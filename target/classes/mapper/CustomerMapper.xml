@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="io.lhysin.myjpa.mapper.CustomerRepository">
+
+    <select id="findById" resultType="io.lhysin.myjpa.entity.Customer">
+        SELECT
+            admCustomer.CUST_NO,
+            admCustomer.NAME,
+            admCustomer.AGE
+        FROM ADM.CUSTOMER admCustomer
+        WHERE admCustomer.CUST_NO = #{custNo}
+    </select>
+
+</mapper>
