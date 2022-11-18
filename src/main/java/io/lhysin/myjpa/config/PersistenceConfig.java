@@ -13,7 +13,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import javax.sql.DataSource;
 
 @Configuration
-@MapperScan("io.lhysin.myjpa.mapper")
+@MapperScan({"io.lhysin.myjpa.mapper", "io.lhysin.myjpa.repository"})
 public class PersistenceConfig {
 
     @Bean

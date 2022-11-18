@@ -8,4 +8,6 @@ insert into ADM.CUSTOMER values ('20220107', 'Customer07', 17);
 insert into ADM.CUSTOMER values ('20220108', 'Customer08', 18);
 insert into ADM.CUSTOMER values ('20220109', 'Customer09', 19);
 
-
+insert into ADM.TORDER values ('20220109', 'order01', 'orderName01');
+insert into ADM.TORDER values ('20220109', 'order02', 'orderName02');
+insert into ADM.TORDER values ('20220109', 'order03', 'orderName03');
