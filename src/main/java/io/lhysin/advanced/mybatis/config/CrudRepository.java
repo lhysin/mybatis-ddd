@@ -27,7 +27,7 @@ public interface CrudRepository<T, ID extends Serializable> {
     int delete(T entity);
 
     @DeleteProvider(type = CrudSqlProvider.class, method = "deleteAllById")
-    int deleteAllById(@Param("ids") Iterable<ID> ids);
+    int deleteAllById(Iterable<ID> ids);
 
     @InsertProvider(type = CrudSqlProvider.class, method = "create")
     int create(T entity);
