@@ -1,13 +1,6 @@
 package io.lhysin.advanced.mybatis.domain;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-
-import java.util.Arrays;
-import java.util.List;
-
 
 @AllArgsConstructor
 public class PageRequest implements Pageable {

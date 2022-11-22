@@ -3,14 +3,9 @@ package io.lhysin.advanced.mybatis.support;
 import io.lhysin.advanced.mybatis.domain.Pageable;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
-import javax.persistence.Column;
-
 import java.io.Serializable;
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.stream.Collectors;
-
-
 
 public abstract class SqlProviderSupport<T, ID extends Serializable> extends ProviderContextSupport<T, ID> {
 

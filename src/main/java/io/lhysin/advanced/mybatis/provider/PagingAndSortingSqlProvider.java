@@ -8,7 +8,6 @@ import org.apache.ibatis.jdbc.SQL;
 
 import java.io.Serializable;
 
-
 @Slf4j
 public class PagingAndSortingSqlProvider<T, ID extends Serializable> extends SqlProviderSupport<T, ID> {
 

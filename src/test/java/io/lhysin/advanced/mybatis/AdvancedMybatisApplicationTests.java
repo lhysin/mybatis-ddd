@@ -13,7 +13,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -45,7 +44,12 @@ class AdvancedMybatisApplicationTests {
         Pageable req = PageRequest.of(2, 3, sort);
         List<Customer> customers = customerMapper.findAll(req);
 
-        customerMapper.findAll(PageRequest.of(2, 3, Sort.by(Sort.Direction.ASC, "asd")));
+        Sort fakeSort = Sort.by(Sort.Direction.ASC, "asd")
+                        .and("OOO")
+                        .and("exists")
+                        .and("INSERT INTO");
+        Pageable fakePageable = PageRequest.of(0, 3, fakeSort);
+        List<Customer> fakeCustomers =customerMapper.findAll(fakePageable);
     }
 
     @Test

@@ -1,7 +1,6 @@
 package io.lhysin.advanced.mybatis.mapper;
 
 import io.lhysin.advanced.mybatis.domain.Pageable;
-import io.lhysin.advanced.mybatis.domain.Sort;
 import io.lhysin.advanced.mybatis.provider.PagingAndSortingSqlProvider;
 import org.apache.ibatis.annotations.SelectProvider;
 
