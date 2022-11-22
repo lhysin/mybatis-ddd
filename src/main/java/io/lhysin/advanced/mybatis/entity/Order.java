@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
-@Entity
 @Table(name = "TORDER", schema = "ADM")
 @Builder
 @AllArgsConstructor(access = AccessLevel.PACKAGE)

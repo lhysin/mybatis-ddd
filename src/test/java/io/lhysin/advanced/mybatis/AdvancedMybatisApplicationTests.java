@@ -1,20 +1,23 @@
 package io.lhysin.advanced.mybatis;
 
+import io.lhysin.advanced.mybatis.entity.Customer;
 import io.lhysin.advanced.mybatis.entity.Order;
 import io.lhysin.advanced.mybatis.mapper.CustomerMapper;
 import io.lhysin.advanced.mybatis.repository.CustomerRepository;
-import io.lhysin.advanced.mybatis.entity.Customer;
 import io.lhysin.advanced.mybatis.repository.OrderRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
+@Slf4j
 class AdvancedMybatisApplicationTests {
 
     @Autowired
@@ -74,8 +77,31 @@ class AdvancedMybatisApplicationTests {
                 .orElse(null);
         assertNull(nullableOrder);
 
-        List<String> idss = List.of("20220101", "20220102", "20220103");
-        List<Customer> customers = customerRepository.findAllById(idss);
+
+        List<String> customerIds = List.of("20220101", "20220102", "20220103");
+        List<Customer> customers = customerRepository.findAllById(customerIds);
+        assertFalse(customers.isEmpty());
+
+        List<Order.PK> orderIds = List.of(
+                Order.PK.builder()
+                        .custNo("20220111")
+                        .ordNo("order10")
+                        .build(),
+                Order.PK.builder()
+                        .custNo("20220111")
+                        .ordNo("order11")
+                        .build(),
+                Order.PK.builder()
+                        .custNo("20220111")
+                        .ordNo("order12")
+                        .build()
+        );
+
+        List<Order> orders = orderRepository.findAllById(orderIds);
+        assertFalse(orders.isEmpty());
+
+        deleteCnt = orderRepository.deleteAllById(orderIds);
+        assertTrue(deleteCnt > 0);
     }
 
 }

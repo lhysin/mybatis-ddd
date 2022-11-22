@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 public abstract class CrudSqlProviderSupport<T, ID> {
 
     protected Class<?> domainType(ProviderContext ctx) {
-/*
+/* TODO 유효성 검증 추가 필요.
         Class<?> mapperType = ctx.getMapperType();
         if(!CrudRepository.class.isInstance(mapperType.)) {
             throw new IllegalArgumentException("Not Found " + CrudRepository.class.getName());
@@ -62,6 +62,7 @@ public abstract class CrudSqlProviderSupport<T, ID> {
     protected String bindColumn(Field field) {
         return field.getAnnotation(Column.class).name();
     }
+
     protected String bindColumnAndAliasField(Field field) {
         return bindColumn(field) + " AS " + field.getName();
     }

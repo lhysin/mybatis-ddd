@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 
 @Getter
-@Entity
 @Table(name = "CUSTOMER", schema = "ADM")
 @Builder
 @AllArgsConstructor(access = AccessLevel.PACKAGE)

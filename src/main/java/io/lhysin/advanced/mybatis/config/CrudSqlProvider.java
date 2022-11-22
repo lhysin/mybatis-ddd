@@ -4,7 +4,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.apache.ibatis.jdbc.SQL;
 
-import javax.persistence.Column;
+import java.lang.reflect.Field;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 
 @Slf4j
@@ -23,22 +26,11 @@ public class CrudSqlProvider<T, ID> extends CrudSqlProviderSupport<T, ID> {
     }
 
     public String findAllById(Iterable<ID> ids, ProviderContext ctx) {
-        throw new UnsupportedOperationException("CrudSqlProvider.findAllById() not implemented.");
-       /* return new SQL(){{
-            SELECT(selectColumns(ctx));
-            FROM(tableName(ctx));
-            WHERE("1==1");
-
-            for(ID id : ids) {
-                OR();
-                WHERE(wheresByIds(ctx));
-            }
-
-        }}.toString();
-        return new SQL().SELECT(this.selectColumns(ctx))
+        return "<script>" + new SQL().SELECT(this.selectColumns(ctx))
                 .FROM(this.tableName(ctx))
-                .WHERE(this.wheresByIds(ctx))
-                .toString();*/
+                .WHERE(this.whereByIds(ids, ctx))
+                .toString() +
+                "</script>";
     }
 
     public String count(ProviderContext ctx) {
@@ -62,12 +54,12 @@ public class CrudSqlProvider<T, ID> extends CrudSqlProviderSupport<T, ID> {
                 .toString();
     }
 
-    public String deleteAllById(ProviderContext ctx) {
-        throw new UnsupportedOperationException("CrudSqlProvider.deleteAllById() not implemented.");
-        /*return new SQL()
+    public String deleteAllById(Iterable<ID> ids, ProviderContext ctx) {
+        return "<script>" + new SQL()
                 .DELETE_FROM(this.tableName(ctx))
-                .WHERE(this.wheresById(ctx))
-                .toString();*/
+                .WHERE(this.whereByIds(ids, ctx))
+                .toString() +
+                "</script>";
     }
 
     public String create(ProviderContext ctx) {
@@ -116,12 +108,26 @@ public class CrudSqlProvider<T, ID> extends CrudSqlProviderSupport<T, ID> {
                 .toArray(String[]::new);
     }
 
-    private String[] wheresByIds(ProviderContext ctx) {
-        return this.onlyIdFields(ctx)
-                .map(field -> {
-                    return field.getAnnotation(Column.class).name() + " IN ${ids}";
-                })
-                .toArray(String[]::new);
+    private String whereByIds(Iterable<ID> ids, ProviderContext ctx) {
+
+        Long idColumnCount = this.onlyIdFields(ctx).collect(Collectors.counting());
+
+        String joinColumns = this.onlyIdFields(ctx)
+                .map(this::bindColumn)
+                .collect(Collectors.joining(","));
+
+        String joinFields = "#{id}";
+        if(idColumnCount > 1) {
+            joinFields = "(" + this.onlyIdFields(ctx)
+                    .map(field -> "#{id." + field.getName() + "}")
+                    .collect(Collectors.joining(",")) +
+                    ")";
+        }
+
+        return "(" + joinColumns + ")" +
+                "<foreach item='id' collection='ids' open=' IN (' separator=',' close=')'>" +
+                "\n" + joinFields +
+                "\n</foreach>";
     }
 
 }

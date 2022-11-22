@@ -1,9 +1,6 @@
 package io.lhysin.advanced.mybatis.config;
 
-import org.apache.ibatis.annotations.DeleteProvider;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.SelectProvider;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
 
 import java.io.Serializable;
 import java.util.List;
@@ -30,7 +27,7 @@ public interface CrudRepository<T, ID extends Serializable> {
     int delete(T entity);
 
     @DeleteProvider(type = CrudSqlProvider.class, method = "deleteAllById")
-    int deleteAllById(Iterable<ID> ids);
+    int deleteAllById(@Param("ids") Iterable<ID> ids);
 
     @InsertProvider(type = CrudSqlProvider.class, method = "create")
     int create(T entity);
