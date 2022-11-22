@@ -110,7 +110,7 @@ public class CrudSqlProvider<T, ID> extends CrudSqlProviderSupport<T, ID> {
 
     private String whereByIds(Iterable<ID> ids, ProviderContext ctx) {
 
-        Long idColumnCount = this.onlyIdFields(ctx).collect(Collectors.counting());
+        long idColumnCount = this.onlyIdFields(ctx).count();
 
         String joinColumns = this.onlyIdFields(ctx)
                 .map(this::bindColumn)
