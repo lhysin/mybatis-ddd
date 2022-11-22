@@ -3,7 +3,8 @@ CREATE SCHEMA ADM;
 create table ADM.CUSTOMER
 (
    CUST_NO varchar(255) not null,
-   NAME varchar(255) ,
+   FIRST_NAME varchar(255) ,
+   LAST_NAME varchar(255) ,
    AGE integer ,
    primary key(CUST_NO)
 );
@@ -11,7 +12,10 @@ create table ADM.CUSTOMER
 create table ADM.TORDER
 (
     CUST_NO varchar(255) not null,
-    ORDER_NO varchar(255) not null,
+    ORD_NO varchar(255) not null,
+    ORD_SEQ integer,
+    ORD_DTM DATE ,
     NAME varchar(255) ,
-    primary key(CUST_NO, ORDER_NO)
+    ITEM_CD varchar(255) ,
+    primary key(CUST_NO, ORD_NO)
 );
