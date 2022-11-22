@@ -1,12 +1,13 @@
-package io.lhysin.advanced.mybatis.config;
+package io.lhysin.advanced.mybatis.mapper;
 
+import io.lhysin.advanced.mybatis.provider.CrudSqlProvider;
 import org.apache.ibatis.annotations.*;
 
 import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-public interface CrudRepository<T, ID extends Serializable> {
+public interface CrudMapper<T, ID extends Serializable> {
 
     @InsertProvider(type = CrudSqlProvider.class, method = "save")
     int save(T entity);

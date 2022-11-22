@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface CustomerMapper {
+public interface CustomerXmlMapper {
 
     Optional<Customer> findById(@Param("custNo") String custNo);
 }
