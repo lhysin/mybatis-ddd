@@ -1,10 +1,9 @@
 # ddd-mybatis
 
-## Domain Driven Design
-
-## Dynamic SQL Generator from Java Persistence
-
-### Mapperless pattern
+> Domain Driven Design Mybatis  
+> 
+> Dynamic SQL Builder from Java Persistence Like  
+> Mapperless pattern
 
 ```java
 import lombok.RequiredArgsConstructor;
@@ -21,16 +20,16 @@ public class Customer {
 }
 
 @Repository
-public interface CustomerRepository extends CrudRepository<Customer, String> {
+public interface CustomerMapper extends CrudMapper<Customer, String> {
 }
 
 @Service
 @RequiredArgsConstructor
 public class CustomerService {
-    private final CustomerRepository customerRepository;
+    private final CustomerMapper customerMapper;
 
     public Customer findById(String custNo) {
-        return customerRepository.findById(custNo).orElseThrow();
+        return customerMapper.findById(custNo).orElseThrow();
     }
 }
 ```
@@ -42,8 +41,6 @@ org.apache.ibatis.annotations.SelectProvider
 org.apache.ibatis.annotations.InsertProvider
 org.apache.ibatis.annotations.UpdateProvider
 ```
-https://mybatis.org/mybatis-3/ko/statement-builders.html
-
+>https://mybatis.org/mybatis-3/ko/statement-builders.html  
 https://mybatis.org/mybatis-3/apidocs/org/apache/ibatis/builder/annotation/ProviderContext.html
-
-https://stackoverflow.com/questions/8451042/can-i-pass-a-list-as-a-parameter-to-a-mybatis-mapper
+https://stackoverflow.com/questions/8451042/can-i-pass-a-list-as-a-parameter-to-a-mybatis-mapper  
