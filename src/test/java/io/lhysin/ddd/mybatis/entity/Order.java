@@ -21,6 +21,7 @@ public class Order {
     public static class PK implements Serializable {
         private String custNo;
         private String ordNo;
+        private Integer ordSeq;
     }
 
     @Id
@@ -33,7 +34,9 @@ public class Order {
     @EqualsAndHashCode.Include
     private String ordNo;
 
+    @Id
     @Column(name = "ORD_SEQ")
+    @EqualsAndHashCode.Include
     private Integer ordSeq;
 
     @Column(name = "ORD_DTM")

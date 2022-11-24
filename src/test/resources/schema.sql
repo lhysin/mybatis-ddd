@@ -17,7 +17,7 @@ create table ADM.TORDER
     ORD_DTM DATE ,
     NAME varchar(255) ,
     ITEM_CD varchar(255) ,
-    primary key(CUST_NO, ORD_NO)
+    primary key(CUST_NO, ORD_NO, ORD_SEQ)
 );
 
 create table ADM.CART
@@ -27,4 +27,5 @@ create table ADM.CART
     primary key(CUST_NO, CART_SEQ)
 );
 
+create sequence ADM.ORDER_SEQUENCE;
 create sequence ADM.CART_SEQUENCE;

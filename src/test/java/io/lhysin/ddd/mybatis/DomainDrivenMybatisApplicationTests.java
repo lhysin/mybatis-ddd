@@ -58,18 +58,31 @@ class DomainDrivenMybatisApplicationTests {
         cartMapper.create(cart);
 
         assertNotNull(cart.getCartSeq());
+
+        List<Order> orders = IntStream.range(0, 100)
+                .mapToObj(i -> Order.builder()
+                        .custNo("20220109")
+                        .ordNo("order_".concat(i+""))
+                        .build())
+                .collect(Collectors.toList());
+
+        orders.stream()
+                .forEach(it -> orderMapper.create(it));
+
+        assertNotNull(orders.get(10).getOrdSeq());
     }
 
     @Test
     void createAll() {
 
         long count = customerMapper.count();
-        List<Customer> customers = IntStream.range(0, 1000).mapToObj(i -> Customer.builder()
-                .custNo("2022_BULK_".concat(i+""))
-                .firstName("FIRST_N_".concat(i+""))
-                .lastName("LAST_N_".concat(i+""))
-                .age(i)
-                .build())
+        List<Customer> customers = IntStream.range(0, 1000)
+                .mapToObj(i -> Customer.builder()
+                        .custNo("2022_BULK_".concat(i+""))
+                        .firstName("FIRST_N_".concat(i+""))
+                        .lastName("LAST_N_".concat(i+""))
+                        .age(i)
+                        .build())
                 .collect(Collectors.toList());
 
         customerMapper.createAll(customers);
