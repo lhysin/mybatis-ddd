@@ -1,4 +1,4 @@
-package io.lhysin.advanced.mybatis.domain;
+package io.lhysin.ddd.mybatis.domain;
 
 public interface Pageable {
     long getOffset();

@@ -1,8 +1,8 @@
-package io.lhysin.advanced.mybatis.entity;
+package io.lhysin.ddd.mybatis.entity;
 
+import io.lhysin.ddd.mybatis.spec.*;
 import lombok.*;
 
-import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 

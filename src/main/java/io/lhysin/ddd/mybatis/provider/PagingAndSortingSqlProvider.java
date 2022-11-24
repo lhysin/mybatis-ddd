@@ -1,14 +1,12 @@
-package io.lhysin.advanced.mybatis.provider;
+package io.lhysin.ddd.mybatis.provider;
 
-import io.lhysin.advanced.mybatis.domain.Pageable;
-import io.lhysin.advanced.mybatis.support.SqlProviderSupport;
-import lombok.extern.slf4j.Slf4j;
+import io.lhysin.ddd.mybatis.domain.Pageable;
+import io.lhysin.ddd.mybatis.support.SqlProviderSupport;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.apache.ibatis.jdbc.SQL;
 
 import java.io.Serializable;
 
-@Slf4j
 public class PagingAndSortingSqlProvider<T, ID extends Serializable> extends SqlProviderSupport<T, ID> {
 
     public String findAll(Pageable pageable, ProviderContext ctx) {
@@ -22,5 +20,4 @@ public class PagingAndSortingSqlProvider<T, ID extends Serializable> extends Sql
                 .FETCH_FIRST_ROWS_ONLY("#{limit}")
                 .toString();
     }
-
 }

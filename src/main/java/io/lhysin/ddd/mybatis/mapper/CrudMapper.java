@@ -1,6 +1,6 @@
-package io.lhysin.advanced.mybatis.mapper;
+package io.lhysin.ddd.mybatis.mapper;
 
-import io.lhysin.advanced.mybatis.provider.CrudSqlProvider;
+import io.lhysin.ddd.mybatis.provider.CrudSqlProvider;
 import org.apache.ibatis.annotations.*;
 
 import java.io.Serializable;
@@ -36,5 +36,7 @@ public interface CrudMapper<T, ID extends Serializable> {
     @UpdateProvider(type = CrudSqlProvider.class, method = "update")
     int update(T entity);
 
+    @UpdateProvider(type = CrudSqlProvider.class, method = "dynamicUpdate")
+    int dynamicUpdate(T entity);
 
 }

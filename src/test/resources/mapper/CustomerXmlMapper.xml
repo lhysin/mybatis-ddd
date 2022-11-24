@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="io.lhysin.advanced.mybatis.mapper.CustomerXmlMapper">
+<mapper namespace="io.lhysin.ddd.mybatis.mapper.CustomerXmlMapper">
 
-    <select id="findById" resultType="io.lhysin.advanced.mybatis.entity.Customer">
+    <select id="findById" resultType="io.lhysin.ddd.mybatis.entity.Customer">
         SELECT
             admCustomer.CUST_NO AS custNO,
             admCustomer.FIRST_NAME AS firstName,

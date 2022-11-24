@@ -1,6 +1,6 @@
-package io.lhysin.advanced.mybatis.mapper;
+package io.lhysin.ddd.mybatis.mapper;
 
-import io.lhysin.advanced.mybatis.entity.Order;
+import io.lhysin.ddd.mybatis.entity.Order;
 import org.springframework.stereotype.Repository;
 
 @Repository

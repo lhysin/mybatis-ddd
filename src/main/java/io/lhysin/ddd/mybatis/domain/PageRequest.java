@@ -1,8 +1,5 @@
-package io.lhysin.advanced.mybatis.domain;
+package io.lhysin.ddd.mybatis.domain;
 
-import lombok.AllArgsConstructor;
-
-@AllArgsConstructor
 public class PageRequest implements Pageable {
 
     private int page;
@@ -10,6 +7,12 @@ public class PageRequest implements Pageable {
     private int size;
 
     private Sort sort;
+
+    public PageRequest(int page, int size, Sort sort) {
+        this.page = page;
+        this.size = size;
+        this.sort = sort;
+    }
 
     public static PageRequest of(int page, int size) {
         return PageRequest.of(page, size, null);

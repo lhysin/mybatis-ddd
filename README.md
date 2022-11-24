@@ -1,4 +1,6 @@
-# advanced-mybatis
+# ddd-mybatis
+
+## Domain Driven Design
 
 ## Dynamic SQL Generator from Java Persistence
 

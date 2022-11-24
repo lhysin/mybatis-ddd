@@ -1,16 +1,19 @@
-package io.lhysin.advanced.mybatis;
+package io.lhysin.ddd.mybatis;
 
-import io.lhysin.advanced.mybatis.domain.PageRequest;
-import io.lhysin.advanced.mybatis.domain.Pageable;
-import io.lhysin.advanced.mybatis.domain.Sort;
-import io.lhysin.advanced.mybatis.entity.Customer;
-import io.lhysin.advanced.mybatis.entity.Order;
-import io.lhysin.advanced.mybatis.mapper.CustomerXmlMapper;
-import io.lhysin.advanced.mybatis.mapper.CustomerMapper;
-import io.lhysin.advanced.mybatis.mapper.OrderMapper;
+import io.lhysin.ddd.mybatis.domain.PageRequest;
+import io.lhysin.ddd.mybatis.domain.Pageable;
+import io.lhysin.ddd.mybatis.domain.Sort;
+import io.lhysin.ddd.mybatis.entity.Customer;
+import io.lhysin.ddd.mybatis.entity.Order;
+import io.lhysin.ddd.mybatis.mapper.CustomerXmlMapper;
+import io.lhysin.ddd.mybatis.mapper.CustomerMapper;
+import io.lhysin.ddd.mybatis.mapper.DummyMapper;
+import io.lhysin.ddd.mybatis.mapper.OrderMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
+import org.mybatis.spring.MyBatisSystemException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
@@ -20,7 +23,8 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 @Slf4j
-class AdvancedMybatisApplicationTests {
+@SpringBootApplication
+class DomainDrivenMybatisApplicationTests {
 
     @Autowired
     private CustomerXmlMapper customerXmlMapper;
@@ -31,10 +35,50 @@ class AdvancedMybatisApplicationTests {
     @Autowired
     private OrderMapper orderMapper;
 
+    @Autowired
+    private DummyMapper dummyMapper;
+
+    @Test
+    void dummy() {
+
+        Exception exception = assertThrows(MyBatisSystemException.class, () -> {
+            dummyMapper.findById("");
+        });
+        log.debug(exception.getMessage());
+        assertTrue(exception.getMessage().contains("Not Exists."));
+
+    }
+
     @Test
     void countCustomer() {
         long count = customerMapper.count();
         assertTrue(count > 0);
+    }
+
+    @Test
+    void dynamicUpdate() {
+        String custNo1 = "20220101";
+        Customer customer1 = Customer.builder()
+                .custNo(custNo1)
+                .firstName("CHANGE_FIRST_NAME")
+                .lastName("CHANGE_LAST_NAME")
+                .age(null)
+                .build();
+        customerMapper.update(customer1);
+        Customer updatedCustomer1 = customerMapper.findById(custNo1).orElseThrow();
+
+        assertNull(updatedCustomer1.getAge());
+
+        String custNo2 = "20220102";
+        Customer customer2 = Customer.builder()
+                .custNo(custNo2)
+                .firstName("ONLY_CHANGE_FIRST_NAME")
+                .build();
+        customerMapper.dynamicUpdate(customer2);
+
+        Customer dynamicUpdatedCustomer2 = customerMapper.findById(custNo2).orElseThrow();
+        assertNotNull(dynamicUpdatedCustomer2.getAge());
+
     }
 
     @Test

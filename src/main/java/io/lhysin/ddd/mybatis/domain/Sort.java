@@ -1,12 +1,8 @@
-package io.lhysin.advanced.mybatis.domain;
-
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+package io.lhysin.ddd.mybatis.domain;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
 public class Sort {
 
     private List<Order> orders;
@@ -38,11 +34,26 @@ public class Sort {
         return new Sort(this.getOrders());
     }
 
-    @Getter
-    @AllArgsConstructor
+    public List<Order> getOrders() {
+        return this.orders;
+    }
+
     public static class Order {
         private Direction direction;
         private String property;
+
+        public Order(Direction direction, String property) {
+            this.direction = direction;
+            this.property = property;
+        }
+
+        public Direction getDirection() {
+            return this.direction;
+        }
+
+        public String getProperty() {
+            return this.property;
+        }
     }
 
     public enum Direction {

@@ -1,15 +1,14 @@
-package io.lhysin.advanced.mybatis.support;
+package io.lhysin.ddd.mybatis.support;
 
+import io.lhysin.ddd.mybatis.spec.*;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
-import javax.persistence.Column;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 
@@ -41,17 +40,27 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
                             .map(schema -> schema.concat(".").concat(it.name()))
                             .orElse(it.name());
                 })
-                .orElseThrow(() -> new IllegalArgumentException("Not Found ".concat(Table.class.getName())));
+                .orElseThrow(() -> new IllegalArgumentException(Table.class.getName().concat(" Not Exists."))
+                );
     }
 
     protected Stream<Field> columns(ProviderContext ctx) {
         return Arrays.stream(this.domainType(ctx).getDeclaredFields())
-                .filter(field -> field.isAnnotationPresent(Column.class));
+                .filter(field -> field.isAnnotationPresent(Column.class))
+                .collect(Collectors.collectingAndThen(Collectors.toList(), Optional::of))
+                .filter(it -> !it.isEmpty())
+                .orElseThrow(() -> new IllegalArgumentException(Column.class.getName().concat(" Not Exists."))
+                ).stream();
+
     }
 
     protected Stream<Field> onlyIdColumns(ProviderContext ctx) {
         return this.columns(ctx)
-                .filter(field -> field.isAnnotationPresent(Id.class));
+                .filter(field -> field.isAnnotationPresent(Id.class))
+                .collect(Collectors.collectingAndThen(Collectors.toList(), Optional::of))
+                .filter(it -> !it.isEmpty())
+                .orElseThrow(() -> new IllegalArgumentException(Id.class.getName().concat(" Not Exists."))
+                ).stream();
     }
 
     protected Stream<Field> withoutIdColumns(ProviderContext ctx) {
@@ -78,5 +87,13 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
 
     protected String bindParameter(String column) {
         return "#{".concat(column).concat("}");
+    }
+
+    protected boolean insertable(Field field) {
+        return field.getAnnotation(Column.class).insertable();
+    }
+
+    protected boolean updatable(Field field) {
+        return field.getAnnotation(Column.class).updatable();
     }
 }

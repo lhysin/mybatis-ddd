@@ -1,17 +1,15 @@
-package io.lhysin.advanced.mybatis.provider;
+package io.lhysin.ddd.mybatis.provider;
 
-import io.lhysin.advanced.mybatis.support.SqlProviderSupport;
-import lombok.extern.slf4j.Slf4j;
+import io.lhysin.ddd.mybatis.support.SqlProviderSupport;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.apache.ibatis.jdbc.SQL;
 
 import java.io.Serializable;
 
-@Slf4j
 public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupport<T, ID> {
 
     public String save(ProviderContext ctx) {
-        throw new UnsupportedOperationException("CrudSqlProvider.save() not implemented.");
+        throw new UnsupportedOperationException("CrudSqlProvider.save() Not Implemented.");
     }
 
     public String findById(ProviderContext ctx) {
@@ -73,6 +71,14 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
         return new SQL()
                 .UPDATE(this.tableName(ctx))
                 .SET(this.updateColumns(ctx))
+                .WHERE(this.wheresById(ctx))
+                .toString();
+    }
+
+    public String dynamicUpdate(T domain, ProviderContext ctx) {
+        return new SQL()
+                .UPDATE(this.tableName(ctx))
+                .SET(this.dynamicUpdateColumns(domain, ctx))
                 .WHERE(this.wheresById(ctx))
                 .toString();
     }
