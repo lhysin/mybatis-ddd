@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-public interface CrudMapper<T, ID extends Serializable> {
+public interface CrudMapper<T, ID extends Serializable> extends ProvierMapper {
 
     @InsertProvider(type = CrudSqlProvider.class, method = "save")
     int save(T entity);
@@ -38,5 +38,8 @@ public interface CrudMapper<T, ID extends Serializable> {
 
     @UpdateProvider(type = CrudSqlProvider.class, method = "dynamicUpdate")
     int dynamicUpdate(T entity);
+
+    @InsertProvider(type = CrudSqlProvider.class, method = "createAll")
+    int createAll(Iterable<T> entities);
 
 }

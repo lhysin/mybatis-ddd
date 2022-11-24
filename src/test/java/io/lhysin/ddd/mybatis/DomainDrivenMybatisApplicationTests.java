@@ -3,12 +3,10 @@ package io.lhysin.ddd.mybatis;
 import io.lhysin.ddd.mybatis.domain.PageRequest;
 import io.lhysin.ddd.mybatis.domain.Pageable;
 import io.lhysin.ddd.mybatis.domain.Sort;
+import io.lhysin.ddd.mybatis.entity.Cart;
 import io.lhysin.ddd.mybatis.entity.Customer;
 import io.lhysin.ddd.mybatis.entity.Order;
-import io.lhysin.ddd.mybatis.mapper.CustomerXmlMapper;
-import io.lhysin.ddd.mybatis.mapper.CustomerMapper;
-import io.lhysin.ddd.mybatis.mapper.DummyMapper;
-import io.lhysin.ddd.mybatis.mapper.OrderMapper;
+import io.lhysin.ddd.mybatis.mapper.*;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.MyBatisSystemException;
@@ -17,6 +15,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -36,6 +36,9 @@ class DomainDrivenMybatisApplicationTests {
     private OrderMapper orderMapper;
 
     @Autowired
+    private CartMapper cartMapper;
+
+    @Autowired
     private DummyMapper dummyMapper;
 
     @Test
@@ -46,6 +49,32 @@ class DomainDrivenMybatisApplicationTests {
         });
         log.debug(exception.getMessage());
         assertTrue(exception.getMessage().contains("Not Exists."));
+
+    }
+
+    @Test
+    void sequence() {
+        Cart cart = Cart.builder().custNo("20220101").build();
+        cartMapper.create(cart);
+
+        assertNotNull(cart.getCartSeq());
+    }
+
+    @Test
+    void createAll() {
+
+        long count = customerMapper.count();
+        List<Customer> customers = IntStream.range(0, 1000).mapToObj(i -> Customer.builder()
+                .custNo("2022_BULK_".concat(i+""))
+                .firstName("FIRST_N_".concat(i+""))
+                .lastName("LAST_N_".concat(i+""))
+                .age(i)
+                .build())
+                .collect(Collectors.toList());
+
+        customerMapper.createAll(customers);
+
+        assertTrue(customerMapper.count() - count == customers.size());
 
     }
 

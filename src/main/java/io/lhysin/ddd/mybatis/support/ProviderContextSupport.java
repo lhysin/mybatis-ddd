@@ -2,10 +2,12 @@ package io.lhysin.ddd.mybatis.support;
 
 import io.lhysin.ddd.mybatis.spec.*;
 import org.apache.ibatis.builder.annotation.ProviderContext;
+import org.springframework.util.ReflectionUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -15,19 +17,13 @@ import java.util.stream.Stream;
 public abstract class ProviderContextSupport<T, ID extends Serializable> {
 
     protected Class<?> domainType(ProviderContext ctx) {
-/* TODO 유효성 검증 추가 필요.
-        Class<?> mapperType = ctx.getMapperType();
-        if(!CrudRepository.class.isInstance(mapperType.)) {
-            throw new IllegalArgumentException("Not Found ".concat(CrudRepository.class.getName()));
-        }
-*/
-
         return Arrays.stream(ctx.getMapperType().getGenericInterfaces())
                 .filter(ParameterizedType.class::isInstance)
                 .map(ParameterizedType.class::cast)
                 .findFirst()
                 .map(type -> type.getActualTypeArguments()[0])
-                .filter(Class.class::isInstance).map(Class.class::cast)
+                .filter(Class.class::isInstance)
+                .map(Class.class::cast)
                 .orElseThrow();
     }
 

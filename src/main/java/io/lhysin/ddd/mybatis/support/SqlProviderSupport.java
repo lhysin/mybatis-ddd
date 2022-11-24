@@ -59,6 +59,15 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
                 .toArray(String[]::new);
     }
 
+    protected String bulkIntoValues(ProviderContext ctx) {
+        String joiningFields = this.columns(ctx)
+                .map(field -> "#{entity.".concat(field.getName()).concat("}"))
+                .collect(Collectors.joining(","));
+        return "<foreach item='entity' collection='entities' open='' separator=',' close=''>"
+                .concat("\n").concat("(").concat(joiningFields).concat(")")
+                .concat("\n</foreach>");
+    }
+
     protected String[] wheresById(ProviderContext ctx) {
         return this.onlyIdColumns(ctx)
                 .map(this::columnNameAndBindParameter)

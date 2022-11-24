@@ -82,4 +82,15 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
                 .WHERE(this.wheresById(ctx))
                 .toString();
     }
+
+    public String createAll(ProviderContext ctx) {
+        return "<script>".concat(
+                new SQL()
+                    .INSERT_INTO(this.tableName(ctx))
+                    .INTO_COLUMNS(this.insertIntoColumns(ctx))
+                    .toString()
+                ).concat(" VALUES ")
+                .concat(this.bulkIntoValues(ctx))
+                .concat("</script>");
+    }
 }

@@ -19,3 +19,12 @@ create table ADM.TORDER
     ITEM_CD varchar(255) ,
     primary key(CUST_NO, ORD_NO)
 );
+
+create table ADM.CART
+(
+    CUST_NO varchar(255) not null,
+    CART_SEQ integer not null,
+    primary key(CUST_NO, CART_SEQ)
+);
+
+create sequence ADM.CART_SEQUENCE;
