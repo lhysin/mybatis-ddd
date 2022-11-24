@@ -85,6 +85,10 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
         return "#{".concat(column).concat("}");
     }
 
+    protected String bindParameterWithKey(String column, String key) {
+        return "#{".concat(key).concat(".").concat(column).concat("}");
+    }
+
     protected boolean insertable(Field field) {
         return field.getAnnotation(Column.class).insertable();
     }

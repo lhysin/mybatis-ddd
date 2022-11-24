@@ -7,7 +7,9 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 public abstract class SqlProviderSupport<T, ID extends Serializable> extends ProviderContextSupport<T, ID> {
@@ -60,10 +62,12 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
     }
 
     protected String bulkIntoValues(ProviderContext ctx) {
+        String key = "entity";
         String joiningFields = this.columns(ctx)
-                .map(field -> "#{entity.".concat(field.getName()).concat("}"))
+                .map(field -> bindParameterWithKey(field.getName(), key))
                 .collect(Collectors.joining(","));
-        return "<foreach item='entity' collection='entities' open='' separator=',' close=''>"
+
+        return "<foreach item='".concat(key).concat("' collection='entities' separator=','>")
                 .concat("\n").concat("(").concat(joiningFields).concat(")")
                 .concat("\n</foreach>");
     }
@@ -75,18 +79,21 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
     }
 
     protected String whereByIds(ProviderContext ctx) {
+
         // FIRST_NAME or FIRST_NAME, LAST_NAME
         String joiningColumns = this.onlyIdColumns(ctx)
                 .map(this::columnName)
                 .collect(Collectors.joining(","));
 
-        // #{id} or (#{id.firstName}, #{id.lastName})
-        String joiningFields = this.isCompositeKey(ctx) ?
+        String key = "id";
+
+        Supplier<String> compositeCase = () ->
                 "(".concat(this.onlyIdColumns(ctx)
-                        .map(field -> "#{id.".concat(field.getName()).concat("}"))
-                        .collect(Collectors.joining(","))
-                ).concat(")")
-                : "#{id}";
+                .map(field -> this.bindParameterWithKey(field.getName(), key))
+                .collect(Collectors.joining(","))).concat(")");
+
+        // (#{id.firstName}, #{id.lastName}) or #{id}
+        String joiningFields = this.isCompositeKey(ctx) ? compositeCase.get() : this.bindParameter(key);
 
         return "(".concat(joiningColumns).concat(")")
                 .concat("<foreach item='id' collection='ids' open=' IN (' separator=',' close=')'>" )

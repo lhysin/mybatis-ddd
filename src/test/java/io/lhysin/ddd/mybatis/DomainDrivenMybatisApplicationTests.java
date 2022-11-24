@@ -44,9 +44,7 @@ class DomainDrivenMybatisApplicationTests {
     @Test
     void dummy() {
 
-        Exception exception = assertThrows(MyBatisSystemException.class, () -> {
-            dummyMapper.findById("");
-        });
+        Exception exception = assertThrows(MyBatisSystemException.class, () -> dummyMapper.findById(""));
         log.debug(exception.getMessage());
         assertTrue(exception.getMessage().contains("Not Exists."));
 
@@ -66,8 +64,7 @@ class DomainDrivenMybatisApplicationTests {
                         .build())
                 .collect(Collectors.toList());
 
-        orders.stream()
-                .forEach(it -> orderMapper.create(it));
+        orders.forEach(it -> orderMapper.create(it));
 
         assertNotNull(orders.get(10).getOrdSeq());
     }
@@ -87,7 +84,7 @@ class DomainDrivenMybatisApplicationTests {
 
         customerMapper.createAll(customers);
 
-        assertTrue(customerMapper.count() - count == customers.size());
+        assertEquals(customerMapper.count() - count, customers.size());
 
     }
 
@@ -135,7 +132,7 @@ class DomainDrivenMybatisApplicationTests {
                         .and("exists")
                         .and("INSERT INTO");
         Pageable fakePageable = PageRequest.of(0, 3, fakeSort);
-        List<Customer> fakeCustomers =customerMapper.findAll(fakePageable);
+        List<Customer> fakeCustomers = customerMapper.findAll(fakePageable);
     }
 
     @Test
@@ -189,6 +186,7 @@ class DomainDrivenMybatisApplicationTests {
         Order.PK pk = Order.PK.builder()
                 .custNo("20220109")
                 .ordNo("order01")
+                .ordSeq(1)
                 .build();
         Order order = orderMapper.findById(pk)
                 .orElseThrow();
@@ -212,14 +210,17 @@ class DomainDrivenMybatisApplicationTests {
                 Order.PK.builder()
                         .custNo("20220111")
                         .ordNo("order10")
+                        .ordSeq(3)
                         .build(),
                 Order.PK.builder()
                         .custNo("20220111")
                         .ordNo("order11")
+                        .ordSeq(4)
                         .build(),
                 Order.PK.builder()
                         .custNo("20220111")
                         .ordNo("order12")
+                        .ordSeq(5)
                         .build()
         );
 
