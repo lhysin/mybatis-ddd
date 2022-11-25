@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-public interface CrudMapper<T, ID extends Serializable> extends ProvierMapper {
+public interface CrudMapper<T, ID extends Serializable> extends ProvierMapper<T, ID> {
 
     @InsertProvider(type = CrudSqlProvider.class, method = "save")
     int save(T entity);
