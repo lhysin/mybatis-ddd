@@ -7,8 +7,9 @@ import org.apache.ibatis.jdbc.SQL;
 import java.io.Serializable;
 
 /**
- * @param <T>
- * @param <ID>
+ * CrudSqlProvider
+ * @param <T> Table Entity
+ * @param <ID> Table PK
  */
 public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupport<T, ID> {
 

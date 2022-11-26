@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
+ * CrudMapper
  * @param <T> Table Entity
  * @param <ID> Table PK
  */

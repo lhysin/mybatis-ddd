@@ -14,6 +14,11 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * ProviderContextSupport
+ * @param <T> Table Entity
+ * @param <ID> Table PK
+ */
 public abstract class ProviderContextSupport<T, ID extends Serializable> {
 
     protected Class<?> domainType(ProviderContext ctx) {

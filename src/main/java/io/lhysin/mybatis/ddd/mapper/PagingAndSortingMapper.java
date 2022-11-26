@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * PagingAndSortingMapper
  * @param <T> Table Entity
  * @param <ID> Table PK
  */

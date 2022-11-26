@@ -8,8 +8,9 @@ import org.apache.ibatis.jdbc.SQL;
 import java.io.Serializable;
 
 /**
- * @param <T>
- * @param <ID>
+ * PagingAndSortingSqlProvider
+ * @param <T> Table Entity
+ * @param <ID> Table PK
  */
 public class PagingAndSortingSqlProvider<T, ID extends Serializable> extends SqlProviderSupport<T, ID> {
 

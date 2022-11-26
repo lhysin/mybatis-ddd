@@ -11,6 +11,11 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
+/**
+ * SqlProviderSupport
+ * @param <T> Table Entity
+ * @param <ID> Table PK
+ */
 public abstract class SqlProviderSupport<T, ID extends Serializable> extends ProviderContextSupport<T, ID> {
 
     /**
@@ -31,9 +36,6 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
         return this.columns(ctx)
                 .filter(this::insertable)
                 .map(this::columnName)
-                .collect(Collectors.collectingAndThen(Collectors.toList(), Optional::of))
-                .filter(it -> !it.isEmpty())
-                .orElseThrow(() -> new IllegalArgumentException("Insertable Column Not Exists."))
                 .toArray(String[]::new);
     }
 
@@ -70,9 +72,6 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
                 .filter(this::updatable)
                 .filter(isDynamicUpdate)
                 .map(this::columnNameAndBindParameter)
-                .collect(Collectors.collectingAndThen(Collectors.toList(), Optional::of))
-                .filter(it -> !it.isEmpty())
-                .orElseThrow(() -> new IllegalArgumentException("Updatable Column Not Exists."))
                 .toArray(String[]::new);
     }
 
