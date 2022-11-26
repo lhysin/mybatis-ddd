@@ -1,10 +1,12 @@
-# ddd-mybatis
+# mybatis-ddd
 
-> Domain Driven Design Mybatis  
+> Mybatis Domain Driven Design   
 > 
-> Dynamic SQL Builder from Java Persistence Like  
-> Mapperless pattern
+> Dynamic Mybatis SQL Builder Like Java Persistence
+> 
+> No Xml Mapper
 
+### 1. How to Use
 ```java
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -31,6 +33,22 @@ public class CustomerService {
     public Customer findById(String custNo) {
         return customerMapper.findById(custNo).orElseThrow();
     }
+}
+```
+### 2. Like @GeneratedValue with @SelectKey
+```java
+import org.springframework.stereotype.Repository;
+import org.apache.ibatis.annotations.InsertProvider;
+import org.apache.ibatis.annotations.SelectKey;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public interface CartMapper extends CrudMapper<Cart, Cart.PK> {
+
+    @Override
+    @InsertProvider(type = CrudSqlProvider.class, method = "create")
+    @SelectKey(keyColumn="CART_SEQ", keyProperty="cartSeq", resultType=Integer.class, before=true, statement="SELECT ADM.CART_SEQUENCE.nextval FROM DUAL")
+    int create(Cart entity);
 }
 ```
 
