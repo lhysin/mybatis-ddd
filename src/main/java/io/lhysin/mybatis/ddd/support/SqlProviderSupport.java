@@ -13,12 +13,20 @@ import java.util.stream.Collectors;
 
 public abstract class SqlProviderSupport<T, ID extends Serializable> extends ProviderContextSupport<T, ID> {
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return select column array
+     */
     protected String[] selectColumns(ProviderContext ctx) {
         return this.columns(ctx)
                 .map(this::columnNameAndAliasField)
                 .toArray(String[]::new);
     }
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return insert into column array
+     */
     protected String[] insertIntoColumns(ProviderContext ctx) {
         return this.columns(ctx)
                 .filter(this::insertable)
@@ -29,14 +37,28 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
                 .toArray(String[]::new);
     }
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return update column array
+     */
     protected String[] updateColumns(ProviderContext ctx) {
         return this.conditionalUpdateColumns(null, ctx);
     }
 
+    /**
+     * @param domain 
+     * @param ctx
+     * @return dynamic update column array
+     */
     protected String[] dynamicUpdateColumns(T domain, ProviderContext ctx) {
         return this.conditionalUpdateColumns(domain, ctx);
     }
 
+    /**
+     * @param domain 
+     * @param ctx
+     * @return dynamic or update column array
+     */
     private String[] conditionalUpdateColumns(T domain, ProviderContext ctx) {
 
         Predicate<Field> isDynamicUpdate = field -> value(domain, field) != null;
@@ -54,12 +76,20 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
                 .toArray(String[]::new);
     }
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return into value bind value array
+     */
     protected String[] intoValues(ProviderContext ctx) {
         return this.columns(ctx)
                 .map(field -> bindParameter(field.getName()))
                 .toArray(String[]::new);
     }
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return foreach into value bind value array
+     */
     protected String bulkIntoValues(ProviderContext ctx) {
         String key = "entity";
         String joiningFields = this.columns(ctx)
@@ -71,12 +101,20 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
                 .concat("\n</foreach>");
     }
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return where column and bind value array
+     */
     protected String[] wheresById(ProviderContext ctx) {
         return this.onlyIdColumns(ctx)
                 .map(this::columnNameAndBindParameter)
                 .toArray(String[]::new);
     }
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return foreach where column and bind value array
+     */
     protected String whereByIds(ProviderContext ctx) {
 
         // FIRST_NAME or FIRST_NAME, LAST_NAME
@@ -100,6 +138,11 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
                 .concat("\n</foreach>");
     }
 
+    /**
+     * @param pageable {@link Pageable}
+     * @param ctx {@link ProviderContext}
+     * @return order by array
+     */
     protected String[] orders(Pageable pageable, ProviderContext ctx) {
         List<String> allColumns = this.columns(ctx)
                 .map(this::columnName)
@@ -111,6 +154,11 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
                 .toArray(String[]::new);
     }
 
+    /**
+     * @param obj target
+     * @param field target field
+     * @return target value
+     */
     protected Object value(Object obj, Field field) {
         try {
             field.setAccessible(true);

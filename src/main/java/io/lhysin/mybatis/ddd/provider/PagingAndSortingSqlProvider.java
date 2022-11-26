@@ -7,8 +7,17 @@ import org.apache.ibatis.jdbc.SQL;
 
 import java.io.Serializable;
 
+/**
+ * @param <T>
+ * @param <ID>
+ */
 public class PagingAndSortingSqlProvider<T, ID extends Serializable> extends SqlProviderSupport<T, ID> {
 
+    /**
+     * @param pageable {@link Pageable}
+     * @param ctx {@link ProviderContext}
+     * @return dynamic SQL
+     */
     public String findAll(Pageable pageable, ProviderContext ctx) {
         return new SQL()
                 .SELECT(this.selectColumns(ctx))

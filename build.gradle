@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'io.github.lhysin'
-version = '0.0.1-REALESE'
+version = '0.0.2-REALESE'
 description = 'Mybatis Domain Driven Design'
 sourceCompatibility = JavaVersion.VERSION_1_8
 
@@ -29,6 +29,10 @@ dependencies {
     // https://projectlombok.org
     testImplementation('org.projectlombok:lombok:1.18.24')
     testAnnotationProcessor('org.projectlombok:lombok:1.18.24')
+}
+
+test {
+    useJUnitPlatform()
 }
 
 // publish

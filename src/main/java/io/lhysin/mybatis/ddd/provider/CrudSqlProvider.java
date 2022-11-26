@@ -6,12 +6,25 @@ import org.apache.ibatis.jdbc.SQL;
 
 import java.io.Serializable;
 
+/**
+ * @param <T>
+ * @param <ID>
+ */
 public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupport<T, ID> {
 
+    /**
+     * Not Implemented.
+     * @param ctx {@link ProviderContext}
+     * @return dynamic SQL
+     */
     public String save(ProviderContext ctx) {
         throw new UnsupportedOperationException("CrudSqlProvider.save() Not Implemented.");
     }
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return dynamic SQL
+     */
     public String findById(ProviderContext ctx) {
         return new SQL()
                 .SELECT(this.selectColumns(ctx))
@@ -20,6 +33,10 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
                 .toString();
     }
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return dynamic SQL
+     */
     public String findAllById(ProviderContext ctx) {
         return "<script>".concat(
                 new SQL().SELECT(this.selectColumns(ctx))
@@ -29,6 +46,10 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
         ).concat("</script>");
     }
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return dynamic SQL
+     */
     public String count(ProviderContext ctx) {
         return new SQL()
                 .SELECT("count(*)")
@@ -36,6 +57,10 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
                 .toString();
     }
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return dynamic SQL
+     */
     public String deleteById(ProviderContext ctx) {
         return new SQL()
                 .DELETE_FROM(this.tableName(ctx))
@@ -43,6 +68,10 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
                 .toString();
     }
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return dynamic SQL
+     */
     public String delete(ProviderContext ctx) {
         return new SQL()
                 .DELETE_FROM(this.tableName(ctx))
@@ -50,6 +79,10 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
                 .toString();
     }
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return dynamic SQL
+     */
     public String deleteAllById(ProviderContext ctx) {
         return "<script>".concat(
                 new SQL()
@@ -59,6 +92,10 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
         ).concat("</script>");
     }
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return dynamic SQL
+     */
     public String create(ProviderContext ctx) {
         return new SQL()
                 .INSERT_INTO(this.tableName(ctx))
@@ -67,6 +104,10 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
                 .toString();
     }
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return dynamic SQL
+     */
     public String update(ProviderContext ctx) {
         return new SQL()
                 .UPDATE(this.tableName(ctx))
@@ -75,6 +116,12 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
                 .toString();
     }
 
+
+    /**
+     * @param domain Table entity
+     * @param ctx {@link ProviderContext}
+     * @return dynamic SQL
+     */
     public String dynamicUpdate(T domain, ProviderContext ctx) {
         return new SQL()
                 .UPDATE(this.tableName(ctx))
@@ -83,6 +130,10 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
                 .toString();
     }
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return dynamic SQL
+     */
     public String createAll(ProviderContext ctx) {
         return "<script>".concat(
                         new SQL()

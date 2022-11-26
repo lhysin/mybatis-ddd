@@ -13,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -102,7 +104,7 @@ class MybatisDomainDrivenApplicationTests {
                 .age(null)
                 .build();
         customerMapper.update(customer1);
-        Customer updatedCustomer1 = customerMapper.findById(custNo1).orElseThrow();
+        Customer updatedCustomer1 = customerMapper.findById(custNo1).orElseThrow(NoSuchElementException::new);
 
         assertNull(updatedCustomer1.getAge());
 
@@ -113,7 +115,7 @@ class MybatisDomainDrivenApplicationTests {
                 .build();
         customerMapper.dynamicUpdate(customer2);
 
-        Customer dynamicUpdatedCustomer2 = customerMapper.findById(custNo2).orElseThrow();
+        Customer dynamicUpdatedCustomer2 = customerMapper.findById(custNo2).orElseThrow(NoSuchElementException::new);
         assertNotNull(dynamicUpdatedCustomer2.getAge());
 
     }
@@ -136,8 +138,8 @@ class MybatisDomainDrivenApplicationTests {
 
     @Test
     void xmlMapperAndCrudMapper() {
-        Customer customer1 = customerXmlMapper.findById("20220101").orElseThrow();
-        Customer customer2 = customerMapper.findById("20220101").orElseThrow();
+        Customer customer1 = customerXmlMapper.findById("20220101").orElseThrow(NoSuchElementException::new);
+        Customer customer2 = customerMapper.findById("20220101").orElseThrow(NoSuchElementException::new);
         assertEquals(customer1, customer2);
     }
 
@@ -152,27 +154,27 @@ class MybatisDomainDrivenApplicationTests {
         customerMapper.create(customer);
 
         Customer createdCustomer = customerMapper.findById(customer.getCustNo())
-                .orElseThrow();
+                .orElseThrow(NoSuchElementException::new);
         assertEquals(customer, createdCustomer);
     }
 
     @Test
     void findAndUpdateCustomer() {
         Customer customer = customerMapper.findById("20220101")
-                .orElseThrow();
+                .orElseThrow(NoSuchElementException::new);
 
         customer.plusAge(20);
         customerMapper.update(customer);
 
         Customer updatedCustomer = customerMapper.findById(customer.getCustNo())
-                .orElseThrow();
+                .orElseThrow(NoSuchElementException::new);
         assertEquals(updatedCustomer.getAge(), customer.getAge());
     }
 
     @Test
     void findAndDeleteCustomer() {
         Customer customer = customerMapper.findById("20220108")
-                .orElseThrow();
+                .orElseThrow(NoSuchElementException::new);
 
         customerMapper.delete(customer);
         Customer nullableCustomer = customerMapper.findById(customer.getCustNo())
@@ -188,7 +190,7 @@ class MybatisDomainDrivenApplicationTests {
                 .ordSeq(1)
                 .build();
         Order order = orderMapper.findById(pk)
-                .orElseThrow();
+                .orElseThrow(NoSuchElementException::new);
         assertNotNull(order);
 
         int deleteCnt = orderMapper.deleteById(pk);
@@ -201,27 +203,29 @@ class MybatisDomainDrivenApplicationTests {
 
     @Test
     void findAllByIdsAndDeleteByIds() {
-        List<String> customerIds = List.of("20220101", "20220102", "20220103");
+        List<String> customerIds = new ArrayList<String>();
+        customerIds.add("20220101");
+        customerIds.add("20220102");
+        customerIds.add("20220103");
         List<Customer> customers = customerMapper.findAllById(customerIds);
         assertFalse(customers.isEmpty());
 
-        List<Order.PK> orderIds = List.of(
-                Order.PK.builder()
-                        .custNo("20220111")
-                        .ordNo("order10")
-                        .ordSeq(3)
-                        .build(),
-                Order.PK.builder()
-                        .custNo("20220111")
-                        .ordNo("order11")
-                        .ordSeq(4)
-                        .build(),
-                Order.PK.builder()
-                        .custNo("20220111")
-                        .ordNo("order12")
-                        .ordSeq(5)
-                        .build()
-        );
+        List<Order.PK> orderIds = new ArrayList<Order.PK>();
+        orderIds.add(Order.PK.builder()
+                .custNo("20220111")
+                .ordNo("order10")
+                .ordSeq(3)
+                .build());
+        orderIds.add(Order.PK.builder()
+                .custNo("20220111")
+                .ordNo("order11")
+                .ordSeq(4)
+                .build());
+        orderIds.add(Order.PK.builder()
+                .custNo("20220111")
+                .ordNo("order12")
+                .ordSeq(5)
+                .build());
 
         List<Order> orders = orderMapper.findAllById(orderIds);
         assertFalse(orders.isEmpty());

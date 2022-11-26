@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -23,7 +24,7 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
                 .map(type -> type.getActualTypeArguments()[0])
                 .filter(Class.class::isInstance)
                 .map(Class.class::cast)
-                .orElseThrow();
+                .orElseThrow(NoSuchElementException::new);
     }
 
     protected String tableName(ProviderContext ctx) {
