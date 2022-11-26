@@ -21,6 +21,10 @@ import java.util.stream.Stream;
  */
 public abstract class ProviderContextSupport<T, ID extends Serializable> {
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return Table Entity tpye
+     */
     protected Class<?> domainType(ProviderContext ctx) {
         return Arrays.stream(ctx.getMapperType().getGenericInterfaces())
                 .filter(ParameterizedType.class::isInstance)
@@ -32,6 +36,10 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
                 .orElseThrow(NoSuchElementException::new);
     }
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return table name
+     */
     protected String tableName(ProviderContext ctx) {
         Class<?> domainType = this.domainType(ctx);
         Table tableEnum = domainType.getAnnotation(Table.class);
@@ -45,6 +53,10 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
                 );
     }
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return column stream
+     */
     protected Stream<Field> columns(ProviderContext ctx) {
         return Arrays.stream(this.domainType(ctx).getDeclaredFields())
                 .filter(field -> field.isAnnotationPresent(Column.class))
@@ -55,6 +67,10 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
 
     }
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return only id columns stream
+     */
     protected Stream<Field> onlyIdColumns(ProviderContext ctx) {
         return this.columns(ctx)
                 .filter(field -> field.isAnnotationPresent(Id.class))
@@ -64,40 +80,83 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
                 ).stream();
     }
 
+    /**
+     * @param ctx {@link ProviderContext}
+     * @return without id column stream
+     */
     protected Stream<Field> withoutIdColumns(ProviderContext ctx) {
         return this.columns(ctx)
                 .filter(field -> !field.isAnnotationPresent(Id.class));
     }
 
+    /**
+     * composite
+     * @param ctx {@link ProviderContext}
+     * @return boolean
+     */
     protected boolean isCompositeKey(ProviderContext ctx) {
         long idColumnCount = this.onlyIdColumns(ctx).count();
         return idColumnCount > 1;
     }
 
+    /**
+     * COLUMN
+     * @param field
+     * @return sql
+     */
     protected String columnName(Field field) {
         return field.getAnnotation(Column.class).name();
     }
 
+    /**
+     * COLUMN AS fieldName
+     * @param field
+     * @return sql
+     */
     protected String columnNameAndAliasField(Field field) {
         return columnName(field).concat(" AS ").concat(field.getName());
     }
 
+    /**
+     * column = #{fieldName}
+     * @param field
+     * @return bind sql
+     */
     protected String columnNameAndBindParameter(Field field) {
         return columnName(field).concat(" = ").concat(bindParameter(field.getName()));
     }
 
+    /**
+     * #{column}
+     * @param column
+     * @return bind sql
+     */
     protected String bindParameter(String column) {
         return "#{".concat(column).concat("}");
     }
 
+    /**
+     * #{key.fieldName}
+     * @param column
+     * @param key
+     * @return bind sql
+     */
     protected String bindParameterWithKey(String column, String key) {
         return "#{".concat(key).concat(".").concat(column).concat("}");
     }
 
+    /**
+     * @param field
+     * @return insertable
+     */
     protected boolean insertable(Field field) {
         return field.getAnnotation(Column.class).insertable();
     }
 
+    /**
+     * @param field
+     * @return updatable
+     */
     protected boolean updatable(Field field) {
         return field.getAnnotation(Column.class).updatable();
     }
