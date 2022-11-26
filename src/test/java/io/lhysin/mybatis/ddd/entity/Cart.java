@@ -15,6 +15,14 @@ import java.io.Serializable;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Cart {
 
+    @Id
+    @Column(name = "CUST_NO")
+    @EqualsAndHashCode.Include
+    private String custNo;
+    @Id
+    @Column(name = "CART_SEQ")
+    private Integer cartSeq;
+
     @Getter
     @Builder
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -23,14 +31,5 @@ public class Cart {
         private String custNo;
         private Integer cartSeq;
     }
-
-    @Id
-    @Column(name = "CUST_NO")
-    @EqualsAndHashCode.Include
-    private String custNo;
-
-    @Id
-    @Column(name = "CART_SEQ")
-    private Integer cartSeq;
 
 }

@@ -1,0 +1,20 @@
+ext {
+    PUBLISH_GROUP_ID = 'io.github.lhysin'
+    PUBLISH_VERSION = '0.0.1-REALESE'
+    PUBLISH_ARTIFACT_ID = 'mybatis-ddd'
+    PUBLISH_DESCRIPTION = 'Mybatis Domain Driven Design'
+
+    PUBLISH_URL = 'https://github.com/lhysin/mybatis-ddd'
+    PUBLISH_LICENSE_NAME = 'The Apache License, Version 2.0'
+    PUBLISH_LICENSE_URL =
+            'https://github.com/lhysin/mybatis-ddd/blob/main/LICENSE'
+    PUBLISH_DEVELOPER_ID = 'lhysin'
+    PUBLISH_DEVELOPER_NAME = 'lhysin'
+    PUBLISH_DEVELOPER_EMAIL = 'lhysin.main@gmail.com'
+    PUBLISH_SCM_CONNECTION =
+            'scm:git:github.com/lhysin/mybatis-ddd.git'
+    PUBLISH_SCM_DEVELOPER_CONNECTION =
+            'scm:git:ssh://github.com:lhysin/mybatis-ddd.git'
+    PUBLISH_SCM_URL =
+            'https://github.com/lhysin/mybatis-ddd/tree/main'
+}

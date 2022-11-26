@@ -23,10 +23,10 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
     public String findAllById(ProviderContext ctx) {
         return "<script>".concat(
                 new SQL().SELECT(this.selectColumns(ctx))
-                    .FROM(this.tableName(ctx))
-                    .WHERE(this.whereByIds(ctx))
-                    .toString()
-                ).concat("</script>");
+                        .FROM(this.tableName(ctx))
+                        .WHERE(this.whereByIds(ctx))
+                        .toString()
+        ).concat("</script>");
     }
 
     public String count(ProviderContext ctx) {
@@ -53,10 +53,10 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
     public String deleteAllById(ProviderContext ctx) {
         return "<script>".concat(
                 new SQL()
-                    .DELETE_FROM(this.tableName(ctx))
-                    .WHERE(this.whereByIds(ctx))
-                    .toString()
-                ).concat("</script>");
+                        .DELETE_FROM(this.tableName(ctx))
+                        .WHERE(this.whereByIds(ctx))
+                        .toString()
+        ).concat("</script>");
     }
 
     public String create(ProviderContext ctx) {
@@ -85,10 +85,10 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
 
     public String createAll(ProviderContext ctx) {
         return "<script>".concat(
-                new SQL()
-                    .INSERT_INTO(this.tableName(ctx))
-                    .INTO_COLUMNS(this.insertIntoColumns(ctx))
-                    .toString()
+                        new SQL()
+                                .INSERT_INTO(this.tableName(ctx))
+                                .INTO_COLUMNS(this.insertIntoColumns(ctx))
+                                .toString()
                 ).concat(" VALUES ")
                 .concat(this.bulkIntoValues(ctx))
                 .concat("</script>");

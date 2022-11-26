@@ -1,0 +1,35 @@
+plugins {
+    id('java')
+    id('io.github.gradle-nexus.publish-plugin') version '1.1.0'
+}
+
+group = 'io.github.lhysin'
+version = '0.0.1-REALESE'
+description = 'Mybatis Domain Driven Design'
+sourceCompatibility = JavaVersion.VERSION_1_8
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation('org.mybatis:mybatis:3.5.11')
+
+    // test
+    testImplementation('com.h2database:h2:2.1.214')
+    testImplementation('org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2')
+    testImplementation('org.springframework.boot:spring-boot-starter-test:2.7.5')
+
+    // https://projectlombok.org
+    testImplementation('org.projectlombok:lombok:1.18.24')
+    testAnnotationProcessor('org.projectlombok:lombok:1.18.24')
+}
+
+// publish
+apply from: "${rootDir}/scripts/publish-root.gradle"

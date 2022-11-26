@@ -40,7 +40,7 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
     private String[] conditionalUpdateColumns(T domain, ProviderContext ctx) {
 
         Predicate<Field> isDynamicUpdate = field -> value(domain, field) != null;
-        if(domain == null) {
+        if (domain == null) {
             isDynamicUpdate = field -> true;
         }
 
@@ -88,14 +88,14 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
 
         Supplier<String> compositeCase = () ->
                 "(".concat(this.onlyIdColumns(ctx)
-                .map(field -> this.bindParameterWithKey(field.getName(), key))
-                .collect(Collectors.joining(","))).concat(")");
+                        .map(field -> this.bindParameterWithKey(field.getName(), key))
+                        .collect(Collectors.joining(","))).concat(")");
 
         // (#{id.firstName}, #{id.lastName}) or #{id}
         String joiningFields = this.isCompositeKey(ctx) ? compositeCase.get() : this.bindParameter(key);
 
         return "(".concat(joiningColumns).concat(")")
-                .concat("<foreach item='id' collection='ids' open=' IN (' separator=',' close=')'>" )
+                .concat("<foreach item='id' collection='ids' open=' IN (' separator=',' close=')'>")
                 .concat("\n").concat(joiningFields)
                 .concat("\n</foreach>");
     }

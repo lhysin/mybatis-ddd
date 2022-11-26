@@ -2,11 +2,11 @@ package io.lhysin.mybatis.ddd.domain;
 
 public class PageRequest implements Pageable {
 
-    private int page;
+    private final int page;
 
-    private int size;
+    private final int size;
 
-    private Sort sort;
+    private final Sort sort;
 
     public PageRequest(int page, int size, Sort sort) {
         this.page = page;

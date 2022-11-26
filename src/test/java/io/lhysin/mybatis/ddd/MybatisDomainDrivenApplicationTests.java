@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
 @Slf4j
@@ -59,7 +58,7 @@ class MybatisDomainDrivenApplicationTests {
         List<Order> orders = IntStream.range(0, 100)
                 .mapToObj(i -> Order.builder()
                         .custNo("20220109")
-                        .ordNo("order_".concat(i+""))
+                        .ordNo("order_".concat(i + ""))
                         .build())
                 .collect(Collectors.toList());
 
@@ -74,9 +73,9 @@ class MybatisDomainDrivenApplicationTests {
         long count = customerMapper.count();
         List<Customer> customers = IntStream.range(0, 1000)
                 .mapToObj(i -> Customer.builder()
-                        .custNo("2022_BULK_".concat(i+""))
-                        .firstName("FIRST_N_".concat(i+""))
-                        .lastName("LAST_N_".concat(i+""))
+                        .custNo("2022_BULK_".concat(i + ""))
+                        .firstName("FIRST_N_".concat(i + ""))
+                        .lastName("LAST_N_".concat(i + ""))
                         .age(i)
                         .build())
                 .collect(Collectors.toList());
@@ -126,10 +125,11 @@ class MybatisDomainDrivenApplicationTests {
         Pageable req = PageRequest.of(2, 3, sort);
         List<Customer> customers = customerMapper.findAll(req);
 
+        // check safty order by
         Sort fakeSort = Sort.by(Sort.Direction.ASC, "asd")
-                        .and("OOO")
-                        .and("exists")
-                        .and("INSERT INTO");
+                .and("OOO")
+                .and("exists")
+                .and("INSERT INTO");
         Pageable fakePageable = PageRequest.of(0, 3, fakeSort);
         List<Customer> fakeCustomers = customerMapper.findAll(fakePageable);
     }

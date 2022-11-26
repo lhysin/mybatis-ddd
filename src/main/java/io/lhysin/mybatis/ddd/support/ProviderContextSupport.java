@@ -1,6 +1,8 @@
 package io.lhysin.mybatis.ddd.support;
 
-import io.lhysin.mybatis.ddd.spec.*;
+import io.lhysin.mybatis.ddd.spec.Column;
+import io.lhysin.mybatis.ddd.spec.Id;
+import io.lhysin.mybatis.ddd.spec.Table;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
 import java.io.Serializable;

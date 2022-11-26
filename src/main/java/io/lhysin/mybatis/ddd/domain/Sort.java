@@ -5,7 +5,7 @@ import java.util.List;
 
 public class Sort {
 
-    private List<Order> orders;
+    private final List<Order> orders;
 
     private Sort(Order order) {
         this.orders = new ArrayList<>();
@@ -38,9 +38,13 @@ public class Sort {
         return this.orders;
     }
 
+    public enum Direction {
+        ASC, DESC
+    }
+
     public static class Order {
-        private Direction direction;
-        private String property;
+        private final Direction direction;
+        private final String property;
 
         public Order(Direction direction, String property) {
             this.direction = direction;
@@ -54,10 +58,6 @@ public class Sort {
         public String getProperty() {
             return this.property;
         }
-    }
-
-    public enum Direction {
-        ASC, DESC
     }
 
 }

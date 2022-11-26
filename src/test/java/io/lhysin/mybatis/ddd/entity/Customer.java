@@ -1,5 +1,4 @@
 package io.lhysin.mybatis.ddd.entity;
-import io.lhysin.mybatis.ddd.spec.*;
 
 import io.lhysin.mybatis.ddd.spec.Column;
 import io.lhysin.mybatis.ddd.spec.Id;

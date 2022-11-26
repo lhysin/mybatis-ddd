@@ -1,0 +1,52 @@
+//apply plugin:'io.github.gradle-nexus:publish-plugin:1.1.0'
+apply plugin:'signing'
+apply plugin:'maven-publish'
+apply from: './scripts/publish-info.gradle'
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+nexusPublishing {
+    repositories {
+        sonatype {  //only for users registered in Sonatype after 24 Feb 2021
+            nexusUrl.set(uri("https://s01.oss.sonatype.org/service/local/"))
+            snapshotRepositoryUrl.set(uri("https://s01.oss.sonatype.org/content/repositories/snapshots/"))
+        }
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from(components.java)
+            pom {
+                name = PUBLISH_ARTIFACT_ID
+                description = PUBLISH_DESCRIPTION
+                url = PUBLISH_LICENSE_URL
+                licenses {
+                    license {
+                        name = PUBLISH_LICENSE_NAME
+                        url = PUBLISH_LICENSE_URL
+                    }
+                }
+                developers {
+                    developer {
+                        id = PUBLISH_DEVELOPER_ID
+                        name = PUBLISH_DEVELOPER_NAME
+                    }
+                }
+                scm {
+                    url = PUBLISH_SCM_URL
+                    connection = PUBLISH_SCM_CONNECTION
+                    developerConnection = PUBLISH_SCM_DEVELOPER_CONNECTION
+                }
+            }
+        }
+    }
+}
+
+signing {
+    sign publishing.publications.mavenJava
+}
