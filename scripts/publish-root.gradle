@@ -24,7 +24,7 @@ publishing {
             pom {
                 name = PUBLISH_ARTIFACT_ID
                 description = PUBLISH_DESCRIPTION
-                url = PUBLISH_LICENSE_URL
+                url = PUBLISH_URL
                 licenses {
                     license {
                         name = PUBLISH_LICENSE_NAME
