@@ -79,7 +79,15 @@ public class Sort {
      * ORDER BY ASC, DESC
      */
     public enum Direction {
-        ASC, DESC
+        /**
+         * ORDER BY ASC
+         */
+        ASC,
+
+        /**
+         * ORDER BY DESC
+         */
+        DESC
     }
 
     /**

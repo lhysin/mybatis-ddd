@@ -48,8 +48,8 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
     }
 
     /**
-     * @param domain 
-     * @param ctx
+     * @param domain  domain
+     * @param ctx {@link ProviderContext}
      * @return dynamic update column array
      */
     protected String[] dynamicUpdateColumns(T domain, ProviderContext ctx) {
@@ -57,8 +57,8 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
     }
 
     /**
-     * @param domain 
-     * @param ctx
+     * @param domain  domain
+     * @param ctx {@link ProviderContext}
      * @return dynamic or update column array
      */
     private String[] conditionalUpdateColumns(T domain, ProviderContext ctx) {

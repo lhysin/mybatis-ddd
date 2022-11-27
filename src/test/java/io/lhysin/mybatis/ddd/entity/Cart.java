@@ -23,6 +23,7 @@ public class Cart {
     @Column(name = "CUST_NO")
     @EqualsAndHashCode.Include
     private String custNo;
+
     @Id
     @Column(name = "CART_SEQ")
     private Integer cartSeq;

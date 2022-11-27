@@ -99,10 +99,12 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
         return idColumnCount > 1;
     }
 
+
     /**
-     * COLUMN
-     * @param field
-     * @return sql
+     * Column name string.
+     *
+     * @param field the field
+     * @return the string
      */
     protected String columnName(Field field) {
         return field.getAnnotation(Column.class).name();
@@ -110,7 +112,7 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
 
     /**
      * COLUMN AS fieldName
-     * @param field
+     * @param field the field
      * @return sql
      */
     protected String columnNameAndAliasField(Field field) {
@@ -119,7 +121,7 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
 
     /**
      * column = #{fieldName}
-     * @param field
+     * @param field the field
      * @return bind sql
      */
     protected String columnNameAndBindParameter(Field field) {
@@ -128,7 +130,7 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
 
     /**
      * #{column}
-     * @param column
+     * @param column column
      * @return bind sql
      */
     protected String bindParameter(String column) {
@@ -137,8 +139,8 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
 
     /**
      * #{key.fieldName}
-     * @param column
-     * @param key
+     * @param column column
+     * @param key key
      * @return bind sql
      */
     protected String bindParameterWithKey(String column, String key) {
@@ -146,7 +148,7 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
     }
 
     /**
-     * @param field
+     * @param field the field
      * @return insertable
      */
     protected boolean insertable(Field field) {
@@ -154,7 +156,7 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
     }
 
     /**
-     * @param field
+     * @param field the field
      * @return updatable
      */
     protected boolean updatable(Field field) {

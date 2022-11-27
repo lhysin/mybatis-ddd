@@ -1,8 +1,8 @@
 ext {
-    PUBLISH_GROUP_ID = 'io.github.lhysin'
-    PUBLISH_VERSION = '0.0.4-REALESE'
-    PUBLISH_ARTIFACT_ID = 'mybatis-ddd'
-    PUBLISH_DESCRIPTION = 'Mybatis Domain Driven Design'
+    PUBLISH_GROUP_ID = group
+    PUBLISH_VERSION = version
+    PUBLISH_ARTIFACT_ID = rootProject.name
+    PUBLISH_DESCRIPTION = description
 
     PUBLISH_URL = 'https://github.com/lhysin/mybatis-ddd'
     PUBLISH_LICENSE_NAME = 'The Apache License, Version 2.0'

@@ -4,6 +4,7 @@ package io.lhysin.mybatis.ddd.domain;
  * Pageable
  */
 public interface Pageable {
+
     /**
      * @return offset
      */
