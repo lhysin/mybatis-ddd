@@ -9,10 +9,20 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 
 import javax.sql.DataSource;
 
+/**
+ * The type Persistence config.
+ */
 @Configuration
 @MapperScan({"io.lhysin"})
 public class PersistenceConfig {
 
+    /**
+     * Sql session factory sql session factory.
+     *
+     * @param dataSource the data source
+     * @return the sql session factory
+     * @throws Exception the exception
+     */
     @Bean
     public SqlSessionFactory sqlSessionFactory(DataSource dataSource) throws Exception {
         SqlSessionFactoryBean factoryBean = new SqlSessionFactoryBean();

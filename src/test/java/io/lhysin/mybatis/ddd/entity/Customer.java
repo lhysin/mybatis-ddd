@@ -5,6 +5,11 @@ import io.lhysin.mybatis.ddd.spec.Id;
 import io.lhysin.mybatis.ddd.spec.Table;
 import lombok.*;
 
+import java.time.LocalDateTime;
+
+/**
+ * The type Customer.
+ */
 @Getter
 @Table(name = "CUSTOMER", schema = "ADM")
 @Builder
@@ -27,6 +32,17 @@ public class Customer {
     @Column(name = "AGE")
     private Integer age;
 
+    @Column(name = "CREATED_AT", updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "UPDATED_AT", insertable = false)
+    private LocalDateTime updatedAt;
+
+    /**
+     * Plus age.
+     *
+     * @param age the age
+     */
     public void plusAge(Integer age) {
         this.age = this.age + age;
     }

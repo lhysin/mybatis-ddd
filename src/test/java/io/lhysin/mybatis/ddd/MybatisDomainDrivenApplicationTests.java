@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -21,6 +22,9 @@ import java.util.stream.IntStream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * The type Mybatis domain driven application tests.
+ */
 @SpringBootTest
 @Slf4j
 @SpringBootApplication
@@ -41,8 +45,11 @@ class MybatisDomainDrivenApplicationTests {
     @Autowired
     private DummyMapper dummyMapper;
 
+    /**
+     * Dummy test.
+     */
     @Test
-    void dummy() {
+    void dummyTest() {
 
         Exception exception = assertThrows(Exception.class, () -> dummyMapper.findById(""));
         log.debug(exception.getMessage());
@@ -50,8 +57,54 @@ class MybatisDomainDrivenApplicationTests {
 
     }
 
+    /**
+     * Insertable false test.
+     */
     @Test
-    void sequence() {
+    void insertableFalseTest() {
+
+        Customer freshCustomer = Customer.builder()
+                .custNo("FRESH_CUSTOMER")
+                .firstName("FIRST_N")
+                .lastName("LAST_N_")
+                .age(10)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+        customerMapper.create(freshCustomer);
+
+        Customer foundFreshCustomer = customerMapper.findById(freshCustomer.getCustNo())
+                .orElseThrow(NoSuchElementException::new);
+        assertNull(foundFreshCustomer.getUpdatedAt());
+    }
+
+    /**
+     * Updatable false test.
+     */
+    @Test
+    void updatableFalseTest() {
+        Customer updatableCstomer = Customer.builder()
+                .custNo("20220101")
+                .firstName("FIRST_N")
+                .lastName("LAST_N_")
+                .age(20)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
+                .build();
+
+        customerMapper.update(updatableCstomer);
+
+        Customer updatedCustomer = customerMapper.findById(updatableCstomer.getCustNo())
+                .orElseThrow(NoSuchElementException::new);
+
+        assertNotEquals(0, updatedCustomer.getCreatedAt().compareTo(updatableCstomer.getCreatedAt()));
+    }
+
+    /**
+     * Sequence test.
+     */
+    @Test
+    void sequenceTest() {
         Cart cart = Cart.builder().custNo("20220101").build();
         cartMapper.create(cart);
 
@@ -69,8 +122,11 @@ class MybatisDomainDrivenApplicationTests {
         assertNotNull(orders.get(10).getOrdSeq());
     }
 
+    /**
+     * Create all test.
+     */
     @Test
-    void createAll() {
+    void createAllTest() {
 
         long count = customerMapper.count();
         List<Customer> customers = IntStream.range(0, 1000)
@@ -88,20 +144,28 @@ class MybatisDomainDrivenApplicationTests {
 
     }
 
+    /**
+     * Count customer test.
+     */
     @Test
-    void countCustomer() {
+    void countCustomerTest() {
         long count = customerMapper.count();
         assertTrue(count > 0);
     }
 
+    /**
+     * Dynamic update test.
+     */
     @Test
-    void dynamicUpdate() {
+    void dynamicUpdateTest() {
         String custNo1 = "20220101";
         Customer customer1 = Customer.builder()
                 .custNo(custNo1)
                 .firstName("CHANGE_FIRST_NAME")
                 .lastName("CHANGE_LAST_NAME")
                 .age(null)
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
         customerMapper.update(customer1);
         Customer updatedCustomer1 = customerMapper.findById(custNo1).orElseThrow(NoSuchElementException::new);
@@ -112,6 +176,8 @@ class MybatisDomainDrivenApplicationTests {
         Customer customer2 = Customer.builder()
                 .custNo(custNo2)
                 .firstName("ONLY_CHANGE_FIRST_NAME")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
         customerMapper.dynamicUpdate(customer2);
 
@@ -120,12 +186,17 @@ class MybatisDomainDrivenApplicationTests {
 
     }
 
+    /**
+     * Paging and sorting test.
+     */
     @Test
-    void pagingAndSorting() {
+    void pagingAndSortingTest() {
         Sort sort = Sort.by("AGE")
                 .and(Sort.Direction.DESC, "FIRST_NAME");
         Pageable req = PageRequest.of(2, 3, sort);
         List<Customer> customers = customerMapper.findAll(req);
+
+        assertFalse(customers.isEmpty());
 
         // check safty order by
         Sort fakeSort = Sort.by(Sort.Direction.ASC, "asd")
@@ -134,22 +205,32 @@ class MybatisDomainDrivenApplicationTests {
                 .and("INSERT INTO");
         Pageable fakePageable = PageRequest.of(0, 3, fakeSort);
         List<Customer> fakeCustomers = customerMapper.findAll(fakePageable);
+
+        assertFalse(fakeCustomers.isEmpty());
     }
 
+    /**
+     * Xml mapper and crud mapper test.
+     */
     @Test
-    void xmlMapperAndCrudMapper() {
+    void xmlMapperAndCrudMapperTest() {
         Customer customer1 = customerXmlMapper.findById("20220101").orElseThrow(NoSuchElementException::new);
         Customer customer2 = customerMapper.findById("20220101").orElseThrow(NoSuchElementException::new);
         assertEquals(customer1, customer2);
     }
 
+    /**
+     * Create and find customer test.
+     */
     @Test
-    void createAndFindCustomer() {
+    void createAndFindCustomerTest() {
         Customer customer = Customer.builder()
                 .custNo("2022test")
                 .age(13)
                 .firstName("test1")
                 .lastName("lastName2")
+                .createdAt(LocalDateTime.now())
+                .updatedAt(LocalDateTime.now())
                 .build();
         customerMapper.create(customer);
 
@@ -158,8 +239,11 @@ class MybatisDomainDrivenApplicationTests {
         assertEquals(customer, createdCustomer);
     }
 
+    /**
+     * Find and update customer test.
+     */
     @Test
-    void findAndUpdateCustomer() {
+    void findAndUpdateCustomerTest() {
         Customer customer = customerMapper.findById("20220101")
                 .orElseThrow(NoSuchElementException::new);
 
@@ -171,8 +255,11 @@ class MybatisDomainDrivenApplicationTests {
         assertEquals(updatedCustomer.getAge(), customer.getAge());
     }
 
+    /**
+     * Find and delete customer test.
+     */
     @Test
-    void findAndDeleteCustomer() {
+    void findAndDeleteCustomerTest() {
         Customer customer = customerMapper.findById("20220108")
                 .orElseThrow(NoSuchElementException::new);
 
@@ -182,8 +269,11 @@ class MybatisDomainDrivenApplicationTests {
         assertNull(nullableCustomer);
     }
 
+    /**
+     * Find and delete order test.
+     */
     @Test
-    void findAndDeleteOrder() {
+    void findAndDeleteOrderTest() {
         Order.PK pk = Order.PK.builder()
                 .custNo("20220109")
                 .ordNo("order01")
@@ -201,8 +291,11 @@ class MybatisDomainDrivenApplicationTests {
         assertNull(nullableOrder);
     }
 
+    /**
+     * Find all by ids and delete by ids test.
+     */
     @Test
-    void findAllByIdsAndDeleteByIds() {
+    void findAllByIdsAndDeleteByIdsTest() {
         List<String> customerIds = new ArrayList<String>();
         customerIds.add("20220101");
         customerIds.add("20220102");

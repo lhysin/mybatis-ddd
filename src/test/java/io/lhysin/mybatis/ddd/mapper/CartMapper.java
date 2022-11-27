@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.InsertProvider;
 import org.apache.ibatis.annotations.SelectKey;
 import org.springframework.stereotype.Repository;
 
+/**
+ * The interface Cart mapper.
+ */
 @Repository
 public interface CartMapper extends CrudMapper<Cart, Cart.PK> {
 

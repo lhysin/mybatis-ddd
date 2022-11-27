@@ -81,6 +81,7 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
      */
     protected String[] intoValues(ProviderContext ctx) {
         return this.columns(ctx)
+                .filter(this::insertable)
                 .map(field -> bindParameter(field.getName()))
                 .toArray(String[]::new);
     }
@@ -92,6 +93,7 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
     protected String bulkIntoValues(ProviderContext ctx) {
         String key = "entity";
         String joiningFields = this.columns(ctx)
+                .filter(this::insertable)
                 .map(field -> bindParameterWithKey(field.getName(), key))
                 .collect(Collectors.joining(","));
 

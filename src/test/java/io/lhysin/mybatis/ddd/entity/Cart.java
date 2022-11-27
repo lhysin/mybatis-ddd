@@ -6,7 +6,11 @@ import io.lhysin.mybatis.ddd.spec.Table;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 
+/**
+ * The type Cart.
+ */
 @Getter
 @Table(name = "CART", schema = "ADM")
 @Builder
@@ -23,6 +27,15 @@ public class Cart {
     @Column(name = "CART_SEQ")
     private Integer cartSeq;
 
+    @Column(name = "CREATED_AT", updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "UPDATED_AT")
+    private LocalDateTime updatedAt;
+
+    /**
+     * The type Pk.
+     */
     @Getter
     @Builder
     @NoArgsConstructor(access = AccessLevel.PROTECTED)

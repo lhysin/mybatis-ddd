@@ -20,18 +20,31 @@ public class Order {
     @Column(name = "CUST_NO")
     @EqualsAndHashCode.Include
     private String custNo;
+
     @Id
     @Column(name = "ORD_NO")
     @EqualsAndHashCode.Include
     private String ordNo;
+
     @Id
     @Column(name = "ORD_SEQ")
     @EqualsAndHashCode.Include
     private Integer ordSeq;
+
     @Column(name = "ORD_DTM")
     private LocalDateTime ordDtm;
+
+    @Column(name = "NAME")
+    private String name;
+
     @Column(name = "ITEM_CD")
     private String itemCd;
+
+    @Column(name = "CREATED_AT", updatable = false)
+    private LocalDateTime createdAt;
+
+    @Column(name = "UPDATED_AT")
+    private LocalDateTime updatedAt;
 
     @Getter
     @Builder
