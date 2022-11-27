@@ -1,6 +1,6 @@
 ext {
     PUBLISH_GROUP_ID = 'io.github.lhysin'
-    PUBLISH_VERSION = '0.0.2-REALESE'
+    PUBLISH_VERSION = '0.0.3-REALESE'
     PUBLISH_ARTIFACT_ID = 'mybatis-ddd'
     PUBLISH_DESCRIPTION = 'Mybatis Domain Driven Design'
 
