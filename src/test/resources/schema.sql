@@ -40,7 +40,8 @@ create table ADM.CART
 create table ADM.ITEM
 (
     ITEM_SEQ integer not null,
-    primary key(ITEM_SEQ)
+    primary key (ITEM_SEQ)
+);
 
 create table ADM.STUDENT
 (
