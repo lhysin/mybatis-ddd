@@ -36,5 +36,11 @@ create table ADM.CART
     primary key(CUST_NO, CART_SEQ)
 );
 
+create table ADM.ITEM
+(
+    ITEM_SEQ integer not null,
+    primary key(ITEM_SEQ)
+);
+
 create sequence ADM.ORDER_SEQUENCE;
-create sequence ADM.CART_SEQUENCE;
+create sequence ADM.ITEM_SEQUENCE;

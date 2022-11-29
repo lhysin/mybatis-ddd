@@ -5,6 +5,7 @@ import io.lhysin.mybatis.ddd.domain.Pageable;
 import io.lhysin.mybatis.ddd.domain.Sort;
 import io.lhysin.mybatis.ddd.entity.Cart;
 import io.lhysin.mybatis.ddd.entity.Customer;
+import io.lhysin.mybatis.ddd.entity.Item;
 import io.lhysin.mybatis.ddd.entity.Order;
 import io.lhysin.mybatis.ddd.mapper.*;
 import lombok.extern.slf4j.Slf4j;
@@ -41,6 +42,9 @@ class MybatisDomainDrivenApplicationTests {
 
     @Autowired
     private CartMapper cartMapper;
+
+    @Autowired
+    private ItemMapper itemMapper;
 
     @Autowired
     private DummyMapper dummyMapper;
@@ -120,6 +124,10 @@ class MybatisDomainDrivenApplicationTests {
         orders.forEach(it -> orderMapper.create(it));
 
         assertNotNull(orders.get(10).getOrdSeq());
+
+        Item item = Item.builder().build();
+        itemMapper.create(item);
+
     }
 
     /**
