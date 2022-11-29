@@ -7,7 +7,9 @@ import io.lhysin.mybatis.ddd.entity.Cart;
 import io.lhysin.mybatis.ddd.entity.Customer;
 import io.lhysin.mybatis.ddd.entity.Item;
 import io.lhysin.mybatis.ddd.entity.Order;
+import io.lhysin.mybatis.ddd.entity.Student;
 import io.lhysin.mybatis.ddd.mapper.*;
+import io.lhysin.mybatis.ddd.type.Grade;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +48,29 @@ class MybatisDomainDrivenApplicationTests {
     @Autowired
     private ItemMapper itemMapper;
 
+    private StudentMapper studentMapper;
+
     @Autowired
     private DummyMapper dummyMapper;
+
+    /**
+     * Type handler test.
+     */
+    @Test
+    void typeHandlerTest() {
+        Student student = studentMapper.findById(1L)
+                .orElseThrow(NoSuchElementException::new);
+
+        Grade grade = student.getGrade();
+        String gradeCode = grade.getCode();
+
+        assertNotNull(gradeCode);
+
+        studentMapper.create(Student.builder()
+                .stdSeq(3L)
+                .grade(Grade.SIX)
+                .build());
+    }
 
     /**
      * Dummy test.

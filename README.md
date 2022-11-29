@@ -7,6 +7,8 @@
 > No Xml Mapper
 
 ### 1. How to Use
+
+---
 ```java
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -36,6 +38,8 @@ public class CustomerService {
 }
 ```
 ### 2. Like @GeneratedValue with @SelectKey
+
+---
 ```java
 import org.springframework.stereotype.Repository;
 import org.apache.ibatis.annotations.InsertProvider;
@@ -50,6 +54,40 @@ public interface CartMapper extends CrudMapper<Cart, Cart.PK> {
     @SelectKey(keyColumn="CART_SEQ", keyProperty="cartSeq", resultType=Integer.class, before=true, statement="SELECT ADM.CART_SEQUENCE.nextval FROM DUAL")
     int create(Cart entity);
 }
+```
+
+### 3. Dynamic Enum Type Handler
+
+---
+```java
+public class Student {
+    @Column(name = "GRADE")
+    private Grade grade;
+}
+
+public enum Grade implements Code {
+    ONE("1"),
+}
+
+public void registerTypeHandler() {
+    sqlSessionFactory.getConfiguration()
+            .getTypeHandlerRegistry()
+            .register(new CodeTypeHandler<>(Grade.class));
+}
+
+Grade grade = studentMapper.find(1).getGrade();
+```
+```text
+SELECT * FROM ADM.STUDENT
++---------+-------+
+| STD_SEQ | GRAGE |
++---------+-------+
+| 1       | 3     |
++---------+-------+
+| 2       | 6     |
++---------+-------+
+| 3       | 1     |
++---------+-------+
 ```
 
 ### reference by

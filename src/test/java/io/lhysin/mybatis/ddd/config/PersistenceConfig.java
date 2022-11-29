@@ -16,6 +16,8 @@ import javax.sql.DataSource;
 @MapperScan({"io.lhysin"})
 public class PersistenceConfig {
 
+
+
     /**
      * Sql session factory sql session factory.
      *

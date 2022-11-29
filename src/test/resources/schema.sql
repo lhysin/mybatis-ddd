@@ -36,10 +36,17 @@ create table ADM.CART
     primary key(CUST_NO, CART_SEQ)
 );
 
+
 create table ADM.ITEM
 (
     ITEM_SEQ integer not null,
     primary key(ITEM_SEQ)
+
+create table ADM.STUDENT
+(
+    STD_SEQ bigint not null,
+    GRADE varchar(255) not null,
+    primary key(STD_SEQ)
 );
 
 create sequence ADM.ORDER_SEQUENCE;
