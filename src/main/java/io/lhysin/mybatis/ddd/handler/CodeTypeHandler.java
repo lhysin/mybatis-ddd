@@ -3,15 +3,15 @@ package io.lhysin.mybatis.ddd.handler;
 import io.lhysin.mybatis.ddd.spec.Code;
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
-import org.apache.ibatis.type.TypeException;
 
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
 
 /**
- * The type Dynamic Code type handler.
+ * The type Code type handler.
  *
  * @param <E> the type parameter
  */
@@ -51,17 +51,17 @@ public class CodeTypeHandler<E extends Enum<E>> extends BaseTypeHandler<Code> {
         return getCode(code);
     }
 
+    /**
+     * String to Enum implement Code
+     * @param str code String
+     * @return Code
+     */
     private Code getCode(String str) {
-        try {
-            Code[] codes = (Code[]) type.getEnumConstants();
-            for (Code code : codes) {
-                if (code.getCode().equals(str)) {
-                    return code;
-                }
-            }
-            return null;
-        } catch (Exception e) {
-            throw new TypeException("Not Found Code '" + type + "'", e);
-        }
+        return Arrays.stream(type.getEnumConstants())
+                .filter(Code.class::isInstance)
+                .map(Code.class::cast)
+                .filter(code -> code.getCode().equals(str))
+                .findFirst()
+                .orElse(null);
     }
 }

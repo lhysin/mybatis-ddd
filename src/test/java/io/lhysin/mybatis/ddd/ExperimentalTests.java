@@ -56,7 +56,7 @@ class ExperimentalTests {
      */
     @Test
     void typeHandlerTest() {
-        Student student = studentMapper.findById(1L)
+        Student student = studentMapper.findById(2L)
                 .orElseThrow(NoSuchElementException::new);
 
         Grade grade = student.getGrade();
