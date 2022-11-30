@@ -4,6 +4,7 @@ import io.lhysin.mybatis.ddd.type.Grade;
 import io.lhysin.mybatis.ddd.handler.CodeTypeHandler;
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.type.TypeHandlerRegistry;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
@@ -22,9 +23,11 @@ public class AppendixConfig {
      */
     @PostConstruct
     public void registerTypeHandler() {
-        sqlSessionFactory.getConfiguration()
-                .getTypeHandlerRegistry()
-                .register(new CodeTypeHandler<>(Grade.class));
+        TypeHandlerRegistry typeHandlerRegistry = sqlSessionFactory.getConfiguration()
+                .getTypeHandlerRegistry();
+
+        typeHandlerRegistry.register(new CodeTypeHandler<>(Grade.class));
+
     }
 
 
