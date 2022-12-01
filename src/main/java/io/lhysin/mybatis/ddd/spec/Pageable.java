@@ -7,18 +7,18 @@ import io.lhysin.mybatis.ddd.domain.Sort;
  */
 public interface Pageable {
 
-    /**
-     * @return offset
-     */
-    long getOffset();
+	/**
+	 * @return offset
+	 */
+	long getOffset();
 
-    /**
-     * @return limit
-     */
-    int getLimit();
+	/**
+	 * @return limit
+	 */
+	int getLimit();
 
-    /**
-     * @return sort
-     */
-    Sort getSort();
+	/**
+	 * @return sort
+	 */
+	Sort getSort();
 }

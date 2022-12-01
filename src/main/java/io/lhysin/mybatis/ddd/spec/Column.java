@@ -12,18 +12,18 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Column {
 
-    /**
-     * @return Column Name
-     */
-    String name();
+	/**
+	 * @return Column Name
+	 */
+	String name();
 
-    /**
-     * @return available insert column
-     */
-    boolean insertable() default true;
+	/**
+	 * @return available insert column
+	 */
+	boolean insertable() default true;
 
-    /**
-     * @return available update column
-     */
-    boolean updatable() default true;
+	/**
+	 * @return available update column
+	 */
+	boolean updatable() default true;
 }
