@@ -14,11 +14,6 @@ public class TypedExample<T> implements Example<T> {
     private final T probe;
     private final NullHandler nullHandler;
 
-    public TypedExample(T probe){
-        this.probe = Objects.requireNonNull(probe);
-        this.nullHandler = NullHandler.IGNORE;
-    }
-
     public TypedExample(T probe, NullHandler nullHandler){
         this.probe = Objects.requireNonNull(probe);
         this.nullHandler = nullHandler;

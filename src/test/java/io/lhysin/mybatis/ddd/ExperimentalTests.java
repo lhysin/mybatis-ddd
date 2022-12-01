@@ -100,11 +100,11 @@ class ExperimentalTests {
                 .custNo("20220109").build()));
         assertFalse(orders.isEmpty());
 
-        Optional<Order> excampleOfIncludeNullOrder = orderMapper.findOne(
+        Optional<Order> exampleOfIncludeNullOrder = orderMapper.findOne(
                 Example.ofIncludeNullValues(
                         Order.builder().build()
                 )
         );
-        assertFalse(excampleOfIncludeNullOrder.isPresent());
+        assertFalse(exampleOfIncludeNullOrder.isPresent());
     }
 }

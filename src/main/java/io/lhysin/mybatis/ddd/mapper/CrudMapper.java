@@ -9,109 +9,88 @@ import java.util.Optional;
 
 /**
  * CrudMapper
- *
- * @param <T>  Table Entity
+ * @param <T> Table Entity
  * @param <ID> Table PK
  */
-public interface CrudMapper<T, ID extends Serializable> extends ProviderMapper<T, ID> {
+public interface CrudMapper<T, ID extends Serializable> extends MapperProvider<T, ID> {
 
     /**
-     * Save int.
-     *
      * @param entity Table Entity
      * @return save Count
      */
-    @Deprecated
-    @InsertProvider(type = CrudSqlProvider.class, method = "save")
+    @InsertProvider(type = CrudSqlProvider.class)
     int save(T entity);
 
     /**
-     * Find by id optional.
-     *
      * @param id Table PK
      * @return find Table Entity
      */
-    @SelectProvider(type = CrudSqlProvider.class, method = "findById")
+    @SelectProvider(type = CrudSqlProvider.class)
     Optional<T> findById(ID id);
 
     /**
-     * Find all by id list.
-     *
      * @param ids Table PKs
      * @return find Table Entities
      */
-    @SelectProvider(type = CrudSqlProvider.class, method = "findAllById")
+    @SelectProvider(type = CrudSqlProvider.class)
     List<T> findAllById(@Param("ids") Iterable<ID> ids);
 
     /**
-     * Count long.
-     *
      * @return find Table count
      */
-    @SelectProvider(type = CrudSqlProvider.class, method = "count")
+    @SelectProvider(type = CrudSqlProvider.class)
     long count();
 
     /**
-     * Delete by id int.
-     *
      * @param id Table PK
      * @return delete count
      */
-    @DeleteProvider(type = CrudSqlProvider.class, method = "deleteById")
+    @DeleteProvider(type = CrudSqlProvider.class)
     int deleteById(ID id);
 
     /**
-     * Delete int.
-     *
      * @param entity Table entity
      * @return delete count
      */
-    @DeleteProvider(type = CrudSqlProvider.class, method = "delete")
+    @DeleteProvider(type = CrudSqlProvider.class)
     int delete(T entity);
 
     /**
-     * Delete all by id int.
-     *
      * @param ids Table entities
      * @return delete count
      */
-    @DeleteProvider(type = CrudSqlProvider.class, method = "deleteAllById")
+    @DeleteProvider(type = CrudSqlProvider.class)
     int deleteAllById(@Param("ids") Iterable<ID> ids);
 
     /**
-     * Create int.
-     *
      * @param entity Table entity
      * @return create count
      */
-    @InsertProvider(type = CrudSqlProvider.class, method = "create")
+    @InsertProvider(type = CrudSqlProvider.class)
     int create(T entity);
 
     /**
      * update all column
-     *
      * @param entity Table entity
      * @return update count
      */
-    @UpdateProvider(type = CrudSqlProvider.class, method = "update")
+    @UpdateProvider(type = CrudSqlProvider.class)
     int update(T entity);
 
     /**
      * update nonnull column
-     *
      * @param entity Table entity
      * @return update count
      */
-    @UpdateProvider(type = CrudSqlProvider.class, method = "dynamicUpdate")
+    @UpdateProvider(type = CrudSqlProvider.class)
     int dynamicUpdate(T entity);
 
     /**
      * bulk insert
-     *
      * @param entities Table entities
      * @return create count
      */
-    @InsertProvider(type = CrudSqlProvider.class, method = "createAll")
+    @InsertProvider(type = CrudSqlProvider.class)
     int createAll(@Param("entities") Iterable<T> entities);
 
 }

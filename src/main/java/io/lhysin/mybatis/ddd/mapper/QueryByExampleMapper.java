@@ -14,7 +14,7 @@ import java.util.Optional;
  * @param <T>  the type parameter
  * @param <ID> the type parameter
  */
-public interface QueryByExampleMapper<T, ID extends Serializable> extends ProviderMapper<T, ID> {
+public interface QueryByExampleMapper<T, ID extends Serializable> extends MapperProvider<T, ID> {
 
 
     /**
