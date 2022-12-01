@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item {
 
-	@Id
-	@Column(name = "ITEM_SEQ")
-	private Long itemSeq;
+    @Id
+    @Column(name = "ITEM_SEQ")
+    private Long itemSeq;
 }

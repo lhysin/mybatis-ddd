@@ -27,105 +27,105 @@ import lombok.extern.slf4j.Slf4j;
 @SpringBootTest
 class ExperimentalTests {
 
-	@Autowired
-	private OrderMapper orderMapper;
+    @Autowired
+    private OrderMapper orderMapper;
 
-	@Autowired
-	private StudentMapper studentMapper;
+    @Autowired
+    private StudentMapper studentMapper;
 
-	@Autowired
-	private DummyMapper dummyMapper;
+    @Autowired
+    private DummyMapper dummyMapper;
 
-	/**
-	 * Join table and row bound test.
-	 */
-	@Test
-	void joinTableAndRowBoundTest() {
-		int totalSize = orderMapper.findCustomerOrder().size();
+    /**
+     * Join table and row bound test.
+     */
+    @Test
+    void joinTableAndRowBoundTest() {
+        int totalSize = orderMapper.findCustomerOrder().size();
 
-		int onePageSize = orderMapper.findCustomerOrder(new RowBounds(0, 2)).size();
-		int twoPageSize = orderMapper.findCustomerOrder(new RowBounds(3, 2)).size();
-		int threePageSize = orderMapper.findCustomerOrder(new RowBounds(5, 2)).size();
+        int onePageSize = orderMapper.findCustomerOrder(new RowBounds(0, 2)).size();
+        int twoPageSize = orderMapper.findCustomerOrder(new RowBounds(3, 2)).size();
+        int threePageSize = orderMapper.findCustomerOrder(new RowBounds(5, 2)).size();
 
-		log.debug("totalSize : {}, onePageSize : {}, twoPageSize : {}, threePageSize : {}",
-			totalSize,
-			onePageSize,
-			twoPageSize,
-			threePageSize
-		);
+        log.debug("totalSize : {}, onePageSize : {}, twoPageSize : {}, threePageSize : {}",
+            totalSize,
+            onePageSize,
+            twoPageSize,
+            threePageSize
+        );
 
-	}
+    }
 
-	/**
-	 * Type handler test.
-	 */
-	@Test
-	void typeHandlerTest() {
-		Student student = studentMapper.findById(2L)
-			.orElseThrow(NoSuchElementException::new);
+    /**
+     * Type handler test.
+     */
+    @Test
+    void typeHandlerTest() {
+        Student student = studentMapper.findById(2L)
+            .orElseThrow(NoSuchElementException::new);
 
-		Grade grade = student.getGrade();
-		String gradeCode = grade.getCode();
+        Grade grade = student.getGrade();
+        String gradeCode = grade.getCode();
 
-		assertNotNull(gradeCode);
+        assertNotNull(gradeCode);
 
-		studentMapper.create(Student.builder()
-			.stdSeq(3L)
-			.grade(Grade.SIX)
-			.build());
-	}
+        studentMapper.create(Student.builder()
+            .stdSeq(3L)
+            .grade(Grade.SIX)
+            .build());
+    }
 
-	/**
-	 * Dummy test.
-	 */
-	@Test
-	void dummyTest() {
+    /**
+     * Dummy test.
+     */
+    @Test
+    void dummyTest() {
 
-		Exception exception = assertThrows(Exception.class, () -> dummyMapper.findById(""));
-		log.debug(exception.getMessage());
-		assertTrue(exception.getMessage().contains("Not Exists"));
+        Exception exception = assertThrows(Exception.class, () -> dummyMapper.findById(""));
+        log.debug(exception.getMessage());
+        assertTrue(exception.getMessage().contains("Not Exists"));
 
-	}
+    }
 
-	/**
-	 * Find by example test.
-	 */
-	@Test
-	void findByExampleTest() {
+    /**
+     * Find by example test.
+     */
+    @Test
+    void findByExampleTest() {
 
-		Optional<Order> order = orderMapper.findOne(
-			Example.of(Order.builder()
-				.name("orderName04")
-				.build()
-			)
-		);
-		assertTrue(order.isPresent());
+        Optional<Order> order = orderMapper.findOne(
+            Example.of(Order.builder()
+                .name("orderName04")
+                .build()
+            )
+        );
+        assertTrue(order.isPresent());
 
-		List<Order> orders = orderMapper.findBy(
-			Example.of(Order.builder()
-				.custNo("20220109")
-				.build()
-			)
-		);
-		assertFalse(orders.isEmpty());
+        List<Order> orders = orderMapper.findBy(
+            Example.of(Order.builder()
+                .custNo("20220109")
+                .build()
+            )
+        );
+        assertFalse(orders.isEmpty());
 
-		Optional<Order> exampleOfIncludeNullOrder = orderMapper.findOne(
-			Example.withIncludeNullValues(
-				Order.builder().build()
-			)
-		);
-		assertFalse(exampleOfIncludeNullOrder.isPresent());
+        Optional<Order> exampleOfIncludeNullOrder = orderMapper.findOne(
+            Example.withIncludeNullValues(
+                Order.builder().build()
+            )
+        );
+        assertFalse(exampleOfIncludeNullOrder.isPresent());
 
-		Exception exception = assertThrows(Exception.class, () -> {
-			orderMapper.findOne(
-				Example.of(Order.builder()
-					.build()
-				)
-			);
-		});
+        Exception exception = assertThrows(Exception.class, () -> {
+            orderMapper.findOne(
+                Example.of(Order.builder()
+                    .build()
+                )
+            );
+        });
 
-		log.debug(exception.getMessage());
-		assertTrue(exception.getMessage().contains("Not Exists"));
+        log.debug(exception.getMessage());
+        assertTrue(exception.getMessage().contains("Not Exists"));
 
-	}
+    }
 }

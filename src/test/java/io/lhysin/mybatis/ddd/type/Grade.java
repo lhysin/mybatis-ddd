@@ -29,8 +29,7 @@ public enum Grade implements Code {
     /**
      * Six grade.
      */
-    SIX("6")
-    ;
+    SIX("6");
 
     private final String code;
 

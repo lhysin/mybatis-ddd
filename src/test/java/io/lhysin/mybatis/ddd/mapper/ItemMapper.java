@@ -13,9 +13,9 @@ import io.lhysin.mybatis.ddd.provider.CrudSqlProvider;
 @Repository
 public interface ItemMapper extends CrudMapper<Item, Integer> {
 
-	@Override
-	@InsertProvider(type = CrudSqlProvider.class, method = "create")
-	@SelectKey(keyColumn = "ITEM_SEQ", keyProperty = "itemSeq", resultType = Long.class, before = true, statement = "SELECT ADM.ITEM_SEQUENCE.nextval FROM DUAL")
-	int create(Item entity);
+    @Override
+    @InsertProvider(type = CrudSqlProvider.class, method = "create")
+    @SelectKey(keyColumn = "ITEM_SEQ", keyProperty = "itemSeq", resultType = Long.class, before = true, statement = "SELECT ADM.ITEM_SEQUENCE.nextval FROM DUAL")
+    int create(Item entity);
 
 }

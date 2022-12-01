@@ -11,25 +11,25 @@ import io.lhysin.mybatis.ddd.spec.Example;
  */
 public class TypedExample<T> implements Example<T> {
 
-	private final T probe;
-	private final NullHandler nullHandler;
+    private final T probe;
+    private final NullHandler nullHandler;
 
-	/**
-	 * Instantiates a new Typed example.
-	 *
-	 * @param probe the probe
-	 * @param nullHandler the null handler
-	 */
-	public TypedExample(T probe, NullHandler nullHandler) {
-		this.probe = Objects.requireNonNull(probe);
-		this.nullHandler = nullHandler;
-	}
+    /**
+     * Instantiates a new Typed example.
+     *
+     * @param probe the probe
+     * @param nullHandler the null handler
+     */
+    public TypedExample(T probe, NullHandler nullHandler) {
+        this.probe = Objects.requireNonNull(probe);
+        this.nullHandler = nullHandler;
+    }
 
-	public T getProbe() {
-		return this.probe;
-	}
+    public T getProbe() {
+        return this.probe;
+    }
 
-	public boolean isIgnoreNullValues() {
-		return NullHandler.IGNORE.equals(this.nullHandler);
-	}
+    public boolean isIgnoreNullValues() {
+        return NullHandler.IGNORE.equals(this.nullHandler);
+    }
 }

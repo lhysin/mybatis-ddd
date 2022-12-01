@@ -15,11 +15,11 @@ import io.lhysin.mybatis.ddd.spec.Pageable;
  */
 public interface PagingAndSortingMapper<T, ID extends Serializable> extends MapperProvider<T, ID> {
 
-	/**
-	 * @param pageable {@link Pageable}
-	 * @return Table entities
-	 */
-	@SelectProvider(type = PagingAndSortingSqlProvider.class)
-	List<T> findAll(Pageable pageable);
+    /**
+     * @param pageable {@link Pageable}
+     * @return Table entities
+     */
+    @SelectProvider(type = PagingAndSortingSqlProvider.class)
+    List<T> findAll(Pageable pageable);
 
 }

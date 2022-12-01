@@ -13,9 +13,9 @@ import io.lhysin.mybatis.ddd.provider.CrudSqlProvider;
 @Repository
 public interface CartMapper extends CrudMapper<Cart, Cart.PK> {
 
-	@Override
-	@InsertProvider(type = CrudSqlProvider.class, method = "create")
-	@SelectKey(keyColumn = "CART_SEQ", keyProperty = "cartSeq", resultType = Integer.class, before = true,
-		statement = "SELECT NVL(MAX(CART_SEQ), 0) FROM ADM.CART WHERE CUST_NO = #{custNo}")
-	int create(Cart entity);
+    @Override
+    @InsertProvider(type = CrudSqlProvider.class, method = "create")
+    @SelectKey(keyColumn = "CART_SEQ", keyProperty = "cartSeq", resultType = Integer.class, before = true,
+        statement = "SELECT NVL(MAX(CART_SEQ), 0) FROM ADM.CART WHERE CUST_NO = #{custNo}")
+    int create(Cart entity);
 }

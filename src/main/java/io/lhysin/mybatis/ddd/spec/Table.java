@@ -12,17 +12,17 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Table {
 
-	/**
-	 * Name string.
-	 *
-	 * @return the string
-	 */
-	String name();
+    /**
+     * Name string.
+     *
+     * @return the string
+     */
+    String name();
 
-	/**
-	 * Schema string.
-	 *
-	 * @return the string
-	 */
-	String schema() default "";
+    /**
+     * Schema string.
+     *
+     * @return the string
+     */
+    String schema() default "";
 }

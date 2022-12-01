@@ -17,22 +17,22 @@ import io.lhysin.mybatis.ddd.spec.Example;
  */
 public interface QueryByExampleMapper<T, ID extends Serializable> extends MapperProvider<T, ID> {
 
-	/**
-	 * find One Sql by Example NotNull prove Field Value.
-	 *
-	 * @param example the example
-	 * @return the optional
-	 */
-	@SelectProvider(type = QueryByExampleProvider.class)
-	Optional<T> findOne(Example<T> example);
+    /**
+     * find One Sql by Example NotNull prove Field Value.
+     *
+     * @param example the example
+     * @return the optional
+     */
+    @SelectProvider(type = QueryByExampleProvider.class)
+    Optional<T> findOne(Example<T> example);
 
-	/**
-	 * find List Sql by Example NotNull prove Field Value.
-	 *
-	 * @param example the example
-	 * @return the list
-	 */
-	@SelectProvider(type = QueryByExampleProvider.class)
-	List<T> findBy(Example<T> example);
+    /**
+     * find List Sql by Example NotNull prove Field Value.
+     *
+     * @param example the example
+     * @return the list
+     */
+    @SelectProvider(type = QueryByExampleProvider.class)
+    List<T> findBy(Example<T> example);
 
 }

@@ -3,11 +3,10 @@
 <mapper namespace="io.lhysin.mybatis.ddd.mapper.CustomerXmlMapper">
 
     <select id="findById" resultType="io.lhysin.mybatis.ddd.entity.Customer">
-        SELECT
-            admCustomer.CUST_NO AS custNO,
-            admCustomer.FIRST_NAME AS firstName,
-            admCustomer.LAST_NAME AS lastName,
-            admCustomer.AGE AS age
+        SELECT admCustomer.CUST_NO    AS custNO,
+               admCustomer.FIRST_NAME AS firstName,
+               admCustomer.LAST_NAME  AS lastName,
+               admCustomer.AGE        AS age
         FROM ADM.CUSTOMER admCustomer
         WHERE admCustomer.CUST_NO = #{custNo}
     </select>

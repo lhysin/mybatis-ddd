@@ -13,11 +13,11 @@ import io.lhysin.mybatis.ddd.entity.Customer;
 @Repository
 public interface CustomerXmlMapper {
 
-	/**
-	 * Find by id optional.
-	 *
-	 * @param custNo the cust no
-	 * @return the optional
-	 */
-	Optional<Customer> findById(@Param("custNo") String custNo);
+    /**
+     * Find by id optional.
+     *
+     * @param custNo the cust no
+     * @return the optional
+     */
+    Optional<Customer> findById(@Param("custNo") String custNo);
 }

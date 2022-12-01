@@ -24,31 +24,31 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Cart {
 
-	@Id
-	@Column(name = "CUST_NO")
-	@EqualsAndHashCode.Include
-	private String custNo;
+    @Id
+    @Column(name = "CUST_NO")
+    @EqualsAndHashCode.Include
+    private String custNo;
 
-	@Id
-	@Column(name = "CART_SEQ")
-	private Integer cartSeq;
+    @Id
+    @Column(name = "CART_SEQ")
+    private Integer cartSeq;
 
-	@Column(name = "CREATED_AT", updatable = false)
-	private LocalDateTime createdAt;
+    @Column(name = "CREATED_AT", updatable = false)
+    private LocalDateTime createdAt;
 
-	@Column(name = "UPDATED_AT")
-	private LocalDateTime updatedAt;
+    @Column(name = "UPDATED_AT")
+    private LocalDateTime updatedAt;
 
-	/**
-	 * The type Pk.
-	 */
-	@Getter
-	@Builder
-	@NoArgsConstructor(access = AccessLevel.PROTECTED)
-	@AllArgsConstructor(access = AccessLevel.PROTECTED)
-	public static class PK implements Serializable {
-		private String custNo;
-		private Integer cartSeq;
-	}
+    /**
+     * The type Pk.
+     */
+    @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class PK implements Serializable {
+        private String custNo;
+        private Integer cartSeq;
+    }
 
 }

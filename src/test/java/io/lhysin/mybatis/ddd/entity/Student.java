@@ -20,11 +20,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Student {
 
-	@Id
-	@Column(name = "STD_SEQ")
-	private Long stdSeq;
+    @Id
+    @Column(name = "STD_SEQ")
+    private Long stdSeq;
 
-	@Column(name = "GRADE")
-	private Grade grade;
+    @Column(name = "GRADE")
+    private Grade grade;
 
 }

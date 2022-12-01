@@ -3,15 +3,14 @@
 <mapper namespace="io.lhysin.mybatis.ddd.mapper.OrderMapper">
 
     <select id="findCustomerOrder" resultType="io.lhysin.mybatis.ddd.dto.CustomerOrderDto">
-        SELECT
-            cust.CUST_NO AS custNo,
-            cust.FIRST_NAME AS firstName,
-            ord.ORD_NO AS ordNo,
-            ord.ORD_SEQ AS ordSeq,
-            ord.ORD_DTM AS ordDtm
+        SELECT cust.CUST_NO    AS custNo,
+               cust.FIRST_NAME AS firstName,
+               ord.ORD_NO      AS ordNo,
+               ord.ORD_SEQ     AS ordSeq,
+               ord.ORD_DTM     AS ordDtm
         FROM ADM.CUSTOMER cust
-        JOIN ADM.TORDER ord
-        ON cust.CUST_NO = ord.CUST_NO
+                 JOIN ADM.TORDER ord
+                      ON cust.CUST_NO = ord.CUST_NO
     </select>
 
 </mapper>

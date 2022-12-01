@@ -17,18 +17,18 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AppendixConfig {
 
-	private final SqlSessionFactory sqlSessionFactory;
+    private final SqlSessionFactory sqlSessionFactory;
 
-	/**
-	 * Dynamic Register type handler.
-	 */
-	@PostConstruct
-	public void registerTypeHandler() {
-		TypeHandlerRegistry typeHandlerRegistry = sqlSessionFactory.getConfiguration()
-			.getTypeHandlerRegistry();
+    /**
+     * Dynamic Register type handler.
+     */
+    @PostConstruct
+    public void registerTypeHandler() {
+        TypeHandlerRegistry typeHandlerRegistry = sqlSessionFactory.getConfiguration()
+            .getTypeHandlerRegistry();
 
-		typeHandlerRegistry.register(new CodeTypeHandler<>(Grade.class));
+        typeHandlerRegistry.register(new CodeTypeHandler<>(Grade.class));
 
-	}
+    }
 
 }
