@@ -163,31 +163,30 @@ class CrudTests {
 	@Test
 	void dynamicUpdateTest() {
 		String custNo1 = "20220101";
-		Customer customer1 = Customer.builder()
+		customerMapper.update(Customer.builder()
 			.custNo(custNo1)
-			.firstName("CHANGE_FIRST_NAME")
-			.lastName("CHANGE_LAST_NAME")
 			.age(null)
-			.createdAt(LocalDateTime.now())
 			.updatedAt(LocalDateTime.now())
-			.build();
-		customerMapper.update(customer1);
+			.build());
 		Customer updatedCustomer1 = customerMapper.findById(custNo1).orElseThrow(NoSuchElementException::new);
 
 		assertNull(updatedCustomer1.getAge());
 
 		String custNo2 = "20220102";
-		Customer customer2 = Customer.builder()
+		customerMapper.dynamicUpdate(Customer.builder()
 			.custNo(custNo2)
-			.firstName("ONLY_CHANGE_FIRST_NAME")
-			.createdAt(LocalDateTime.now())
+			.age(null)
 			.updatedAt(LocalDateTime.now())
-			.build();
-		customerMapper.dynamicUpdate(customer2);
-
+			.build());
 		Customer dynamicUpdatedCustomer2 = customerMapper.findById(custNo2).orElseThrow(NoSuchElementException::new);
 		assertNotNull(dynamicUpdatedCustomer2.getAge());
 
+		Exception exception = assertThrows(Exception.class, () -> {
+			customerMapper.dynamicUpdate(Customer.builder()
+				.build());
+		});
+
+		assertTrue(exception.getMessage().contains("Not Exists"));
 	}
 
 	/**

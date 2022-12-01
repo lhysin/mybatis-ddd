@@ -23,7 +23,7 @@ public interface QueryByExampleMapper<T, ID extends Serializable> extends Mapper
 	 * @param example the example
 	 * @return the optional
 	 */
-	@SelectProvider(type = QueryByExampleProvider.class, method = "findOne")
+	@SelectProvider(type = QueryByExampleProvider.class)
 	Optional<T> findOne(Example<T> example);
 
 	/**
@@ -32,7 +32,7 @@ public interface QueryByExampleMapper<T, ID extends Serializable> extends Mapper
 	 * @param example the example
 	 * @return the list
 	 */
-	@SelectProvider(type = QueryByExampleProvider.class, method = "findBy")
+	@SelectProvider(type = QueryByExampleProvider.class)
 	List<T> findBy(Example<T> example);
 
 }

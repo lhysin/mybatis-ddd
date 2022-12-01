@@ -73,11 +73,17 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
 			isDynamicUpdate = field -> true;
 		}
 
-		return this.withoutIdColumns(ctx)
+		List<String> columns = this.withoutIdColumns(ctx)
 			.filter(this::updatable)
 			.filter(isDynamicUpdate)
 			.map(this::columnNameAndBindParameter)
-			.toArray(String[]::new);
+			.collect(Collectors.toList());
+
+		if (columns.isEmpty()) {
+			throw new IllegalArgumentException("Not Exists Updatable Value.");
+		}
+
+		return columns.toArray(new String[0]);
 	}
 
 	/**
@@ -101,6 +107,10 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
 			.filter(this::insertable)
 			.map(field -> bindParameterWithKey(field.getName(), key))
 			.collect(Collectors.joining(","));
+
+		if (joiningFields.isEmpty()) {
+			throw new IllegalArgumentException("Not Exists insertable Value.");
+		}
 
 		return "<foreach item='".concat(key).concat("' collection='entities' separator=','>")
 			.concat("\n").concat("(").concat(joiningFields).concat(")")
@@ -130,6 +140,10 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
 			})
 			.map(Field::getName)
 			.collect(Collectors.toList());
+
+		if (fieldValues.isEmpty()) {
+			throw new IllegalArgumentException("Not Exists Example Value.");
+		}
 
 		return this.columns(ctx)
 			.filter(field -> fieldValues.contains(field.getName()))

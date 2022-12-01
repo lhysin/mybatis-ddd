@@ -95,7 +95,7 @@ class ExperimentalTests {
 
 		Optional<Order> order = orderMapper.findOne(
 			Example.of(Order.builder()
-				.custNo("20220109")
+				.name("orderName04")
 				.build()
 			)
 		);
@@ -110,7 +110,7 @@ class ExperimentalTests {
 		assertFalse(orders.isEmpty());
 
 		Optional<Order> exampleOfIncludeNullOrder = orderMapper.findOne(
-			Example.ofIncludeNullValues(
+			Example.withIncludeNullValues(
 				Order.builder().build()
 			)
 		);

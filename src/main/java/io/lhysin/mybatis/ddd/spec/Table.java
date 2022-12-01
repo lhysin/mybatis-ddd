@@ -6,19 +6,23 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Table
+ * The interface Table.
  */
 @Target({ElementType.TYPE})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Table {
 
 	/**
-	 * @return Table Name
+	 * Name string.
+	 *
+	 * @return the string
 	 */
 	String name();
 
 	/**
-	 * @return Table Schema
+	 * Schema string.
+	 *
+	 * @return the string
 	 */
 	String schema() default "";
 }

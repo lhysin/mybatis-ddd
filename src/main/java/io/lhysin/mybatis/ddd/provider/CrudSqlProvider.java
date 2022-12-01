@@ -100,7 +100,7 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
 	 * @param ctx {@link ProviderContext}
 	 * @return dynamic SQL
 	 */
-	public String create(ProviderContext ctx) {
+	public String create(T domin, ProviderContext ctx) {
 		return new SQL()
 			.INSERT_INTO(this.tableName(ctx))
 			.INTO_COLUMNS(this.insertIntoColumns(ctx))

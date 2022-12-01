@@ -17,28 +17,28 @@ public interface Example<T> {
 	 * @return the example
 	 */
 	static <T> Example<T> of(T probe) {
-		return Example.ofIgnoreNullValues(probe);
+		return Example.withIgnoreNullValues(probe);
 	}
 
 	/**
-	 * Of include null values example.
+	 * With include null values example.
 	 *
-	 * @param <T>   the type parameter
+	 * @param <T>  the type parameter
 	 * @param probe the probe
 	 * @return the example
 	 */
-	static <T> Example<T> ofIncludeNullValues(T probe) {
+	static <T> Example<T> withIncludeNullValues(T probe) {
 		return new TypedExample<>(probe, NullHandler.INCLUDE);
 	}
 
 	/**
-	 * Of ignore null values example.
+	 * With ignore null values example.
 	 *
-	 * @param <T>   the type parameter
+	 * @param <T>  the type parameter
 	 * @param probe the probe
 	 * @return the example
 	 */
-	static <T> Example<T> ofIgnoreNullValues(T probe) {
+	static <T> Example<T> withIgnoreNullValues(T probe) {
 		return new TypedExample<>(probe, NullHandler.IGNORE);
 	}
 
