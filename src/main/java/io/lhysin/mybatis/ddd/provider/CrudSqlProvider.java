@@ -10,8 +10,8 @@ import io.lhysin.mybatis.ddd.support.SqlProviderSupport;
 
 /**
  * CrudSqlProvider
- * @param <T> Table Entity
- * @param <ID> Table PK
+ * @param <T>  Table Entity
+ * @param <ID>  Table PK
  */
 public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupport<T, ID>
 	implements ProviderMethodResolver {
@@ -26,6 +26,8 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
 	}
 
 	/**
+	 * Find by id string.
+	 *
 	 * @param ctx {@link ProviderContext}
 	 * @return dynamic SQL
 	 */
@@ -38,6 +40,8 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
 	}
 
 	/**
+	 * Find all by id string.
+	 *
 	 * @param ctx {@link ProviderContext}
 	 * @return dynamic SQL
 	 */
@@ -51,6 +55,8 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
 	}
 
 	/**
+	 * Count string.
+	 *
 	 * @param ctx {@link ProviderContext}
 	 * @return dynamic SQL
 	 */
@@ -62,6 +68,8 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
 	}
 
 	/**
+	 * Delete by id string.
+	 *
 	 * @param ctx {@link ProviderContext}
 	 * @return dynamic SQL
 	 */
@@ -73,6 +81,8 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
 	}
 
 	/**
+	 * Delete string.
+	 *
 	 * @param ctx {@link ProviderContext}
 	 * @return dynamic SQL
 	 */
@@ -84,6 +94,8 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
 	}
 
 	/**
+	 * Delete all by id string.
+	 *
 	 * @param ctx {@link ProviderContext}
 	 * @return dynamic SQL
 	 */
@@ -97,6 +109,9 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
 	}
 
 	/**
+	 * Create string.
+	 *
+	 * @param domin the domin
 	 * @param ctx {@link ProviderContext}
 	 * @return dynamic SQL
 	 */
@@ -109,6 +124,8 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
 	}
 
 	/**
+	 * Update string.
+	 *
 	 * @param ctx {@link ProviderContext}
 	 * @return dynamic SQL
 	 */
@@ -121,6 +138,8 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
 	}
 
 	/**
+	 * Dynamic update string.
+	 *
 	 * @param domain Table entity
 	 * @param ctx {@link ProviderContext}
 	 * @return dynamic SQL
@@ -134,6 +153,8 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
 	}
 
 	/**
+	 * Create all string.
+	 *
 	 * @param ctx {@link ProviderContext}
 	 * @return dynamic SQL
 	 */

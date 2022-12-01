@@ -17,12 +17,14 @@ import io.lhysin.mybatis.ddd.spec.Table;
 
 /**
  * ProviderContextSupport
- * @param <T> Table Entity
- * @param <ID> Table PK
+ * @param <T>  Table Entity
+ * @param <ID>  Table PK
  */
 public abstract class ProviderContextSupport<T, ID extends Serializable> {
 
 	/**
+	 * Domain type class.
+	 *
 	 * @param ctx {@link ProviderContext}
 	 * @return Table Entity tpye
 	 */
@@ -38,6 +40,8 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
 	}
 
 	/**
+	 * Table name string.
+	 *
 	 * @param ctx {@link ProviderContext}
 	 * @return table name
 	 */
@@ -55,6 +59,8 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
 	}
 
 	/**
+	 * Columns stream.
+	 *
 	 * @param ctx {@link ProviderContext}
 	 * @return column stream
 	 */
@@ -69,6 +75,8 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
 	}
 
 	/**
+	 * Only id columns stream.
+	 *
 	 * @param ctx {@link ProviderContext}
 	 * @return only id columns stream
 	 */
@@ -82,6 +90,8 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
 	}
 
 	/**
+	 * Without id columns stream.
+	 *
 	 * @param ctx {@link ProviderContext}
 	 * @return without id column stream
 	 */
@@ -93,7 +103,7 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
 	/**
 	 * composite
 	 * @param ctx {@link ProviderContext}
-	 * @return boolean
+	 * @return boolean boolean
 	 */
 	protected boolean isCompositeKey(ProviderContext ctx) {
 		long idColumnCount = this.onlyIdColumns(ctx).count();
@@ -113,7 +123,7 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
 	/**
 	 * COLUMN AS fieldName
 	 * @param field the field
-	 * @return sql
+	 * @return sql string
 	 */
 	protected String columnNameAndAliasField(Field field) {
 		return columnName(field).concat(" AS ").concat(field.getName());
@@ -128,6 +138,13 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
 		return columnName(field).concat(" = ").concat(bindParameter(field.getName()));
 	}
 
+	/**
+	 * Column name and bind parameter with key string.
+	 *
+	 * @param field the field
+	 * @param column the column
+	 * @return the string
+	 */
 	protected String columnNameAndBindParameterWithKey(Field field, String column) {
 		return columnName(field).concat(" = ").concat(bindParameterWithKey(field.getName(), column));
 	}
@@ -152,16 +169,20 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
 	}
 
 	/**
+	 * Insertable boolean.
+	 *
 	 * @param field the field
-	 * @return insertable
+	 * @return insertable boolean
 	 */
 	protected boolean insertable(Field field) {
 		return field.getAnnotation(Column.class).insertable();
 	}
 
 	/**
+	 * Updatable boolean.
+	 *
 	 * @param field the field
-	 * @return updatable
+	 * @return updatable boolean
 	 */
 	protected boolean updatable(Field field) {
 		return field.getAnnotation(Column.class).updatable();

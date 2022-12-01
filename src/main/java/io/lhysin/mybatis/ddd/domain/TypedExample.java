@@ -7,13 +7,19 @@ import io.lhysin.mybatis.ddd.spec.Example;
 /**
  * The type Typed example.
  *
- * @param <T> the type parameter
+ * @param <T>  the type parameter
  */
 public class TypedExample<T> implements Example<T> {
 
 	private final T probe;
 	private final NullHandler nullHandler;
 
+	/**
+	 * Instantiates a new Typed example.
+	 *
+	 * @param probe the probe
+	 * @param nullHandler the null handler
+	 */
 	public TypedExample(T probe, NullHandler nullHandler) {
 		this.probe = Objects.requireNonNull(probe);
 		this.nullHandler = nullHandler;

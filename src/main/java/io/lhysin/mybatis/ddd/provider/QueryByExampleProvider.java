@@ -11,13 +11,16 @@ import io.lhysin.mybatis.ddd.support.SqlProviderSupport;
 
 /**
  * CrudSqlProvider
- * @param <T> Table Entity
- * @param <ID> Table PK
+ * @param <T>  Table Entity
+ * @param <ID>  Table PK
  */
 public class QueryByExampleProvider<T, ID extends Serializable> extends SqlProviderSupport<T, ID>
 	implements ProviderMethodResolver {
 
 	/**
+	 * Find one string.
+	 *
+	 * @param example the example
 	 * @param ctx {@link ProviderContext}
 	 * @return dynamic SQL
 	 */
@@ -31,6 +34,9 @@ public class QueryByExampleProvider<T, ID extends Serializable> extends SqlProvi
 	}
 
 	/**
+	 * Find by string.
+	 *
+	 * @param example the example
 	 * @param ctx {@link ProviderContext}
 	 * @return dynamic SQL
 	 */

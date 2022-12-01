@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'io.github.lhysin'
-version = '1.0.1-REALESE'
+version = '1.0.2-REALESE'
 description = 'Mybatis Domain Driven Design'
 sourceCompatibility = JavaVersion.VERSION_1_8
 
@@ -25,7 +25,6 @@ dependencies {
     testImplementation('com.h2database:h2:2.1.214')
     testImplementation('org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.0')
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.6'
-
 
     // https://projectlombok.org
     testImplementation('org.projectlombok:lombok:1.18.24')
