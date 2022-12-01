@@ -1,6 +1,6 @@
 package io.lhysin.mybatis.ddd.provider;
 
-import io.lhysin.mybatis.ddd.domain.Pageable;
+import io.lhysin.mybatis.ddd.spec.Pageable;
 import io.lhysin.mybatis.ddd.support.SqlProviderSupport;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.apache.ibatis.jdbc.SQL;

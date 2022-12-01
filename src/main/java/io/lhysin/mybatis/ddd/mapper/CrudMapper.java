@@ -9,19 +9,25 @@ import java.util.Optional;
 
 /**
  * CrudMapper
- * @param <T> Table Entity
+ *
+ * @param <T>  Table Entity
  * @param <ID> Table PK
  */
 public interface CrudMapper<T, ID extends Serializable> extends ProviderMapper<T, ID> {
 
     /**
+     * Save int.
+     *
      * @param entity Table Entity
      * @return save Count
      */
+    @Deprecated
     @InsertProvider(type = CrudSqlProvider.class, method = "save")
     int save(T entity);
 
     /**
+     * Find by id optional.
+     *
      * @param id Table PK
      * @return find Table Entity
      */
@@ -29,6 +35,8 @@ public interface CrudMapper<T, ID extends Serializable> extends ProviderMapper<T
     Optional<T> findById(ID id);
 
     /**
+     * Find all by id list.
+     *
      * @param ids Table PKs
      * @return find Table Entities
      */
@@ -36,12 +44,16 @@ public interface CrudMapper<T, ID extends Serializable> extends ProviderMapper<T
     List<T> findAllById(@Param("ids") Iterable<ID> ids);
 
     /**
+     * Count long.
+     *
      * @return find Table count
      */
     @SelectProvider(type = CrudSqlProvider.class, method = "count")
     long count();
 
     /**
+     * Delete by id int.
+     *
      * @param id Table PK
      * @return delete count
      */
@@ -49,6 +61,8 @@ public interface CrudMapper<T, ID extends Serializable> extends ProviderMapper<T
     int deleteById(ID id);
 
     /**
+     * Delete int.
+     *
      * @param entity Table entity
      * @return delete count
      */
@@ -56,6 +70,8 @@ public interface CrudMapper<T, ID extends Serializable> extends ProviderMapper<T
     int delete(T entity);
 
     /**
+     * Delete all by id int.
+     *
      * @param ids Table entities
      * @return delete count
      */
@@ -63,6 +79,8 @@ public interface CrudMapper<T, ID extends Serializable> extends ProviderMapper<T
     int deleteAllById(@Param("ids") Iterable<ID> ids);
 
     /**
+     * Create int.
+     *
      * @param entity Table entity
      * @return create count
      */
@@ -71,6 +89,7 @@ public interface CrudMapper<T, ID extends Serializable> extends ProviderMapper<T
 
     /**
      * update all column
+     *
      * @param entity Table entity
      * @return update count
      */
@@ -79,6 +98,7 @@ public interface CrudMapper<T, ID extends Serializable> extends ProviderMapper<T
 
     /**
      * update nonnull column
+     *
      * @param entity Table entity
      * @return update count
      */
@@ -87,6 +107,7 @@ public interface CrudMapper<T, ID extends Serializable> extends ProviderMapper<T
 
     /**
      * bulk insert
+     *
      * @param entities Table entities
      * @return create count
      */

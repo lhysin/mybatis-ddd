@@ -1,5 +1,7 @@
 package io.lhysin.mybatis.ddd.domain;
 
+import io.lhysin.mybatis.ddd.spec.Pageable;
+
 /**
  * PageRequest
  */

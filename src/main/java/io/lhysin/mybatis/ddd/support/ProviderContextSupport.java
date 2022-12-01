@@ -128,6 +128,10 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
         return columnName(field).concat(" = ").concat(bindParameter(field.getName()));
     }
 
+    protected String columnNameAndBindParameterWithKey(Field field, String column) {
+        return columnName(field).concat(" = ").concat(bindParameterWithKey(field.getName(), column));
+    }
+
     /**
      * #{column}
      * @param column column

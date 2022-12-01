@@ -14,7 +14,7 @@ import java.util.List;
  * The interface Order mapper.
  */
 @Repository
-public interface OrderMapper extends CrudMapper<Order, Order.PK> {
+public interface OrderMapper extends CrudMapper<Order, Order.PK>, QueryByExampleMapper<Order, Order.PK> {
 
     @Override
     @InsertProvider(type = CrudSqlProvider.class, method = "create")

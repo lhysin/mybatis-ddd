@@ -1,6 +1,6 @@
 package io.lhysin.mybatis.ddd.mapper;
 
-import io.lhysin.mybatis.ddd.domain.Pageable;
+import io.lhysin.mybatis.ddd.spec.Pageable;
 import io.lhysin.mybatis.ddd.provider.PagingAndSortingSqlProvider;
 import org.apache.ibatis.annotations.SelectProvider;
 

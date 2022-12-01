@@ -1,9 +1,11 @@
 package io.lhysin.mybatis.ddd;
 
+import io.lhysin.mybatis.ddd.entity.Order;
 import io.lhysin.mybatis.ddd.entity.Student;
 import io.lhysin.mybatis.ddd.mapper.DummyMapper;
 import io.lhysin.mybatis.ddd.mapper.OrderMapper;
 import io.lhysin.mybatis.ddd.mapper.StudentMapper;
+import io.lhysin.mybatis.ddd.spec.Example;
 import io.lhysin.mybatis.ddd.type.Grade;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.RowBounds;
@@ -11,7 +13,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -80,5 +84,27 @@ class ExperimentalTests {
         log.debug(exception.getMessage());
         assertTrue(exception.getMessage().contains("Not Exists."));
 
+    }
+
+    /**
+     * Find by example test.
+     */
+    @Test
+    void findByExampleTest() {
+
+        Optional<Order> order = orderMapper.findOne(Example.of(Order.builder()
+                .custNo("20220109").build()));
+        assertTrue(order.isPresent());
+
+        List<Order> orders = orderMapper.findBy(Example.of(Order.builder()
+                .custNo("20220109").build()));
+        assertFalse(orders.isEmpty());
+
+        Optional<Order> excampleOfIncludeNullOrder = orderMapper.findOne(
+                Example.ofIncludeNullValues(
+                        Order.builder().build()
+                )
+        );
+        assertFalse(excampleOfIncludeNullOrder.isPresent());
     }
 }

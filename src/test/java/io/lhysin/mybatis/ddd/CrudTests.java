@@ -1,7 +1,7 @@
 package io.lhysin.mybatis.ddd;
 
 import io.lhysin.mybatis.ddd.domain.PageRequest;
-import io.lhysin.mybatis.ddd.domain.Pageable;
+import io.lhysin.mybatis.ddd.spec.Pageable;
 import io.lhysin.mybatis.ddd.domain.Sort;
 import io.lhysin.mybatis.ddd.entity.Cart;
 import io.lhysin.mybatis.ddd.entity.Customer;

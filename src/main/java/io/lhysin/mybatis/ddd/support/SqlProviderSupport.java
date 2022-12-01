@@ -1,15 +1,19 @@
 package io.lhysin.mybatis.ddd.support;
 
-import io.lhysin.mybatis.ddd.domain.Pageable;
+import io.lhysin.mybatis.ddd.spec.Column;
+import io.lhysin.mybatis.ddd.spec.Example;
+import io.lhysin.mybatis.ddd.spec.Pageable;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+
+import static io.lhysin.mybatis.ddd.support.ReflectionSupport.value;
 
 /**
  * SqlProviderSupport
@@ -103,6 +107,36 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
     }
 
     /**
+     * create where notnull field value.
+     *
+     * @param example the example
+     * @param ctx {@link ProviderContext}
+     * @return where column and bind value array
+     */
+    protected String[] wheresByExample(Example<T> example, ProviderContext ctx) {
+
+        T probe = example.getProbe();
+        Class<?> probeType = example.getProbeType();
+
+        List<String> fieldValues = Arrays.stream(probeType.getDeclaredFields())
+                .filter(field -> field.isAnnotationPresent(Column.class))
+                .filter(field -> {
+                    if (example.isIgnoreNullValues()) {
+                        return value(probe, field) != null;
+                    } else {
+                        return true;
+                    }
+                })
+                .map(Field::getName)
+                .collect(Collectors.toList());
+
+        return this.columns(ctx)
+                .filter(field -> fieldValues.contains(field.getName()))
+                .map(field ->  this.columnNameAndBindParameterWithKey(field, "probe"))
+                .toArray(String[]::new);
+    }
+
+    /**
      * @param ctx {@link ProviderContext}
      * @return where column and bind value array
      */
@@ -155,20 +189,6 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
                 .toArray(String[]::new);
     }
 
-    /**
-     * @param obj target
-     * @param field target field
-     * @return target value
-     */
-    protected Object value(Object obj, Field field) {
-        try {
-            field.setAccessible(true);
-            return field.get(obj);
-        } catch (IllegalAccessException e) {
-            throw new IllegalStateException(e);
-        } finally {
-            field.setAccessible(false);
-        }
-    }
+
 
 }

@@ -1,4 +1,6 @@
-package io.lhysin.mybatis.ddd.domain;
+package io.lhysin.mybatis.ddd.spec;
+
+import io.lhysin.mybatis.ddd.domain.Sort;
 
 /**
  * Pageable
