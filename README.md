@@ -6,7 +6,14 @@
 >
 > No Xml Mapper
 
-### 1. How to Use
+### 0. Annotation (Not Support javax.persistence)
+```java
+import io.lhysin.mybatis.ddd.spec.Id;
+import io.lhysin.mybatis.ddd.spec.Table;
+import io.lhysin.mybatis.ddd.spec.Column;
+```
+
+### 1. findById
 
 ---
 
@@ -58,24 +65,20 @@ WHERE (CUST_NO = ?)
 ---
 
 ```java
-String custNo1="20220101";
+void dynamicUpdateTest(){
 	customerMapper.update(Customer.builder()
-	.custNo(custNo1)
-	.age(null)
-	.updatedAt(LocalDateTime.now())
-	.build());
-	Customer updatedCustomer1=customerMapper.findById(custNo1).orElseThrow(NoSuchElementException::new);
+        .custNo("20220101")
+        .age(null)
+        .updatedAt(LocalDateTime.now())
+        .build());
 
-	assertNull(updatedCustomer1.getAge());
-
-	String custNo2="20220102";
 	customerMapper.dynamicUpdate(Customer.builder()
-	.custNo(custNo2)
-	.age(null)
-	.updatedAt(LocalDateTime.now())
-	.build());
-	Customer dynamicUpdatedCustomer2=customerMapper.findById(custNo2).orElseThrow(NoSuchElementException::new);
-	assertNotNull(dynamicUpdatedCustomer2.getAge());
+        .custNo("20220102")
+        .age(null)
+        .updatedAt(LocalDateTime.now())
+        .build());
+}
+
 ```
 
 ```sql
@@ -97,7 +100,7 @@ WHERE (CUST_NO = ?)
 -- Parameters: 2022-12-01T21:18:14.702(LocalDateTime), 20220102(String)
 ```
 
-### 3. Like @GeneratedValue with @SelectKey
+### 3. with @SelectKey
 
 ---
 
@@ -112,7 +115,8 @@ public interface CartMapper extends CrudMapper<Cart, Cart.PK> {
 
 	@Override
 	@InsertProvider(type = CrudSqlProvider.class, method = "create")
-	@SelectKey(keyColumn = "CART_SEQ", keyProperty = "cartSeq", resultType = Integer.class, before = true, statement = "SELECT ADM.CART_SEQUENCE.nextval FROM DUAL")
+	@SelectKey(keyColumn = "CART_SEQ", keyProperty = "cartSeq", resultType = Integer.class, before = true,
+        statement = "SELECT ADM.CART_SEQUENCE.nextval FROM DUAL")
 	int create(Cart entity);
 }
 ```
@@ -158,13 +162,15 @@ public enum Grade implements Code {
 	SIX("6")
 }
 
-	public void registerTypeHandler() {
-		sqlSessionFactory.getConfiguration()
-			.getTypeHandlerRegistry()
-			.register(new CodeTypeHandler<>(Grade.class));
-	}
+public void registerTypeHandler() {
+    sqlSessionFactory.getConfiguration()
+        .getTypeHandlerRegistry()
+        .register(new CodeTypeHandler<>(Grade.class));
+}
 
-	Grade grade = studentMapper.find(1).getGrade();
+Grade grade = studentMapper.findById(2L)
+	.orElseThrow(NoSuchElementException::new)
+    .getGrade();
 ```
 
 ```sql
@@ -188,35 +194,42 @@ VALUES (?, ?)
 ```java
 public interface QueryByExampleMapper<T, ID extends Serializable> extends MapperProvider<T, ID>
 
-	void findByExampleTest() {
-		Optional<Order> order = orderMapper.findOne(
-			Example.of(Order.builder()
-				.name("orderName04")
-				.build()
-			)
-		);
-		assertTrue(order.isPresent());
-	}
+void findByExampleTest() {
+	Optional<Order> order = orderMapper.findOne(
+		Example.of(Order.builder()
+			.name("orderName04")
+			.build()
+		)
+	);
+	assertTrue(order.isPresent());
+
+	Optional<Order> exampleOfIncludeNullOrder = orderMapper.findOne(
+		Example.withIncludeNullValues(
+			Order.builder().build()
+		)
+	);
+	assertFalse(exampleOfIncludeNullOrder.isPresent());
+}
 ```
 
 ```sql
 --Preparing:
-SELECT CUST_NO    AS custNo,
-       ORD_NO     AS ordNo,
-       ORD_SEQ    AS ordSeq,
-       ORD_DTM    AS ordDtm,
-       NAME       AS name,
-       ITEM_CD    AS itemCd,
-       CREATED_AT AS createdAt,
-       UPDATED_AT AS updatedAt
+SELECT CUST_NO AS custNo, ORD_NO AS ordNo, ORD_SEQ AS ordSeq, ORD_DTM AS ordDtm, NAME AS name, ITEM_CD AS itemCd, CREATED_AT AS createdAt, UPDATED_AT AS updatedAt
 FROM ADM.TORDER
 WHERE (NAME = ?)
-    FETCH FIRST 1 ROWS ONLY
+FETCH FIRST 1 ROWS ONLY
 -- Parameters: orderName04(String)
+
+--Preparing:
+SELECT CUST_NO AS custNo, ORD_NO AS ordNo, ORD_SEQ AS ordSeq, ORD_DTM AS ordDtm, NAME AS name, ITEM_CD AS itemCd, CREATED_AT AS createdAt, UPDATED_AT AS updatedAt
+FROM ADM.TORDER
+WHERE (CUST_NO = ? AND ORD_NO = ? AND ORD_SEQ = ? AND ORD_DTM = ? AND NAME = ? AND ITEM_CD = ? AND CREATED_AT = ? AND UPDATED_AT = ?)
+FETCH FIRST 1 ROWS ONLY
+-- Parameters: null, null, null, null, null, null, null, null
 ```
 
 ### reference by
 
-> https://mybatis.org/mybatis-3/ko/statement-builders.html  
+> https://mybatis.org/mybatis-3/ko/statement-builders.html
 https://mybatis.org/mybatis-3/apidocs/org/apache/ibatis/builder/annotation/ProviderContext.html
-https://stackoverflow.com/questions/8451042/can-i-pass-a-list-as-a-parameter-to-a-mybatis-mapper  
+https://stackoverflow.com/questions/8451042/can-i-pass-a-list-as-a-parameter-to-a-mybatis-mapper

@@ -83,7 +83,7 @@ class ExperimentalTests {
 
 		Exception exception = assertThrows(Exception.class, () -> dummyMapper.findById(""));
 		log.debug(exception.getMessage());
-		assertTrue(exception.getMessage().contains("Not Exists."));
+		assertTrue(exception.getMessage().contains("Not Exists"));
 
 	}
 
@@ -115,5 +115,17 @@ class ExperimentalTests {
 			)
 		);
 		assertFalse(exampleOfIncludeNullOrder.isPresent());
+
+		Exception exception = assertThrows(Exception.class, () -> {
+			orderMapper.findOne(
+				Example.of(Order.builder()
+					.build()
+				)
+			);
+		});
+
+		log.debug(exception.getMessage());
+		assertTrue(exception.getMessage().contains("Not Exists"));
+
 	}
 }

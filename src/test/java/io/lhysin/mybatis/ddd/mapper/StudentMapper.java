@@ -1,7 +1,8 @@
 package io.lhysin.mybatis.ddd.mapper;
 
-import io.lhysin.mybatis.ddd.entity.Student;
 import org.springframework.stereotype.Repository;
+
+import io.lhysin.mybatis.ddd.entity.Student;
 
 /**
  * The interface Student mapper.

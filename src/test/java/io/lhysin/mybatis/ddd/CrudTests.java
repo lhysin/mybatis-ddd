@@ -186,6 +186,7 @@ class CrudTests {
 				.build());
 		});
 
+		log.debug(exception.getMessage());
 		assertTrue(exception.getMessage().contains("Not Exists"));
 	}
 

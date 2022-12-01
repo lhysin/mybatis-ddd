@@ -3,10 +3,11 @@ package io.lhysin.mybatis.ddd.entity;
 import io.lhysin.mybatis.ddd.spec.Column;
 import io.lhysin.mybatis.ddd.spec.Id;
 import io.lhysin.mybatis.ddd.spec.Table;
-import lombok.*;
-
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 /**
  * The type Item.
@@ -18,7 +19,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Item {
 
-    @Id
-    @Column(name = "ITEM_SEQ")
-    private Long itemSeq;
+	@Id
+	@Column(name = "ITEM_SEQ")
+	private Long itemSeq;
 }
