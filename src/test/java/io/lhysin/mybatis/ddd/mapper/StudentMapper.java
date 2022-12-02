@@ -8,5 +8,5 @@ import io.lhysin.mybatis.ddd.entity.Student;
  * The interface Student mapper.
  */
 @Repository
-public interface StudentMapper extends CrudMapper<Student, Long> {
+public interface StudentMapper extends CrudMapper<Student, Long>, QueryByExampleMapper<Student, Long> {
 }

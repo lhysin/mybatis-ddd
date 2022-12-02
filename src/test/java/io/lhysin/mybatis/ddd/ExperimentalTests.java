@@ -93,6 +93,13 @@ class ExperimentalTests {
     @Test
     void findByExampleTest() {
 
+        Optional<Student> student = studentMapper.findOne(
+            Example.of(Student.builder()
+                .grade(Grade.FIVE)
+                .build())
+        );
+        assertTrue(student.isPresent());
+
         Optional<Order> order = orderMapper.findOne(
             Example.of(Order.builder()
                 .name("orderName04")
