@@ -2,21 +2,23 @@ package io.lhysin.mybatis.ddd;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 import org.apache.ibatis.session.RowBounds;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import io.lhysin.mybatis.ddd.entity.Order;
+import io.lhysin.mybatis.ddd.dto.OrderCriteria;
+import io.lhysin.mybatis.ddd.dto.OrderInClauseCriteria;
+import io.lhysin.mybatis.ddd.dto.OrderLikeCriteria;
 import io.lhysin.mybatis.ddd.entity.Student;
 import io.lhysin.mybatis.ddd.mapper.DummyMapper;
 import io.lhysin.mybatis.ddd.mapper.OrderMapper;
 import io.lhysin.mybatis.ddd.mapper.StudentMapper;
-import io.lhysin.mybatis.ddd.spec.Example;
+import io.lhysin.mybatis.ddd.spec.Criteria;
 import io.lhysin.mybatis.ddd.type.Grade;
 import lombok.extern.slf4j.Slf4j;
 
@@ -87,52 +89,80 @@ class ExperimentalTests {
 
     }
 
-    /**
-     * Find by example test.
-     */
     @Test
-    void findByExampleTest() {
+    void test_QueryByCriteria() {
 
-        Optional<Student> student = studentMapper.findOne(
-            Example.of(Student.builder()
-                .grade(Grade.FIVE)
-                .build())
-        );
-        assertTrue(student.isPresent());
-
-        Optional<Order> order = orderMapper.findOne(
-            Example.of(Order.builder()
-                .name("orderName04")
+        Criteria<OrderCriteria> orderCriteria = Criteria.of(
+            OrderCriteria.builder()
+                .ordNo("ordNo")
+                .ordSeq(1)
+                .name(null)
                 .build()
-            )
         );
-        assertTrue(order.isPresent());
+        orderMapper.findBy(orderCriteria);
 
-        List<Order> orders = orderMapper.findBy(
-            Example.of(Order.builder()
-                .custNo("20220109")
-                .build()
-            )
-        );
-        assertFalse(orders.isEmpty());
-
-        Optional<Order> exampleOfIncludeNullOrder = orderMapper.findOne(
-            Example.withIncludeNullValues(
-                Order.builder().build()
-            )
-        );
-        assertFalse(exampleOfIncludeNullOrder.isPresent());
 
         Exception exception = assertThrows(Exception.class, () -> {
-            orderMapper.findOne(
-                Example.of(Order.builder()
+            orderMapper.findBy(
+                Criteria.of(
+                    OrderInClauseCriteria.builder()
                     .build()
                 )
             );
         });
 
-        log.debug(exception.getMessage());
-        assertTrue(exception.getMessage().contains("Not Exists"));
+        log.error(exception.getMessage());
+        assertTrue(exception.getMessage().contains("Not Allow"));
+    }
 
+    @Test
+    void test_QueryByCriteria_LIKE() {
+
+        orderMapper.findBy(
+            OrderLikeCriteria.builder()
+                .ordNo("1")
+                .startWithName("start")
+                .build()
+                .getCriteria()
+        );
+
+        orderMapper.findBy(
+            OrderLikeCriteria.builder()
+                .ordNo("1")
+                .endWithName("end")
+                .build()
+                .getCriteria()
+        );
+
+        orderMapper.findBy(
+            OrderLikeCriteria.builder()
+                .ordNo("1")
+                .anyName("any")
+                .build()
+                .getCriteria()
+        );
+    }
+
+    @Test
+    void test_QueryByCriteria_IN() {
+
+        List<String> nameList = new ArrayList<String>();
+        nameList.add("name1");
+        nameList.add("name2");
+
+        orderMapper.findBy(
+            OrderInClauseCriteria.builder()
+                .ordNo("1")
+                .build()
+                .getCriteria()
+        );
+
+        orderMapper.findBy(
+            OrderInClauseCriteria.builder()
+                .inOrdNos(nameList)
+                .notInOrdNos(nameList)
+                .build()
+                .getCriteria()
+        );
     }
 }

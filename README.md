@@ -188,63 +188,146 @@ VALUES (?, ?)
 
 ```
 
-### 5. Query by Example
+### 5. Query by Criteria
 
 ---
 
 ```java
-public interface QueryByExampleMapper<T, ID extends Serializable> extends MapperProvider<T, ID>
+public interface QueryByCriteriaMapper<T, ID extends Serializable>
+    extends MapperProvider<T, ID>
 
-void findByExampleTest() {
-    Optional<Order> order = orderMapper.findOne(
-        Example.of(Order.builder()
-            .name("orderName04")
+@Getter
+@Builder
+public class OrderCriteria {
+    @WhereClause(column = @Column(name = "ORD_NO"), comparison = Comparison.EQUAL)
+    private String ordNo;
+
+    @WhereClause(column = @Column(name = "ORD_SEQ"), comparison = Comparison.LESS_THAN_EQUAL, ignoreNullValue = false)
+    private Integer ordSeq;
+
+    @WhereClause(column = @Column(name = "NAME"), comparison = Comparison.NOT_EQUAL)
+    private String name;
+}
+
+void test_QueryByCriteria() {
+    Criteria<OrderCriteria> orderCriteria = Criteria.of(
+        OrderCriteria.builder()
+            .ordSeq(1)
+            .name(null)
             .build()
-        )
     );
-    assertTrue(order.isPresent());
-
-    Optional<Order> exampleOfIncludeNullOrder = orderMapper.findOne(
-        Example.withIncludeNullValues(
-            Order.builder().build()
-        )
-    );
-    assertFalse(exampleOfIncludeNullOrder.isPresent());
+    orderMapper.findBy(orderCriteria);
 }
 ```
 
 ```sql
--- Example.of (default withIgnoreNullValues)
 --Preparing:
-SELECT CUST_NO    AS custNo,
-       ORD_NO     AS ordNo,
-       ORD_SEQ    AS ordSeq,
-       ORD_DTM    AS ordDtm,
-       NAME       AS name,
-       ITEM_CD    AS itemCd,
-       CREATED_AT AS createdAt,
-       UPDATED_AT AS updatedAt
+SELECT CUST_NO AS custNo, ORD_NO AS ordNo, ORD_SEQ AS ordSeq, ORD_DTM AS ordDtm,
+       NAME AS name, ITEM_CD AS itemCd, CREATED_AT AS createdAt, UPDATED_AT AS updatedAt
 FROM ADM.TORDER
-WHERE (NAME = ?)
-    FETCH FIRST 1 ROWS ONLY
--- Parameters: orderName04(String)
-
--- Example.withIncludeNullValues
---Preparing:
-SELECT CUST_NO    AS custNo,
-       ORD_NO     AS ordNo,
-       ORD_SEQ    AS ordSeq,
-       ORD_DTM    AS ordDtm,
-       NAME       AS name,
-       ITEM_CD    AS itemCd,
-       CREATED_AT AS createdAt,
-       UPDATED_AT AS updatedAt
-FROM ADM.TORDER
-WHERE (CUST_NO = ? AND ORD_NO = ? AND ORD_SEQ = ? AND ORD_DTM = ? AND NAME = ? AND ITEM_CD = ? AND CREATED_AT = ? AND
-       UPDATED_AT = ?)
-    FETCH FIRST 1 ROWS ONLY
--- Parameters: null, null, null, null, null, null, null, null
+WHERE WHERE (ORD_NO = ? AND ORD_SEQ <= ?)
+-- Parameters: ordNo(String), 1(Integer)
 ```
+
+```java
+@Getter
+@Builder
+public class OrderLikeCriteria {
+
+    @WhereClause(column = @Column(name = "ORD_NO"), comparison = Comparison.EQUAL)
+    private String ordNo;
+
+    @WhereClause(column = @Column(name = "NAME"), comparison = Comparison.START_WITH_LIKE)
+    private String startWithName;// != NULL
+
+    @WhereClause(column = @Column(name = "NAME"), comparison = Comparison.END_WITH_LIKE)
+    private String endWithName;
+
+    @WhereClause(column = @Column(name = "NAME"), comparison = Comparison.ANY_LIKE)
+    private String anyName;
+
+    public Criteria<OrderLikeCriteria> getCriteria() {
+        return Criteria.of(this);
+    }
+}
+
+
+void test_QueryByCriteria_LIKE() {
+    orderMapper.findBy(
+        OrderDynamicCriteria.builder()
+            .ordNo("1")
+            .startWithName("or")
+            .build()
+            .getCriteria()
+    );
+
+    orderMapper.findBy(
+        OrderDynamicCriteria.builder()
+            .ordNo("1")
+            .endWithName("1")
+            .build()
+            .getCriteria()
+    );
+
+    orderMapper.findBy(
+        OrderDynamicCriteria.builder()
+            .ordNo("1")
+            .anyName("")
+            .build()
+            .getCriteria()
+    );
+}
+```
+```sql
+SELECT *
+FROM ADM.TORDER WHERE (ORD_NO = ? AND NAME LIKE ?||'%')
+-- Parameters: 1(String), start(String)
+
+SELECT *
+FROM ADM.TORDER WHERE (ORD_NO = ? AND NAME LIKE '%'||?)
+-- Parameters: 1(String), end(String)
+
+SELECT *
+FROM ADM.TORDER WHERE (ORD_NO = ? AND NAME LIKE '%'||?||'%')
+-- Parameters: 1(String), any(String)
+```
+
+
+```java
+void test_QueryByCriteria_IN() {
+
+    List<String> nameList = new ArrayList<String>();
+    nameList.add("name1");
+    nameList.add("name2");
+
+    orderMapper.findBy(
+        OrderInClauseCriteria.builder()
+            .ordNo("1")
+            .build()
+            .getCriteria()
+    );
+
+    orderMapper.findBy(
+        OrderInClauseCriteria.builder()
+            .inOrdNos(nameList)
+            .notInOrdNos(nameList)
+            .build()
+            .getCriteria()
+    );
+}
+```
+
+```sql
+SELECT *
+FROM ADM.TORDER WHERE (ORD_NO IN (?))
+--Parameters: 1(String)
+
+SELECT *
+FROM ADM.TORDER WHERE (ORD_NO IN (?,?) AND ORD_NO NOT IN (?,?))
+-- Parameters: name1(String), name2(String), name1(String), name2(String)
+
+```
+
 
 ### reference by
 

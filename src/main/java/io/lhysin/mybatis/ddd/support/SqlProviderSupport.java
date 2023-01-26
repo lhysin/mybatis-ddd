@@ -4,8 +4,9 @@ import static io.lhysin.mybatis.ddd.support.ReflectionSupport.*;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
 import io.lhysin.mybatis.ddd.spec.Column;
-import io.lhysin.mybatis.ddd.spec.Example;
+import io.lhysin.mybatis.ddd.spec.Criteria;
 import io.lhysin.mybatis.ddd.spec.Pageable;
 
 /**
@@ -117,38 +118,15 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
             .concat("\n</foreach>");
     }
 
-    /**
-     * create where notnull field value.
-     *
-     * @param example the example
-     * @param ctx {@link ProviderContext}
-     * @return where column and bind value array
-     */
-    protected String[] wheresByExample(Example<T> example, ProviderContext ctx) {
-
-        T probe = example.getProbe();
-        Class<?> probeType = example.getProbeType();
-
-        List<String> fieldValues = Arrays.stream(probeType.getDeclaredFields())
-            .filter(field -> field.isAnnotationPresent(Column.class))
-            .filter(field -> {
-                if (example.isIgnoreNullValues()) {
-                    return value(probe, field) != null;
-                } else {
-                    return true;
-                }
-            })
-            .map(Field::getName)
-            .collect(Collectors.toList());
-
-        if (fieldValues.isEmpty()) {
-            throw new IllegalArgumentException("Not Exists Example Value.");
-        }
-
+    protected String[] wheresByCriteria(Criteria<T> criteria, ProviderContext ctx) {
         return this.columns(ctx)
-            .filter(field -> fieldValues.contains(field.getName()))
-            .map(field -> this.columnNameAndBindParameterWithKey(field, "probe"))
-            .toArray(String[]::new);
+            .map(field -> criteria.createWhereClause(field.getDeclaredAnnotation(Column.class)))
+            .flatMap(Collection::stream)
+            .collect(Collectors.collectingAndThen(Collectors.toList(), Optional::of))
+            .filter(it -> !it.isEmpty())
+            .orElseThrow(() -> new IllegalArgumentException("Not Allow Empty Where Clause."))
+            .toArray(new String[0]);
+
     }
 
     /**
