@@ -14,9 +14,20 @@ import io.lhysin.mybatis.ddd.spec.Comparison;
 import io.lhysin.mybatis.ddd.spec.Criteria;
 import io.lhysin.mybatis.ddd.spec.WhereClause;
 
+/**
+ * The type Typed criteria.
+ *
+ * @param <T>  the type parameter
+ */
 public class TypedCriteria<T> implements Criteria<T> {
 
     private final T probe;
+
+    /**
+     * Instantiates a new Typed criteria.
+     *
+     * @param probe the probe
+     */
     public TypedCriteria(T probe) {
         this.probe = probe;
     }

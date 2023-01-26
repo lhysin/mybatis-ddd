@@ -1,7 +1,7 @@
 package io.lhysin.mybatis.ddd.spec;
 
 /**
- * Where clause condition
+ * Where clause comparison
  */
 public enum Comparison {
 
@@ -16,21 +16,21 @@ public enum Comparison {
     NOT_EQUAL("!="),
 
     /**
-     * ADN field > value
+     * ADN field &gt; value
      */
     GREATER_THAN(">"),
 
     /**
-     * ADN field >= value
+     * ADN field &gt;= value
      */
     GREATER_THAN_EQUAL(">="),
 
     /**
-     * ADN field < value
+     * ADN field &lt; value
      */
     LESS_THAN("<"),
     /**
-     * ADN field <= value
+     * ADN field &lt;= value
      */
     LESS_THAN_EQUAL("<="),
 
@@ -69,8 +69,12 @@ public enum Comparison {
         this.operator = operator;
     }
 
+    /**
+     * Gets operator.
+     *
+     * @return the operator
+     */
     public String getOperator() {
-
         return " ".concat(this.operator).concat(" ");
     }
 }

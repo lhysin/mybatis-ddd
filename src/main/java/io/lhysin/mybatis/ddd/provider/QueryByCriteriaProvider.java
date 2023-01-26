@@ -9,9 +9,20 @@ import org.apache.ibatis.jdbc.SQL;
 import io.lhysin.mybatis.ddd.spec.Criteria;
 import io.lhysin.mybatis.ddd.support.SqlProviderSupport;
 
+/**
+ * QueryByCriteriaProvider
+ *
+ * @param <T>  Table Entity
+ * @param <ID>  Table PK
+ */
 public class QueryByCriteriaProvider<T, ID extends Serializable> extends SqlProviderSupport<T, ID>
     implements ProviderMethodResolver {
 
+    /**
+     * @param criteria {@link Criteria}
+     * @param ctx {@link ProviderContext}
+     * @return dynamic SQL
+     */
     public String findOne(Criteria<T> criteria, ProviderContext ctx) {
         return new SQL()
             .SELECT(selectColumns(ctx))
@@ -21,6 +32,11 @@ public class QueryByCriteriaProvider<T, ID extends Serializable> extends SqlProv
             .toString();
     }
 
+    /**
+     * @param criteria {@link Criteria}
+     * @param ctx {@link ProviderContext}
+     * @return dynamic SQL
+     */
     public String findBy(Criteria<T> criteria, ProviderContext ctx) {
         return new SQL()
             .SELECT(selectColumns(ctx))

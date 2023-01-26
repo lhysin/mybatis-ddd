@@ -118,6 +118,13 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
             .concat("\n</foreach>");
     }
 
+    /**
+     * Wheres by criteria string [ ].
+     *
+     * @param criteria {@link Criteria}
+     * @param ctx {@link ProviderContext}
+     * @return dynamic SQL
+     */
     protected String[] wheresByCriteria(Criteria<T> criteria, ProviderContext ctx) {
         return this.columns(ctx)
             .map(field -> criteria.createWhereClause(field.getDeclaredAnnotation(Column.class)))
