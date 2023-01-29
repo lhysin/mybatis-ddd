@@ -12,16 +12,18 @@ import java.util.stream.IntStream;
 import io.lhysin.mybatis.ddd.spec.Column;
 import io.lhysin.mybatis.ddd.spec.Comparison;
 import io.lhysin.mybatis.ddd.spec.Criteria;
+import io.lhysin.mybatis.ddd.spec.NullHandler;
 import io.lhysin.mybatis.ddd.spec.WhereClause;
 
 /**
  * The type Typed criteria.
  *
- * @param <T>  the type parameter
+ * @param <T>   the type parameter
  */
 public class TypedCriteria<T> implements Criteria<T> {
 
     private final T probe;
+    private final Sort sort;
 
     /**
      * Instantiates a new Typed criteria.
@@ -29,7 +31,18 @@ public class TypedCriteria<T> implements Criteria<T> {
      * @param probe the probe
      */
     public TypedCriteria(T probe) {
+        this(probe, null);
+    }
+
+    /**
+     * Instantiates a new Typed criteria.
+     *
+     * @param probe the probe
+     * @param sort {@link Sort}
+     */
+    public TypedCriteria(T probe, Sort sort) {
         this.probe = probe;
+        this.sort = sort;
     }
 
     public List<String> createWhereClause(Column column) {
@@ -37,7 +50,10 @@ public class TypedCriteria<T> implements Criteria<T> {
             .filter(field -> field.isAnnotationPresent(WhereClause.class))
             .filter(field -> field.getDeclaredAnnotation(WhereClause.class).column().equals(column))
             .filter(field -> {
-                if(field.getDeclaredAnnotation(WhereClause.class).ignoreNullValue()) {
+                /*
+                 * if value is null, ignore where clause.
+                 */
+                if(NullHandler.IGNORE.equals(field.getDeclaredAnnotation(WhereClause.class).nullHandler())) {
                     return value(probe, field) != null;
                 } else {
                     return true;
@@ -71,23 +87,21 @@ public class TypedCriteria<T> implements Criteria<T> {
     }
 
     private String bindParameterByComparison(Comparison comparison, String fieldName) {
-        String open = "#{probe.";
-        String close = "}";
+        String open = Comparison.START_WITH_LIKE.equals(comparison) ||
+            Comparison.ANY_LIKE.equals(comparison) ? "'%'||" : "";
+        String close = Comparison.END_WITH_LIKE.equals(comparison) ||
+            Comparison.ANY_LIKE.equals(comparison) ? "||'%'" : "";
 
-        if(Comparison.START_WITH_LIKE.equals(comparison)) {
-            close = close.concat("||'%'");
-        } else if(Comparison.END_WITH_LIKE.equals(comparison)) {
-            open = "'%'||".concat(open);
-        } else if(Comparison.ANY_LIKE.equals(comparison)) {
-            open = "'%'||".concat(open);
-            close = close.concat("||'%'");
-        }
-
-        return open.concat(fieldName).concat(close);
+        return String.format("%s#{probe.%s}%s", open, fieldName, close);
     }
 
     @Override
     public T getProbe() {
         return this.probe;
+    }
+
+    @Override
+    public Sort getSort() {
+        return this.sort;
     }
 }

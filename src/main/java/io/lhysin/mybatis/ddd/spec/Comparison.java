@@ -72,9 +72,9 @@ public enum Comparison {
     /**
      * Gets operator.
      *
-     * @return the operator
+     * @return where clause
      */
     public String getOperator() {
-        return " ".concat(this.operator).concat(" ");
+        return String.format(" %s ", this.operator);
     }
 }

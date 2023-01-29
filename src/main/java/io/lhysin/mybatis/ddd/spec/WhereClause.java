@@ -23,7 +23,9 @@ public @interface WhereClause {
     Column column();
 
     /**
-     * @return ignore Null value.
+     * {@link NullHandler#INCLUDE} Include null value.
+     * {@link NullHandler#IGNORE} Ignore null value.
+     * @return {@link NullHandler}
      */
-    boolean ignoreNullValue() default true;
+    NullHandler nullHandler() default NullHandler.INCLUDE;
 }

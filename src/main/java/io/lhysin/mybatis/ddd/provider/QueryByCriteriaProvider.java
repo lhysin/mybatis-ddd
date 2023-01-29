@@ -28,6 +28,7 @@ public class QueryByCriteriaProvider<T, ID extends Serializable> extends SqlProv
             .SELECT(selectColumns(ctx))
             .FROM(tableName(ctx))
             .WHERE(wheresByCriteria(criteria, ctx))
+            .ORDER_BY(this.orders(criteria.getSort(), ctx))
             .FETCH_FIRST_ROWS_ONLY(1)
             .toString();
     }
@@ -40,6 +41,20 @@ public class QueryByCriteriaProvider<T, ID extends Serializable> extends SqlProv
     public String findBy(Criteria<T> criteria, ProviderContext ctx) {
         return new SQL()
             .SELECT(selectColumns(ctx))
+            .FROM(tableName(ctx))
+            .WHERE(wheresByCriteria(criteria, ctx))
+            .ORDER_BY(this.orders(criteria.getSort(), ctx))
+            .toString();
+    }
+
+    /**
+     * @param  criteria {@link Criteria}
+     * @param ctx {@link ProviderContext}
+     * @return dynamic SQL
+     */
+    public String countBy(Criteria<T> criteria, ProviderContext ctx) {
+        return new SQL()
+            .SELECT("count(*)")
             .FROM(tableName(ctx))
             .WHERE(wheresByCriteria(criteria, ctx))
             .toString();

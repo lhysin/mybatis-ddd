@@ -31,4 +31,11 @@ public interface QueryByCriteriaMapper<T, ID extends Serializable> extends Mappe
     @SelectProvider(type = QueryByCriteriaProvider.class)
     List<T> findBy(Criteria<?> criteria);
 
+    /**
+     * @param  criteria {@link Criteria}
+     * @return find Table count
+     */
+    @SelectProvider(type = QueryByCriteriaProvider.class)
+    long countBy(Criteria<?> criteria);
+
 }

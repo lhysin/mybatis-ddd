@@ -2,6 +2,7 @@ package io.lhysin.mybatis.ddd.spec;
 
 import java.util.List;
 
+import io.lhysin.mybatis.ddd.domain.Sort;
 import io.lhysin.mybatis.ddd.domain.TypedCriteria;
 
 /**
@@ -17,6 +18,13 @@ public interface Criteria<T> {
      * @return the probe
      */
     T getProbe();
+
+    /**
+     * Gets sort.
+     *
+     * @return the sort
+     */
+    Sort getSort();
 
     /**
      * Create where clause list.
@@ -44,5 +52,9 @@ public interface Criteria<T> {
      */
     static <T> Criteria<T> of(T object) {
         return new TypedCriteria<>(object);
+    }
+
+    static <T> Criteria<T> of(T object, Sort sort) {
+        return new TypedCriteria<>(object, sort);
     }
 }

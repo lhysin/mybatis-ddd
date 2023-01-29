@@ -2,10 +2,12 @@ package io.lhysin.mybatis.ddd.mapper;
 
 import java.io.Serializable;
 
+import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
+
 /**
- * ProviderMapper
+ * MapperProvider
  * @param <T> Table Entity
  * @param <ID> Table PK
  */
-public interface MapperProvider<T, ID extends Serializable> {
+interface MapperProvider<T, ID extends Serializable> extends ProviderMethodResolver {
 }

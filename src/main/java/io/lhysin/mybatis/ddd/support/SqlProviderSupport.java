@@ -13,9 +13,9 @@ import java.util.stream.Collectors;
 
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
+import io.lhysin.mybatis.ddd.domain.Sort;
 import io.lhysin.mybatis.ddd.spec.Column;
 import io.lhysin.mybatis.ddd.spec.Criteria;
-import io.lhysin.mybatis.ddd.spec.Pageable;
 
 /**
  * SqlProviderSupport
@@ -174,16 +174,21 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
     }
 
     /**
-     * @param pageable {@link Pageable}
+     * @param sort {@link Sort}
      * @param ctx {@link ProviderContext}
      * @return order by array
      */
-    protected String[] orders(Pageable pageable, ProviderContext ctx) {
+    protected String[] orders(Sort sort, ProviderContext ctx) {
+
+        if(sort == null) {
+            return new String[0];
+        }
+
         List<String> allColumns = this.columns(ctx)
             .map(this::columnName)
             .collect(Collectors.toList());
 
-        return pageable.getSort().getOrders().stream()
+        return sort.getOrders().stream()
             .filter(order -> allColumns.contains(order.getProperty()))
             .map(order -> order.getProperty().concat(" ").concat(order.getDirection().name()))
             .toArray(String[]::new);
