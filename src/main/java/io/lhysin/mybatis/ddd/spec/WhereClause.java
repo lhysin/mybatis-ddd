@@ -27,5 +27,5 @@ public @interface WhereClause {
      * {@link NullHandler#IGNORE} Ignore null value.
      * @return {@link NullHandler}
      */
-    NullHandler nullHandler() default NullHandler.INCLUDE;
+    NullHandler nullHandler();
 }
