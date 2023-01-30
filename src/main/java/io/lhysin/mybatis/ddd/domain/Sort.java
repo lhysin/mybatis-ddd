@@ -28,7 +28,7 @@ public class Sort {
     /**
      * create sort
      * @param direction direction
-     * @param property order column name
+     * @param property order property name (fieldName)
      * @return sort
      */
     public static Sort by(Direction direction, String property) {

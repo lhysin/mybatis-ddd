@@ -3,26 +3,59 @@ package io.lhysin.mybatis.ddd.spec;
 import java.util.List;
 
 import io.lhysin.mybatis.ddd.domain.Sort;
-import io.lhysin.mybatis.ddd.domain.TypedCriteria;
 
 /**
  * The interface Criteria.
  *
- * @param <T>   the type parameter
+ * @param <T>    the type parameter
  */
 public interface Criteria<T> {
 
     /**
-     * Gets probe.
-     *
+     * @param <T> probe type
+     * @param probe probe
+     * @return {@link Criteria}
+     */
+    static <T> Criteria<T> of(T probe) {
+        return new TypedCriteria<>(probe);
+    }
+
+    /**
+     * @param <T> probe type
+     * @param probe probe
+     * @param pageable {@link Pageable}
+     * @return {@link Criteria}
+     */
+    static <T> Criteria<T> of(T probe, Pageable pageable) {
+        return new TypedCriteria<>(probe, pageable);
+    }
+
+    /**
+     * @param <T> probe type
+     * @param probe probe
+     * @param sort {@link Sort}
+     * @return {@link Criteria}
+     */
+    static <T> Criteria<T> of(T probe, Sort sort) {
+        return new TypedCriteria<>(probe, sort);
+    }
+
+    /**
      * @return the probe
      */
     T getProbe();
 
     /**
-     * Gets sort.
+     * nullable pageable.
      *
-     * @return the sort
+     * @return {@link Pageable}
+     */
+    Pageable getPageable();
+
+    /**
+     * nullable sort.
+     *
+     * @return {@link Sort}
      */
     Sort getSort();
 
@@ -41,20 +74,5 @@ public interface Criteria<T> {
      */
     default Class<?> getProbeType() {
         return getProbe().getClass();
-    }
-
-    /**
-     * Of criteria.
-     *
-     * @param <T> probe type
-     * @param object probe
-     * @return {@link Criteria}
-     */
-    static <T> Criteria<T> of(T object) {
-        return new TypedCriteria<>(object);
-    }
-
-    static <T> Criteria<T> of(T object, Sort sort) {
-        return new TypedCriteria<>(object, sort);
     }
 }

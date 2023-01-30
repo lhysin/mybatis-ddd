@@ -14,6 +14,7 @@ import io.lhysin.mybatis.ddd.spec.Code;
 /**
  * The type Code type handler.
  *
+ * @see BaseTypeHandler
  * @param <E> the type parameter
  */
 public class CodeTypeHandler<E extends Enum<E>> extends BaseTypeHandler<Code> {

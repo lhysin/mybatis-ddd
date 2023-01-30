@@ -9,10 +9,12 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import io.lhysin.mybatis.ddd.domain.PageRequest;
 import io.lhysin.mybatis.ddd.domain.Sort;
 import io.lhysin.mybatis.ddd.dto.OrderCriteria;
 import io.lhysin.mybatis.ddd.dto.OrderInClauseCriteria;
 import io.lhysin.mybatis.ddd.dto.OrderLikeCriteria;
+import io.lhysin.mybatis.ddd.entity.Order;
 import io.lhysin.mybatis.ddd.mapper.OrderMapper;
 import io.lhysin.mybatis.ddd.spec.Criteria;
 import lombok.extern.slf4j.Slf4j;
@@ -36,14 +38,13 @@ class QueryByCriteriaTest {
         );
         orderMapper.findBy(orderCriteria);
 
-
         Exception exception = assertThrows(Exception.class, () ->
             orderMapper.findBy(
                 Criteria.of(
                     OrderInClauseCriteria.builder()
-                    .build()
+                        .build()
                 )
-        ));
+            ));
 
         log.error(exception.getMessage());
         assertTrue(exception.getMessage().contains("Not Allow"));
@@ -107,7 +108,7 @@ class QueryByCriteriaTest {
                 OrderCriteria.builder()
                     .name("x")
                     .build()
-                , Sort.by(Sort.Direction.DESC, "ORD_NO")
+                , Sort.by(Sort.Direction.DESC, "ordNo")
             )
         );
     }
@@ -124,5 +125,20 @@ class QueryByCriteriaTest {
 
         log.debug(String.format("test_QueryByCriteria_count : %s", count));
         assertTrue(count > 0);
+    }
+
+    @Test
+    void test_QueryByCriteria_findBy_with_Pageable() {
+        List<Order> orderList = orderMapper.findBy(
+            Criteria.of(
+                OrderCriteria.builder()
+                    .name("x")
+                    .build(),
+                PageRequest.of(1, 10)
+            )
+        );
+
+        log.debug(String.format("test_QueryByCriteria_findAllBy : %s", orderList));
+        assertNotNull(orderList);
     }
 }

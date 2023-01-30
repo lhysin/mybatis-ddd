@@ -51,12 +51,14 @@ public enum Comparison {
 
     /**
      * ADN field IN (value)
+     * <br>
      * ADN field IN (value1, value2, value3 ...)
      */
     IN("IN"),
 
     /**
      * ADN field NOT_IN (value)
+     * <br>
      * ADN field NOT_IN (value1, value2, value3 ...)
      */
     NOT_IN("NOT IN"),

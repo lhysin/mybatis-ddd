@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
@@ -19,6 +20,8 @@ import io.lhysin.mybatis.ddd.spec.Criteria;
 
 /**
  * SqlProviderSupport
+ *
+ * @see ProviderContextSupport
  * @param <T> Table Entity
  * @param <ID> Table PK
  */
@@ -119,13 +122,11 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
     }
 
     /**
-     * Wheres by criteria string [ ].
-     *
      * @param criteria {@link Criteria}
      * @param ctx {@link ProviderContext}
      * @return dynamic SQL
      */
-    protected String[] wheresByCriteria(Criteria<T> criteria, ProviderContext ctx) {
+    protected String[] wheresByCriteria(Criteria<?> criteria, ProviderContext ctx) {
         return this.columns(ctx)
             .map(field -> criteria.createWhereClause(field.getDeclaredAnnotation(Column.class)))
             .flatMap(Collection::stream)
@@ -180,17 +181,24 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
      */
     protected String[] orders(Sort sort, ProviderContext ctx) {
 
-        if(sort == null) {
+        if (sort == null) {
             return new String[0];
         }
 
-        List<String> allColumns = this.columns(ctx)
-            .map(this::columnName)
-            .collect(Collectors.toList());
+        Map<String, String> fieldAndColumn = this.columns(ctx)
+            .collect(Collectors.toMap(
+                Field::getName,
+                field -> field.getAnnotation(Column.class).name()
+                )
+            );
 
         return sort.getOrders().stream()
-            .filter(order -> allColumns.contains(order.getProperty()))
-            .map(order -> order.getProperty().concat(" ").concat(order.getDirection().name()))
+            .filter(order -> fieldAndColumn.containsKey(order.getProperty()))
+            /*
+             * e.g.
+             * ORD_NO DESC
+             */
+            .map(order -> String.format("%s %s", fieldAndColumn.get(order.getProperty()), order.getDirection()))
             .toArray(String[]::new);
     }
 

@@ -16,6 +16,7 @@ import io.lhysin.mybatis.ddd.provider.CrudSqlProvider;
  */
 @Repository
 public interface OrderMapper extends CrudMapper<Order, Order.PK>,
+    PagingAndSortingMapper<Order, Order.PK>,
     QueryByCriteriaMapper<Order, Order.PK> {
 
     @Override

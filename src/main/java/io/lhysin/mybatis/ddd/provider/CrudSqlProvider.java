@@ -3,18 +3,18 @@ package io.lhysin.mybatis.ddd.provider;
 import java.io.Serializable;
 
 import org.apache.ibatis.builder.annotation.ProviderContext;
-import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 import org.apache.ibatis.jdbc.SQL;
 
 import io.lhysin.mybatis.ddd.support.SqlProviderSupport;
 
 /**
  * CrudSqlProvider
+ *
+ * @see SqlProviderSupport
  * @param <T>  Table Entity
  * @param <ID>  Table PK
  */
-public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupport<T, ID>
-    implements ProviderMethodResolver {
+public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupport<T, ID> {
 
     /**
      * Not Implemented.

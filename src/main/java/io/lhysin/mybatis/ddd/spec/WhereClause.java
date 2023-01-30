@@ -7,6 +7,10 @@ import java.lang.annotation.Target;
 
 /**
  * The interface Where clause.
+ *
+ * @see Comparison
+ * @see Column
+ * @see NullHandler
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)

@@ -4,7 +4,7 @@ plugins {
 }
 
 group = 'io.github.lhysin'
-version = '1.1.1-REALESE'
+version = '1.1.2-REALESE'
 description = 'Mybatis Domain Driven Design'
 sourceCompatibility = JavaVersion.VERSION_1_8
 

@@ -12,10 +12,11 @@ import io.lhysin.mybatis.ddd.spec.Criteria;
 /**
  * QueryByCriteriaMapper
  *
+ * @see QueryByCriteriaProvider
  * @param <T> Table Entity
  * @param <ID> Table PK
  */
-public interface QueryByCriteriaMapper<T, ID extends Serializable> extends MapperProvider<T, ID> {
+public interface QueryByCriteriaMapper<T, ID extends Serializable> {
 
     /**
      * @param criteria {@link Criteria}

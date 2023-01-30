@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.ibatis.builder.annotation.ProviderContext;
+import org.apache.ibatis.builder.annotation.ProviderMethodResolver;
 
 import io.lhysin.mybatis.ddd.spec.Column;
 import io.lhysin.mybatis.ddd.spec.Id;
@@ -17,10 +18,12 @@ import io.lhysin.mybatis.ddd.spec.Table;
 
 /**
  * ProviderContextSupport
+ *
+ * @see ProviderMethodResolver
  * @param <T>  Table Entity
  * @param <ID>  Table PK
  */
-public abstract class ProviderContextSupport<T, ID extends Serializable> {
+public abstract class ProviderContextSupport<T, ID extends Serializable> implements ProviderMethodResolver {
 
     /**
      * Domain type class.
@@ -49,11 +52,9 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
         Class<?> domainType = this.domainType(ctx);
         Table tableEnum = domainType.getAnnotation(Table.class);
         return Optional.ofNullable(tableEnum)
-            .map(it -> {
-                return Optional.ofNullable(it.schema())
-                    .map(schema -> schema.concat(".").concat(it.name()))
-                    .orElse(it.name());
-            })
+            .map(it -> Optional.ofNullable(it.schema())
+                .map(schema -> String.format("%s.%s", schema, it.name()))
+                .orElse(it.name()))
             .orElseThrow(() -> new IllegalArgumentException(Table.class.getName().concat(" Not Exists."))
             );
     }
@@ -103,7 +104,7 @@ public abstract class ProviderContextSupport<T, ID extends Serializable> {
     /**
      * composite
      * @param ctx {@link ProviderContext}
-     * @return boolean boolean
+     * @return boolean
      */
     protected boolean isCompositeKey(ProviderContext ctx) {
         long idColumnCount = this.onlyIdColumns(ctx).count();

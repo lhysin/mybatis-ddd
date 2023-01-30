@@ -14,10 +14,12 @@ import io.lhysin.mybatis.ddd.provider.CrudSqlProvider;
 
 /**
  * CrudMapper
+ *
+ * @see CrudSqlProvider
  * @param <T> Table Entity
  * @param <ID> Table PK
  */
-public interface CrudMapper<T, ID extends Serializable> extends MapperProvider<T, ID> {
+public interface CrudMapper<T, ID extends Serializable> {
 
     /**
      * @param entity Table Entity

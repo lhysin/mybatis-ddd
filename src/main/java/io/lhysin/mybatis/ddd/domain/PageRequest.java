@@ -4,6 +4,8 @@ import io.lhysin.mybatis.ddd.spec.Pageable;
 
 /**
  * PageRequest
+ *
+ * @see Pageable
  */
 public class PageRequest implements Pageable {
 
