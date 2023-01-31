@@ -41,7 +41,7 @@ public interface Criteria<T> {
     }
 
     /**
-     * @return the probe
+     * @return the probe {@link T}
      */
     T getProbe();
 
@@ -62,15 +62,15 @@ public interface Criteria<T> {
     /**
      * Create where clause list.
      *
-     * @param column the column
-     * @return the list
+     * @param column the column {@link Column}
+     * @return the list {@link List}&lt;{@link String}&gt;
      */
     List<String> createWhereClause(Column column);
 
     /**
      * Gets probe type.
      *
-     * @return the probe type
+     * @return the probe type {@link Class}&lt;{@link T}&gt;
      */
     default Class<?> getProbeType() {
         return getProbe().getClass();

@@ -13,17 +13,17 @@ import java.lang.annotation.Target;
 public @interface Column {
 
     /**
-     * @return Column Name
+     * @return Column Name {@link String}
      */
     String name();
 
     /**
-     * @return available insert column
+     * @return available insert column {@link Boolean}
      */
     boolean insertable() default true;
 
     /**
-     * @return available update column
+     * @return available update column {@link Boolean}
      */
     boolean updatable() default true;
 }

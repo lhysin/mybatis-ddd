@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import org.apache.ibatis.builder.annotation.ProviderContext;
 import org.apache.ibatis.jdbc.SQL;
+import org.apache.ibatis.logging.Log;
+import org.apache.ibatis.logging.LogFactory;
 
 import io.lhysin.mybatis.ddd.support.SqlProviderSupport;
 
@@ -16,150 +18,207 @@ import io.lhysin.mybatis.ddd.support.SqlProviderSupport;
  */
 public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupport<T, ID> {
 
+    private final Log log = LogFactory.getLog(this.getClass());
+
     /**
      * Not Implemented.
+     *
      * @param ctx {@link ProviderContext}
-     * @return dynamic SQL
+     * @return dynamic SQL {@link String}
      */
     public String save(ProviderContext ctx) {
         throw new UnsupportedOperationException("CrudSqlProvider.save() Not Implemented.");
     }
 
     /**
-     * Find by id string.
+     * Find by id.
      *
      * @param ctx {@link ProviderContext}
-     * @return dynamic SQL
+     * @return dynamic SQL {@link String}
      */
     public String findById(ProviderContext ctx) {
-        return new SQL()
+        String sql = new SQL()
             .SELECT(this.selectColumns(ctx))
             .FROM(this.tableName(ctx))
             .WHERE(this.wheresById(ctx))
             .toString();
+
+        if(log.isTraceEnabled()) {
+            log.trace("created sql : " + sql);
+        }
+
+        return sql;
     }
 
     /**
-     * Find all by id string.
+     * Find all by ids.
      *
      * @param ctx {@link ProviderContext}
-     * @return dynamic SQL
+     * @return dynamic SQL {@link String}
      */
     public String findAllById(ProviderContext ctx) {
-        return "<script>".concat(
+        String sql = "<script>".concat(
             new SQL().SELECT(this.selectColumns(ctx))
                 .FROM(this.tableName(ctx))
                 .WHERE(this.whereByIds(ctx))
                 .toString()
         ).concat("</script>");
+
+        if(log.isTraceEnabled()) {
+            log.trace("created sql : " + sql);
+        }
+
+        return sql;
     }
 
     /**
-     * Count string.
+     * Count.
      *
      * @param ctx {@link ProviderContext}
-     * @return dynamic SQL
+     * @return dynamic SQL {@link String}
      */
     public String count(ProviderContext ctx) {
-        return new SQL()
+        String sql = new SQL()
             .SELECT("count(*)")
             .FROM(this.tableName(ctx))
             .toString();
+
+        if(log.isTraceEnabled()) {
+            log.trace("created sql : " + sql);
+        }
+
+        return sql;
     }
 
     /**
-     * Delete by id string.
+     * Delete by id.
      *
      * @param ctx {@link ProviderContext}
-     * @return dynamic SQL
+     * @return dynamic SQL {@link String}
      */
     public String deleteById(ProviderContext ctx) {
-        return new SQL()
+        String sql = new SQL()
             .DELETE_FROM(this.tableName(ctx))
             .WHERE(this.wheresById(ctx))
             .toString();
+
+        if(log.isTraceEnabled()) {
+            log.trace("created sql : " + sql);
+        }
+
+        return sql;
     }
 
     /**
-     * Delete string.
+     * Delete by entity.
      *
      * @param ctx {@link ProviderContext}
-     * @return dynamic SQL
+     * @return dynamic SQL {@link String}
      */
     public String delete(ProviderContext ctx) {
-        return new SQL()
+        String sql = new SQL()
             .DELETE_FROM(this.tableName(ctx))
             .WHERE(this.wheresById(ctx))
             .toString();
+
+        if(log.isTraceEnabled()) {
+            log.trace("created sql : " + sql);
+        }
+
+        return sql;
     }
 
     /**
-     * Delete all by id string.
+     * Delete all by ids.
      *
      * @param ctx {@link ProviderContext}
-     * @return dynamic SQL
+     * @return dynamic SQL {@link String}
      */
     public String deleteAllById(ProviderContext ctx) {
-        return "<script>".concat(
+        String sql = "<script>".concat(
             new SQL()
                 .DELETE_FROM(this.tableName(ctx))
                 .WHERE(this.whereByIds(ctx))
                 .toString()
         ).concat("</script>");
+
+        if(log.isTraceEnabled()) {
+            log.trace("created sql : " + sql);
+        }
+
+        return sql;
     }
 
     /**
-     * Create string.
+     * Insert by entity.
      *
      * @param domin the domin
      * @param ctx {@link ProviderContext}
-     * @return dynamic SQL
+     * @return dynamic SQL {@link String}
      */
     public String create(T domin, ProviderContext ctx) {
-        return new SQL()
+        String sql = new SQL()
             .INSERT_INTO(this.tableName(ctx))
             .INTO_COLUMNS(this.insertIntoColumns(ctx))
             .INTO_VALUES(this.intoValues(ctx))
             .toString();
+
+        if(log.isTraceEnabled()) {
+            log.trace("created sql : " + sql);
+        }
+
+        return sql;
     }
 
     /**
-     * Update string.
+     * Update by entity.
      *
      * @param ctx {@link ProviderContext}
-     * @return dynamic SQL
+     * @return dynamic SQL {@link String}
      */
     public String update(ProviderContext ctx) {
-        return new SQL()
+        String sql = new SQL()
             .UPDATE(this.tableName(ctx))
             .SET(this.updateColumns(ctx))
             .WHERE(this.wheresById(ctx))
             .toString();
+
+        if(log.isTraceEnabled()) {
+            log.trace("created sql : " + sql);
+        }
+
+        return sql;
     }
 
     /**
-     * Dynamic update string.
+     * Dynamic Update by entity.
      *
      * @param domain Table entity
      * @param ctx {@link ProviderContext}
-     * @return dynamic SQL
+     * @return dynamic SQL {@link String}
      */
     public String dynamicUpdate(T domain, ProviderContext ctx) {
-        return new SQL()
+        String sql = new SQL()
             .UPDATE(this.tableName(ctx))
             .SET(this.dynamicUpdateColumns(domain, ctx))
             .WHERE(this.wheresById(ctx))
             .toString();
+
+        if(log.isTraceEnabled()) {
+            log.trace("created sql : " + sql);
+        }
+
+        return sql;
     }
 
     /**
-     * Create all string.
+     * Bulk Insert by entities
      *
      * @param ctx {@link ProviderContext}
-     * @return dynamic SQL
+     * @return dynamic SQL {@link String}
      */
     public String createAll(ProviderContext ctx) {
-        return "<script>".concat(
+        String sql = "<script>".concat(
                 new SQL()
                     .INSERT_INTO(this.tableName(ctx))
                     .INTO_COLUMNS(this.insertIntoColumns(ctx))
@@ -167,5 +226,11 @@ public class CrudSqlProvider<T, ID extends Serializable> extends SqlProviderSupp
             ).concat(" VALUES ")
             .concat(this.bulkIntoValues(ctx))
             .concat("</script>");
+
+        if(log.isTraceEnabled()) {
+            log.trace("created sql : " + sql);
+        }
+
+        return sql;
     }
 }

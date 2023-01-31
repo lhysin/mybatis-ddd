@@ -37,8 +37,8 @@ public class Sort {
 
     /**
      * create sort Direction default ASC
-     * @param property order column name
-     * @return sort
+     * @param property order column name {@link String}
+     * @return sort {@link Sort}
      */
     public static Sort by(String property) {
         return Sort.by(Direction.ASC, property);
@@ -46,9 +46,9 @@ public class Sort {
 
     /**
      * create sort
-     * @param direction direction
-     * @param property order column name
-     * @return sort
+     * @param direction direction {@link Direction}
+     * @param property order column name {@link String}
+     * @return sort {@link Sort}
      */
     public Sort and(Direction direction, String property) {
         this.getOrders().add(new Order(direction, property));
@@ -57,8 +57,8 @@ public class Sort {
 
     /**
      * create sort Direction default ASC
-     * @param property order column name
-     * @return sort
+     * @param property order column name {@link String}
+     * @return sort {@link Sort}
      */
     public Sort and(String property) {
         this.getOrders().add(new Order(Direction.ASC, property));
@@ -66,7 +66,7 @@ public class Sort {
     }
 
     /**
-     * @return orders
+     * @return orders {@link List}&lt;{@link Order}&gt;
      */
     public List<Order> getOrders() {
         return this.orders;
@@ -103,8 +103,8 @@ public class Sort {
         private final String property;
 
         /**
-         * @param direction direction
-         * @param property property
+         * @param direction direction {@link Direction}
+         * @param property property {@link String}
          */
         public Order(Direction direction, String property) {
             this.direction = direction;
@@ -112,14 +112,14 @@ public class Sort {
         }
 
         /**
-         * @return direction
+         * @return direction {@link Direction}
          */
         public Direction getDirection() {
             return this.direction;
         }
 
         /**
-         * @return property
+         * @return property {@link String}
          */
         public String getProperty() {
             return this.property;

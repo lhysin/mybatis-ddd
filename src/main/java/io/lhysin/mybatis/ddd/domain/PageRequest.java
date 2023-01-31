@@ -27,7 +27,7 @@ public class PageRequest implements Pageable {
     /**
      * @param page page
      * @param size size
-     * @param sort sort
+     * @param sort sort {@link Sort}
      */
     public PageRequest(int page, int size, Sort sort) {
         this.page = page;
@@ -39,7 +39,7 @@ public class PageRequest implements Pageable {
      * create PageRequest
      * @param page page
      * @param size size
-     * @return PageRequest
+     * @return PageRequest {@link PageRequest}
      */
     public static PageRequest of(int page, int size) {
         return PageRequest.of(page, size, null);
@@ -50,14 +50,14 @@ public class PageRequest implements Pageable {
      * @param page page
      * @param size size
      * @param sort sort
-     * @return PageRequest
+     * @return PageRequest {@link PageRequest}
      */
     public static PageRequest of(int page, int size, Sort sort) {
         return new PageRequest(page, size, sort);
     }
 
     /**
-     * @return offset
+     * @return offset {@link Long}
      */
     @Override
     public long getOffset() {
@@ -65,7 +65,7 @@ public class PageRequest implements Pageable {
     }
 
     /**
-     * @return limit
+     * @return limit {@link Integer}
      */
     @Override
     public int getLimit() {
@@ -73,7 +73,7 @@ public class PageRequest implements Pageable {
     }
 
     /**
-     * @return sort
+     * @return sort {@link Sort}
      */
     @Override
     public Sort getSort() {

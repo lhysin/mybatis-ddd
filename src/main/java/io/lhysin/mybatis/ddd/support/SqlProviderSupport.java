@@ -29,7 +29,7 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
 
     /**
      * @param ctx {@link ProviderContext}
-     * @return select column array
+     * @return select column array {@link String[]}
      */
     protected String[] selectColumns(ProviderContext ctx) {
         return this.columns(ctx)
@@ -39,7 +39,7 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
 
     /**
      * @param ctx {@link ProviderContext}
-     * @return insert into column array
+     * @return insert into column array {@link String[]}
      */
     protected String[] insertIntoColumns(ProviderContext ctx) {
         return this.columns(ctx)
@@ -50,25 +50,25 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
 
     /**
      * @param ctx {@link ProviderContext}
-     * @return update column array
+     * @return update column array {@link String[]}
      */
     protected String[] updateColumns(ProviderContext ctx) {
         return this.conditionalUpdateColumns(null, ctx);
     }
 
     /**
-     * @param domain  domain
+     * @param domain domain {@link T}
      * @param ctx {@link ProviderContext}
-     * @return dynamic update column array
+     * @return dynamic update column array {@link String[]}
      */
     protected String[] dynamicUpdateColumns(T domain, ProviderContext ctx) {
         return this.conditionalUpdateColumns(domain, ctx);
     }
 
     /**
-     * @param domain  domain
+     * @param domain domain {@link T}
      * @param ctx {@link ProviderContext}
-     * @return dynamic or update column array
+     * @return dynamic or update column array {@link String[]}
      */
     private String[] conditionalUpdateColumns(T domain, ProviderContext ctx) {
 
@@ -92,7 +92,7 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
 
     /**
      * @param ctx {@link ProviderContext}
-     * @return into value bind value array
+     * @return into value bind value array {@link String[]}
      */
     protected String[] intoValues(ProviderContext ctx) {
         return this.columns(ctx)
@@ -103,7 +103,7 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
 
     /**
      * @param ctx {@link ProviderContext}
-     * @return foreach into value bind value array
+     * @return foreach into value bind value array {@link String}
      */
     protected String bulkIntoValues(ProviderContext ctx) {
         String key = "entity";
@@ -124,7 +124,7 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
     /**
      * @param criteria {@link Criteria}
      * @param ctx {@link ProviderContext}
-     * @return dynamic SQL
+     * @return where clause sql array {@link String[]}
      */
     protected String[] wheresByCriteria(Criteria<?> criteria, ProviderContext ctx) {
         return this.columns(ctx)
@@ -139,7 +139,7 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
 
     /**
      * @param ctx {@link ProviderContext}
-     * @return where column and bind value array
+     * @return where column and bind value array {@link String[]}
      */
     protected String[] wheresById(ProviderContext ctx) {
         return this.onlyIdColumns(ctx)
@@ -149,7 +149,7 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
 
     /**
      * @param ctx {@link ProviderContext}
-     * @return foreach where column and bind value array
+     * @return foreach where column and bind value array {@link String}
      */
     protected String whereByIds(ProviderContext ctx) {
 
@@ -177,7 +177,7 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
     /**
      * @param sort {@link Sort}
      * @param ctx {@link ProviderContext}
-     * @return order by array
+     * @return order by array {@link String[]}
      */
     protected String[] orders(Sort sort, ProviderContext ctx) {
 

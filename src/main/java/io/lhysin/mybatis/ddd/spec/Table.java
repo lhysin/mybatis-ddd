@@ -13,16 +13,16 @@ import java.lang.annotation.Target;
 public @interface Table {
 
     /**
-     * Name string.
+     * Get Table Name.
      *
-     * @return the string
+     * @return table name {@link String}
      */
     String name();
 
     /**
-     * Schema string.
+     * Get Table Schema.
      *
-     * @return the string
+     * @return table schema {@link String}
      */
     String schema() default "";
 }

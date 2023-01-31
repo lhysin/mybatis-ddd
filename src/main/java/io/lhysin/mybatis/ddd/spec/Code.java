@@ -9,7 +9,7 @@ public interface Code {
     /**
      * Gets code.
      *
-     * @return the code
+     * @return code string. {@link String}
      */
     String getCode();
 }

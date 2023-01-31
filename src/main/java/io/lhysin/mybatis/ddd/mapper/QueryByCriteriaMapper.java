@@ -20,21 +20,21 @@ public interface QueryByCriteriaMapper<T, ID extends Serializable> {
 
     /**
      * @param criteria {@link Criteria}
-     * @return find Table Entity
+     * @return find Table Entity {@link Optional}&lt;{@link T}&gt;}
      */
     @SelectProvider(type = QueryByCriteriaProvider.class)
     Optional<T> findOne(Criteria<?> criteria);
 
     /**
      * @param criteria {@link Criteria}
-     * @return find Table Entity
+     * @return find Table Entity {@link List}&lt;{@link T}&gt;
      */
     @SelectProvider(type = QueryByCriteriaProvider.class)
     List<T> findBy(Criteria<?> criteria);
 
     /**
      * @param  criteria {@link Criteria}
-     * @return find Table count
+     * @return find Table count {@link Long}
      */
     @SelectProvider(type = QueryByCriteriaProvider.class)
     long countBy(Criteria<?> criteria);

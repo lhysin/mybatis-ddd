@@ -74,7 +74,7 @@ public enum Comparison {
     /**
      * Gets operator.
      *
-     * @return where clause
+     * @return where clause {@link String}
      */
     public String getOperator() {
         return String.format(" %s ", this.operator);

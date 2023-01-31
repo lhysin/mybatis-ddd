@@ -41,7 +41,7 @@ public @interface WhereClause {
      *     'AND ORD_SEQ = null'
      * }
      * </pre>
-     * @return optional
+     * @return optional {@link Boolean}
      */
     boolean optional() default false;
 }

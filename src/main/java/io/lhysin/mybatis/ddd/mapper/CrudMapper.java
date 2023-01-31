@@ -22,80 +22,80 @@ import io.lhysin.mybatis.ddd.provider.CrudSqlProvider;
 public interface CrudMapper<T, ID extends Serializable> {
 
     /**
-     * @param entity Table Entity
-     * @return save Count
+     * @param entity Table Entity {@link T}
+     * @return save Count {@link Integer}
      */
     @InsertProvider(type = CrudSqlProvider.class)
     int save(T entity);
 
     /**
-     * @param id Table PK
-     * @return find Table Entity
+     * @param id Table PK {@link ID}
+     * @return find Table Entity {@link Optional}&lt;{@link T}&gt;}
      */
     @SelectProvider(type = CrudSqlProvider.class)
     Optional<T> findById(ID id);
 
     /**
-     * @param ids Table PKs
-     * @return find Table Entities
+     * @param ids Table PKs {@link List}&lt;{@link ID}&gt;
+     * @return find Table Entities {@link List}&lt;{@link T}&gt;
      */
     @SelectProvider(type = CrudSqlProvider.class)
     List<T> findAllById(@Param("ids") Iterable<ID> ids);
 
     /**
-     * @return find Table count
+     * @return find Table count {@link Long}
      */
     @SelectProvider(type = CrudSqlProvider.class)
     long count();
 
     /**
-     * @param id Table PK
-     * @return delete count
+     * @param id Table PK {@link ID}
+     * @return delete count {@link Integer}
      */
     @DeleteProvider(type = CrudSqlProvider.class)
     int deleteById(ID id);
 
     /**
-     * @param entity Table entity
-     * @return delete count
+     * @param entity Table entity {@link T}
+     * @return delete count {@link Integer}
      */
     @DeleteProvider(type = CrudSqlProvider.class)
     int delete(T entity);
 
     /**
-     * @param ids Table entities
-     * @return delete count
+     * @param ids Table PKs {@link List}&lt;{@link ID}&gt;
+     * @return delete count {@link Integer}
      */
     @DeleteProvider(type = CrudSqlProvider.class)
     int deleteAllById(@Param("ids") Iterable<ID> ids);
 
     /**
-     * @param entity Table entity
-     * @return create count
+     * @param entity Table entity {@link T}
+     * @return create count {@link Integer}
      */
     @InsertProvider(type = CrudSqlProvider.class)
     int create(T entity);
 
     /**
      * update all column
-     * @param entity Table entity
-     * @return update count
+     * @param entity Table entity {@link T}
+     * @return update count {@link Integer}
      */
     @UpdateProvider(type = CrudSqlProvider.class)
     int update(T entity);
 
     /**
      * update nonnull column
-     * @param entity Table entity
-     * @return update count
+     * @param entity Table entity {@link T}
+     * @return update count {@link Integer}
      */
     @UpdateProvider(type = CrudSqlProvider.class)
     int dynamicUpdate(T entity);
 
     /**
      * bulk insert
-     * @param entities Table entities
-     * @return create count
+     * @param entities Table entities {@link List}&lt;{@link T}&gt;
+     * @return create count {@link Integer}
      */
     @InsertProvider(type = CrudSqlProvider.class)
     int createAll(@Param("entities") Iterable<T> entities);

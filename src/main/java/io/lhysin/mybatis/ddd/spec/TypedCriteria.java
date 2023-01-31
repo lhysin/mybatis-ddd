@@ -26,14 +26,14 @@ class TypedCriteria<T> implements Criteria<T> {
     /**
      * Instantiates a new Typed criteria.
      *
-     * @param probe the probe
+     * @param probe the probe {@link T}
      */
     public TypedCriteria(T probe) {
         this(probe, (Pageable)null);
     }
 
     /**
-     * @param probe the probe
+     * @param probe the probe {@link T}
      * @param pageable {@link Pageable}
      */
     public TypedCriteria(T probe, Pageable pageable) {
@@ -43,7 +43,7 @@ class TypedCriteria<T> implements Criteria<T> {
     }
 
     /**
-     * @param probe the probe
+     * @param probe the probe {@link T}
      * @param sort {@link Sort}
      */
     public TypedCriteria(T probe, Sort sort) {
