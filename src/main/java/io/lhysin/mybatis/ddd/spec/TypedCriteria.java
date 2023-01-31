@@ -60,7 +60,7 @@ class TypedCriteria<T> implements Criteria<T> {
                 /*
                  * if value is null, ignore where clause.
                  */
-                if (NullHandler.IGNORE.equals(field.getDeclaredAnnotation(WhereClause.class).nullHandler())) {
+                if (field.getDeclaredAnnotation(WhereClause.class).optional()) {
                     return value(probe, field) != null;
                 } else {
                     return true;

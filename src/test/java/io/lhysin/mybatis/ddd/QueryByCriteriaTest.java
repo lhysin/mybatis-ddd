@@ -11,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import io.lhysin.mybatis.ddd.domain.PageRequest;
 import io.lhysin.mybatis.ddd.domain.Sort;
+import io.lhysin.mybatis.ddd.dto.NotOptionalOrderCriteria;
 import io.lhysin.mybatis.ddd.dto.OrderCriteria;
 import io.lhysin.mybatis.ddd.dto.OrderInClauseCriteria;
 import io.lhysin.mybatis.ddd.dto.OrderLikeCriteria;
@@ -138,7 +139,21 @@ class QueryByCriteriaTest {
             )
         );
 
-        log.debug(String.format("test_QueryByCriteria_findAllBy : %s", orderList));
+        log.debug(String.format("test_QueryByCriteria_findBy_with_Pageable : %s", orderList));
+        assertNotNull(orderList);
+    }
+
+    @Test
+    void test_QueryByCriteria_findBy_with_Not_Optional_Criteria() {
+        List<Order> orderList = orderMapper.findBy(
+            Criteria.of(
+                NotOptionalOrderCriteria.builder()
+                    .build(),
+                PageRequest.of(1, 10)
+            )
+        );
+
+        log.debug(String.format("test_QueryByCriteria_findBy_with_Not_Optional_Criteria : %s", orderList));
         assertNotNull(orderList);
     }
 }

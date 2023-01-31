@@ -10,7 +10,6 @@ import java.lang.annotation.Target;
  *
  * @see Comparison
  * @see Column
- * @see NullHandler
  */
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
@@ -27,9 +26,22 @@ public @interface WhereClause {
     Column column();
 
     /**
-     * {@link NullHandler#INCLUDE} Include null value.
-     * {@link NullHandler#IGNORE} Ignore null value.
-     * @return {@link NullHandler}
+     * <pre>
+     * // column="ORD_NO", optional=true, Comparison.EQUAL
+     * String ordNo = null;
+     * // column="ORD_SEQ", optional=false, Comparison.EQUAL
+     * Integer ordSeq = null;
+     *
+     * if (optional == true) {
+     *     'AND ORD_SEQ = null'
+     * }
+     *
+     * if (optional == false) {
+     *     'AND ORD_NO = null'
+     *     'AND ORD_SEQ = null'
+     * }
+     * </pre>
+     * @return optional
      */
-    NullHandler nullHandler();
+    boolean optional() default false;
 }
