@@ -8,11 +8,11 @@ import java.lang.reflect.Field;
 public class ReflectionSupport {
 
     /**
-     * Value object.
+     * Value of target Object by Field
      *
-     * @param obj target
-     * @param field target field
-     * @return target value
+     * @param obj target {@link Object}
+     * @param field field {@link Field}
+     * @return target value {@link Object}
      */
     public static Object value(Object obj, Field field) {
         try {
@@ -25,3 +25,4 @@ public class ReflectionSupport {
         }
     }
 }
+

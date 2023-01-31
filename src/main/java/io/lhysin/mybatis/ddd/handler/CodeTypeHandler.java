@@ -14,6 +14,7 @@ import io.lhysin.mybatis.ddd.spec.Code;
 /**
  * The type Code type handler.
  *
+ * @see BaseTypeHandler
  * @param <E> the type parameter
  */
 public class CodeTypeHandler<E extends Enum<E>> extends BaseTypeHandler<Code> {
@@ -23,7 +24,7 @@ public class CodeTypeHandler<E extends Enum<E>> extends BaseTypeHandler<Code> {
     /**
      * Instantiates a new Code type handler.
      *
-     * @param type the type
+     * @param type the type {@link Class}&lt;{@link E}&gt;
      */
     public CodeTypeHandler(Class<E> type) {
         this.type = type;
@@ -55,8 +56,8 @@ public class CodeTypeHandler<E extends Enum<E>> extends BaseTypeHandler<Code> {
 
     /**
      * String to Enum implement Code
-     * @param str code String
-     * @return Code
+     * @param str code String {@link String}
+     * @return Code {@link Code}
      */
     private Code getCode(String str) {
         return Arrays.stream(type.getEnumConstants())

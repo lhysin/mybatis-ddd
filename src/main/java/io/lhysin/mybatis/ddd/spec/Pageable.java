@@ -18,7 +18,7 @@ public interface Pageable {
     int getLimit();
 
     /**
-     * @return sort
+     * @return sort {@link Sort}
      */
     Sort getSort();
 }

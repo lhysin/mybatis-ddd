@@ -4,20 +4,24 @@ import static io.lhysin.mybatis.ddd.support.ReflectionSupport.*;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
-import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.apache.ibatis.builder.annotation.ProviderContext;
 
+import io.lhysin.mybatis.ddd.domain.Sort;
 import io.lhysin.mybatis.ddd.spec.Column;
-import io.lhysin.mybatis.ddd.spec.Example;
-import io.lhysin.mybatis.ddd.spec.Pageable;
+import io.lhysin.mybatis.ddd.spec.Criteria;
 
 /**
  * SqlProviderSupport
+ *
+ * @see ProviderContextSupport
  * @param <T> Table Entity
  * @param <ID> Table PK
  */
@@ -25,7 +29,7 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
 
     /**
      * @param ctx {@link ProviderContext}
-     * @return select column array
+     * @return select column array {@link String[]}
      */
     protected String[] selectColumns(ProviderContext ctx) {
         return this.columns(ctx)
@@ -35,7 +39,7 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
 
     /**
      * @param ctx {@link ProviderContext}
-     * @return insert into column array
+     * @return insert into column array {@link String[]}
      */
     protected String[] insertIntoColumns(ProviderContext ctx) {
         return this.columns(ctx)
@@ -46,25 +50,25 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
 
     /**
      * @param ctx {@link ProviderContext}
-     * @return update column array
+     * @return update column array {@link String[]}
      */
     protected String[] updateColumns(ProviderContext ctx) {
         return this.conditionalUpdateColumns(null, ctx);
     }
 
     /**
-     * @param domain  domain
+     * @param domain domain {@link T}
      * @param ctx {@link ProviderContext}
-     * @return dynamic update column array
+     * @return dynamic update column array {@link String[]}
      */
     protected String[] dynamicUpdateColumns(T domain, ProviderContext ctx) {
         return this.conditionalUpdateColumns(domain, ctx);
     }
 
     /**
-     * @param domain  domain
+     * @param domain domain {@link T}
      * @param ctx {@link ProviderContext}
-     * @return dynamic or update column array
+     * @return dynamic or update column array {@link String[]}
      */
     private String[] conditionalUpdateColumns(T domain, ProviderContext ctx) {
 
@@ -88,7 +92,7 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
 
     /**
      * @param ctx {@link ProviderContext}
-     * @return into value bind value array
+     * @return into value bind value array {@link String[]}
      */
     protected String[] intoValues(ProviderContext ctx) {
         return this.columns(ctx)
@@ -99,7 +103,7 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
 
     /**
      * @param ctx {@link ProviderContext}
-     * @return foreach into value bind value array
+     * @return foreach into value bind value array {@link String}
      */
     protected String bulkIntoValues(ProviderContext ctx) {
         String key = "entity";
@@ -118,42 +122,24 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
     }
 
     /**
-     * create where notnull field value.
-     *
-     * @param example the example
+     * @param criteria {@link Criteria}
      * @param ctx {@link ProviderContext}
-     * @return where column and bind value array
+     * @return where clause sql array {@link String[]}
      */
-    protected String[] wheresByExample(Example<T> example, ProviderContext ctx) {
-
-        T probe = example.getProbe();
-        Class<?> probeType = example.getProbeType();
-
-        List<String> fieldValues = Arrays.stream(probeType.getDeclaredFields())
-            .filter(field -> field.isAnnotationPresent(Column.class))
-            .filter(field -> {
-                if (example.isIgnoreNullValues()) {
-                    return value(probe, field) != null;
-                } else {
-                    return true;
-                }
-            })
-            .map(Field::getName)
-            .collect(Collectors.toList());
-
-        if (fieldValues.isEmpty()) {
-            throw new IllegalArgumentException("Not Exists Example Value.");
-        }
-
+    protected String[] wheresByCriteria(Criteria<?> criteria, ProviderContext ctx) {
         return this.columns(ctx)
-            .filter(field -> fieldValues.contains(field.getName()))
-            .map(field -> this.columnNameAndBindParameterWithKey(field, "probe"))
-            .toArray(String[]::new);
+            .map(field -> criteria.createWhereClause(field.getDeclaredAnnotation(Column.class)))
+            .flatMap(Collection::stream)
+            .collect(Collectors.collectingAndThen(Collectors.toList(), Optional::of))
+            .filter(it -> !it.isEmpty())
+            .orElseThrow(() -> new IllegalArgumentException("Not Allow Empty Where Clause."))
+            .toArray(new String[0]);
+
     }
 
     /**
      * @param ctx {@link ProviderContext}
-     * @return where column and bind value array
+     * @return where column and bind value array {@link String[]}
      */
     protected String[] wheresById(ProviderContext ctx) {
         return this.onlyIdColumns(ctx)
@@ -163,7 +149,7 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
 
     /**
      * @param ctx {@link ProviderContext}
-     * @return foreach where column and bind value array
+     * @return foreach where column and bind value array {@link String}
      */
     protected String whereByIds(ProviderContext ctx) {
 
@@ -189,18 +175,30 @@ public abstract class SqlProviderSupport<T, ID extends Serializable> extends Pro
     }
 
     /**
-     * @param pageable {@link Pageable}
+     * @param sort {@link Sort}
      * @param ctx {@link ProviderContext}
-     * @return order by array
+     * @return order by array {@link String[]}
      */
-    protected String[] orders(Pageable pageable, ProviderContext ctx) {
-        List<String> allColumns = this.columns(ctx)
-            .map(this::columnName)
-            .collect(Collectors.toList());
+    protected String[] orders(Sort sort, ProviderContext ctx) {
 
-        return pageable.getSort().getOrders().stream()
-            .filter(order -> allColumns.contains(order.getProperty()))
-            .map(order -> order.getProperty().concat(" ").concat(order.getDirection().name()))
+        if (sort == null) {
+            return new String[0];
+        }
+
+        Map<String, String> fieldAndColumn = this.columns(ctx)
+            .collect(Collectors.toMap(
+                Field::getName,
+                field -> field.getAnnotation(Column.class).name()
+                )
+            );
+
+        return sort.getOrders().stream()
+            .filter(order -> fieldAndColumn.containsKey(order.getProperty()))
+            /*
+             * e.g.
+             * ORD_NO DESC
+             */
+            .map(order -> String.format("%s %s", fieldAndColumn.get(order.getProperty()), order.getDirection()))
             .toArray(String[]::new);
     }
 

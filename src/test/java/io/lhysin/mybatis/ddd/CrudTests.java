@@ -22,10 +22,8 @@ import io.lhysin.mybatis.ddd.entity.Order;
 import io.lhysin.mybatis.ddd.mapper.CartMapper;
 import io.lhysin.mybatis.ddd.mapper.CustomerMapper;
 import io.lhysin.mybatis.ddd.mapper.CustomerXmlMapper;
-import io.lhysin.mybatis.ddd.mapper.DummyMapper;
 import io.lhysin.mybatis.ddd.mapper.ItemMapper;
 import io.lhysin.mybatis.ddd.mapper.OrderMapper;
-import io.lhysin.mybatis.ddd.mapper.StudentMapper;
 import io.lhysin.mybatis.ddd.spec.Pageable;
 import lombok.extern.slf4j.Slf4j;
 
@@ -50,12 +48,6 @@ class CrudTests {
 
     @Autowired
     private ItemMapper itemMapper;
-
-    @Autowired
-    private StudentMapper studentMapper;
-
-    @Autowired
-    private DummyMapper dummyMapper;
 
     /**
      * Insertable false test.
@@ -181,10 +173,10 @@ class CrudTests {
         Customer dynamicUpdatedCustomer2 = customerMapper.findById(custNo2).orElseThrow(NoSuchElementException::new);
         assertNotNull(dynamicUpdatedCustomer2.getAge());
 
-        Exception exception = assertThrows(Exception.class, () -> {
+        Exception exception = assertThrows(Exception.class, () ->
             customerMapper.dynamicUpdate(Customer.builder()
-                .build());
-        });
+                .build())
+        );
 
         log.debug(exception.getMessage());
         assertTrue(exception.getMessage().contains("Not Exists"));
@@ -195,14 +187,14 @@ class CrudTests {
      */
     @Test
     void pagingAndSortingTest() {
-        Sort sort = Sort.by("AGE")
-            .and(Sort.Direction.DESC, "FIRST_NAME");
+        Sort sort = Sort.by("age")
+            .and(Sort.Direction.DESC, "firstName");
         Pageable req = PageRequest.of(2, 3, sort);
         List<Customer> customers = customerMapper.findAll(req);
 
         assertFalse(customers.isEmpty());
 
-        // check safty order by
+        // check safety order by
         Sort fakeSort = Sort.by(Sort.Direction.ASC, "asd")
             .and("OOO")
             .and("exists")
@@ -300,14 +292,14 @@ class CrudTests {
      */
     @Test
     void findAllByIdsAndDeleteByIdsTest() {
-        List<String> customerIds = new ArrayList<String>();
+        List<String> customerIds = new ArrayList<>();
         customerIds.add("20220101");
         customerIds.add("20220102");
         customerIds.add("20220103");
         List<Customer> customers = customerMapper.findAllById(customerIds);
         assertFalse(customers.isEmpty());
 
-        List<Order.PK> orderIds = new ArrayList<Order.PK>();
+        List<Order.PK> orderIds = new ArrayList<>();
         orderIds.add(Order.PK.builder()
             .custNo("20220111")
             .ordNo("order10")
